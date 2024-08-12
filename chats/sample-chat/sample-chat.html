@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>Sample Chat</title>
+    <style>
+        * {
+            font-family: 'Arial', sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            height: 100vh;
+        }
+        .container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: row;
+            height: calc(100% - 60px); /* Adjust for header height */
+        }
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        .header .name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .header .status {
+            font-size: 14px;
+            color: #d4d4d4;
+        }
+        .chat-contact {
+            width: 30%;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+            background-color: #f1f3f4;
+            padding: 10px;
+            height: 100%;
+        }
+        .chat-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative; /* Added for positioning badge */
+        }
+        .chat-card:hover {
+            background-color: #e9ecef;
+        }
+        .chat-card-left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+        .chat-card-left img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        .chat-card-left .name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .chat-card-left .last-message {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .chat-card-left .last-message-time {
+            font-size: 12px;
+            color: #adb5bd;
+        }
+        .chat-card-right {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .chat-card-right .ellipsis {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #6c757d;
+            cursor: pointer;
+            font-weight: bold; /* Make ellipsis bold */
+            transition: color 0.3s;
+        }
+        .chat-card-right .ellipsis:hover {
+            color: #007bff;
+        }
+        .badge {
+            position: absolute;
+            right: 40px;
+            transform: translateY(-100%);
+            background-color: #ff0000;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 9px;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 25px;
+            right: 0;
+            display: none;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .dropdown-menu.show {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .dropdown-menu a:hover {
+            background-color: #f1f3f4;
+        }
+        .dropdown-menu a i {
+            margin-right: 10px;
+        }
+        .context-menu {
+            display: none;
+            position: fixed;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            width: 200px;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .context-menu.show {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+        .context-menu a {
+            display: block;
+            padding: 10px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .context-menu a:hover {
+            background-color: #f1f3f4;
+        }
+        .context-menu a i {
+            margin-right: 10px;
+        }
+        .message-container {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background-color: #fff;
+            overflow-y: auto;
+            height: 100%;
+            position: relative;
+        }
+        .message-left, .message-right {
+            margin-bottom: 15px;
+            max-width: 70%;
+            position: relative;
+        }
+        .message-left {
+            align-self: flex-start;
+        }
+        .message-right {
+            align-self: flex-end;
+            text-align: right;
+        }
+        .message-text {
+            padding: 10px;
+            border-radius: 15px;
+            background-color: #e9ecef;
+            display: inline-block;
+        }
+        .message-left .message-text {
+            background-color: #f1f3f4;
+        }
+        .message-time {
+            font-size: 12px;
+            color: #adb5bd;
+            margin-top: 5px;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #f1f3f4;
+            border-top: 1px solid #e0e0e0;
+            position: fixed;
+            bottom: 0;
+            width: 69%;
+        }
+        .input-container input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        .input-container input[type="file"] {
+            display: none;
+        }
+        .input-container label {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .input-container button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        @media (max-width: 767px) {
+            .chat-contact{
+                display: none;
+            }
+            .message-container{
+                width: 100%;
+            }
+            .input-container {
+                background-color: white;
+                border: none;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="images/confident-attractive-caucasian-guy-beige-pullon-smiling-broadly-while-standing-against-gray (1).jpg" alt="Profile Picture">
+            <div>
+                <div class="name">John Doe</div>
+                <div class="status">Online</div>
+            </div>
+        </div>
+        <div class="chat-container">
+            <div class="chat-contact">
+                <div class="chat-card">
+                    <div class="chat-card-left">
+                        <img src="images/confident-attractive-caucasian-guy-beige-pullon-smiling-broadly-while-standing-against-gray (1).jpg" alt="Profile Picture">
+                        <div>
+                            <div class="name">John Doe</div>
+                            <div class="last-message">Hey there!</div>
+                            <div class="last-message-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="chat-card-right">
+                        <button class="ellipsis" aria-haspopup="true" aria-expanded="false">...</button>
+                        <div class="dropdown-menu" aria-label="submenu">
+                            <a href="#"><i class="fa fa-trash"></i> Delete Chat</a>
+                            <a href="#"><i class="fa fa-user-slash"></i> Block User</a>
+                            <a href="#"><i class="fa fa-archive"></i> Archive</a>
+                            <a href="#"><i class="fa fa-thumbtack"></i> Pin</a>
+                            <a href="#"><i class="fa fa-bell-slash"></i> Mute Notifications</a>
+                        </div>
+                    </div>
+                    <div class="badge">1</div>
+                </div>
+                <div class="chat-card">
+                    <div class="chat-card-left">
+                        <img src="images/confident-attractive-caucasian-guy-beige-pullon-smiling-broadly-while-standing-against-gray (1).jpg" alt="Profile Picture">
+                        <div>
+                            <div class="name">Jane Smith</div>
+                            <div class="last-message">See you later!</div>
+                            <div class="last-message-time">1 hour ago</div>
+                        </div>
+                    </div>
+                    <div class="chat-card-right">
+                        <button class="ellipsis" aria-haspopup="true" aria-expanded="false">...</button>
+                        <div class="dropdown-menu" aria-label="submenu">
+                            <a href="#"><i class="fa fa-trash"></i> Delete Chat</a>
+                            <a href="#"><i class="fa fa-user-slash"></i> Block User</a>
+                            <a href="#"><i class="fa fa-archive"></i> Archive</a>
+                            <a href="#"><i class="fa fa-thumbtack"></i> Pin</a>
+                            <a href="#"><i class="fa fa-bell-slash"></i> Mute Notifications</a>
+                        </div>
+                    </div>
+                    <div class="badge">1</div>
+                </div>
+            </div>
+            <div class="message-container">
+                <div class="message-left">
+                    <p class="message-text">Hello, how are you?</p>
+                    <p class="message-time">1 second ago</p>
+                </div>
+
+                <div class="message-right">
+                    <p class="message-text">Good, thanks!</p>
+                    <p class="message-time">1 second ago</p>
+                </div>
+
+                <!-- Add more messages here -->
+                <div class="input-container">
+                    <label for="attach-image">📷</label>
+                    <input type="file" id="attach-image" accept="image/*">
+                    <label for="attach-file">📁</label>
+                    <input type="file" id="attach-file">
+                    <input type="text" placeholder="Type a message">
+                    <button type="submit"><i class="fa fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu HTML -->
+    <div class="context-menu" id="context-menu">
+        <a href="#"><i class="fa fa-reply"></i> Reply</a>
+        <a href="#"><i class="fa fa-edit"></i> Edit</a>
+        <a href="#"><i class="fa fa-trash"></i> Delete</a>
+        <a href="#"><i class="fa fa-thumbtack"></i> Pin</a>
+        <a href="#"><i class="fa fa-share"></i> Forward</a>
+        <a href="#"><i class="fa fa-copy"></i> Copy</a>
+        <a href="#"><i class="fa fa-check-square"></i> Select</a>
+    </div>
+
+    <script>
+        // Handle ellipsis button clicks
+        document.querySelectorAll('.ellipsis').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.stopPropagation();
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== this.nextElementSibling) {
+                        menu.classList.remove('show');
+                    }
+                });
+                const dropdown = this.nextElementSibling;
+                dropdown.classList.toggle('show');
+                this.setAttribute('aria-expanded', dropdown.classList.contains('show'));
+            });
+        });
+
+        // Handle global clicks to close dropdowns
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.chat-card-right')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
+        // Handle right-click on message-right to show context menu
+        document.querySelectorAll('.message-right').forEach(message => {
+            message.addEventListener('contextmenu', function(event) {
+                event.preventDefault();
+                const contextMenu = document.getElementById('context-menu');
+                contextMenu.style.top = `${event.clientY}px`;
+                contextMenu.style.left = `${event.clientX}px`;
+                contextMenu.classList.add('show');
+            });
+        });
+
+        // Handle clicks outside of context menu to hide it
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.context-menu')) {
+                document.getElementById('context-menu').classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

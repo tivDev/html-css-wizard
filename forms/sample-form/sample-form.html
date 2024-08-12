@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sample-form</title>
+    <style>
+        *{
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            margin-top: 3%;
+        }
+
+        form{
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(39, 27, 27, 0.503);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            /* font-weight: bold; */
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 95%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .checkbox{
+            display: flex;
+            align-items: center;
+        }
+        .checkbox label{
+            margin: 0;
+            margin-left: 5px;
+
+        }
+        .button-group{
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <form action="">
+                <h2>Register</h2>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter Email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter Password">
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="show-password" class="show-password">
+                    <label for="show-password">Show Password</label>
+                </div>
+                <script>
+                    const checkbox = document.querySelector('.show-password');
+                    const passwordInput = document.getElementById('password');
+                    checkbox.addEventListener('change', () => {
+                        if (checkbox.checked) {
+                            passwordInput.type = 'text';
+                        } else {
+                            passwordInput.type = 'password';
+                        }
+                    });
+                </script>
+                <div class="form-group button-group">
+                    <input type="submit" value="Register">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexible Card Dashboard</title>
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f0f0f0; /* Light gray background for the page */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333; /* Darker color for the heading */
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #ffffff; /* White background for cards */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Slight lift on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
+        }
+
+        .status {
+            font-weight: bold;
+            color: #555; /* Slightly lighter color for status */
+            margin-bottom: 10px;
+        }
+
+        .amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333; /* Darker color for amount */
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            width: 100%;
+            height: 8px;
+            background-color: #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .info span {
+            font-size: 14px;
+            color: #666; /* Lighter color for info text */
+        }
+
+        @media (max-width: 1200px) {
+            .card-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Different progress bar colors */
+        .progress-bar-red { background-color: #ff4d4d; }
+        .progress-bar-blue { background-color: #4d79ff; }
+        .progress-bar-green { background-color: #4dff4d; }
+        .progress-bar-orange { background-color: #ff9d4d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Card Dashboard</h2>
+        <div class="card-container">
+
+            <div class="card">
+                <div class="status">Rejected</div>
+                <div class="amount">$3,868</div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-red"></div>
+                </div>
+                <div class="info">
+                    <span>Converted Leads</span>
+                    <span>52 Completed (63%)</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="status">Pending</div>
+                <div class="amount">$3,868</div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-blue"></div>
+                </div>
+                <div class="info">
+                    <span>Converted Leads</span>
+                    <span>52 Completed (63%)</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="status">Approved</div>
+                <div class="amount">$3,868</div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-green"></div>
+                </div>
+                <div class="info">
+                    <span>Converted Leads</span>
+                    <span>52 Completed (63%)</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="status">Under Review</div>
+                <div class="amount">$3,868</div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-orange"></div>
+                </div>
+                <div class="info">
+                    <span>Converted Leads</span>
+                    <span>52 Completed (63%)</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

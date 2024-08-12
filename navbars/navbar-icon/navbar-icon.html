@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <title>Navbar with Icons</title>
+    <style>
+        * {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        header ul {
+            display: flex;
+            gap: 50px;
+            list-style: none;
+        }
+
+        header ul li a {
+            text-decoration: none;
+            color: white;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+
+        header ul li a:hover {
+            color: lightgray;
+        }
+
+        .navbar {
+            width: 100%;
+            padding: 10px 20px;
+            display: none;
+            position: absolute;
+            bottom: 0;
+            background-color: #233048;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .navbar li {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            font-size: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #444;
+            border-radius: 5px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #233048;
+            color: #fff;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .profile span {
+            font-size: 18px;
+        }
+
+        /* responsive for mobile */
+
+        @media (max-width: 767.98px) {
+            header ul {
+                display: none;
+            }
+
+            .navbar {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h2>Logo</h2>
+            <div class="profile">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Product</a></li>
+                    <li><a href="#">Report</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+                <a href="#">
+                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                        alt="Profile Picture" />
+                </a>
+            </div>
+        </header>
+        <div class="navbar">
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-box"></i> Product</a></li>
+                <li><a href="#"><i class="fas fa-chart-bar"></i> Report</a></li>
+                <li><a href="#"><i class="fas fa-phone"></i> Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

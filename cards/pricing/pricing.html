@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>Pricing</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card-price {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #d00000;
+            
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+            color: #555;
+            flex-grow: 1;
+        }
+
+        .card li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card li i {
+            margin-right: 10px;
+            color: #1b263b;
+        }
+
+        .btn {
+            width: 100%;
+            background-color: #000814;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #0069d9;
+        }
+
+        @media (max-width: 992px) {
+            .card-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .card-title {
+                font-size: 20px;
+            }
+
+            .card-price {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .card-title {
+                font-size: 18px;
+            }
+
+            .card-price {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">Pricing</h1>
+        <div class="card-container">
+            <div class="card card-pricing-1">
+                <h3 class="card-title">Basic</h3>
+                <p class="card-price">$9.99</p>
+                <ul>
+                    <li><i class="fa fa-hdd"></i> 5GB Storage</li>
+                    <li><i class="fa fa-infinity"></i> Unlimited Public Projects</li>
+                    <li><i class="fa fa-users"></i> Community Access</li>
+                    <li><i class="fa fa-infinity"></i> Unlimited Private Projects</li>
+                    <li><i class="fa fa-phone"></i> Dedicated Phone Support</li>
+                    <li><i class="fa fa-globe"></i> Free Subdomain</li>
+                </ul>
+                <button class="btn">Sign Up</button>
+            </div>
+            <div class="card card-pricing-2">
+                <h3 class="card-title">Standard</h3>
+                <p class="card-price">$19.99</p>
+                <ul>
+                    <li><i class="fa fa-hdd"></i> 50GB Storage</li>
+                    <li><i class="fa fa-infinity"></i> Unlimited Public Projects</li>
+                    <li><i class="fa fa-users"></i> Community Access</li>
+                    <li><i class="fa fa-infinity"></i> Unlimited Private Projects</li>
+                    <li><i class="fa fa-phone"></i> Dedicated Phone Support</li>
+                    <li><i class="fa fa-globe"></i> Free Subdomain</li>
+                </ul>
+                <button class="btn">Sign Up</button>
+            </div>
+            <div class="card card-pricing-3">
+                <h3 class="card-title">Premium</h3>
+                <p class="card-price">$29.99</p>
+                <ul>
+                    <li><i class="fa fa-hdd"></i> 150GB Storage</li>
+                    <li><i class="fa fa-infinity"></i> Unlimited Public Projects</li>
+                    <li><i class="fa fa-users"></i> Community Access</li>
+                    <li><i class="fa fa-infinity"></i> Unlimited Private Projects</li>
+                    <li><i class="fa fa-phone"></i> Dedicated Phone Support</li>
+                    <li><i class="fa fa-globe"></i> Free Subdomain</li>
+                    <li><i class="fa fa-chart-line"></i> Advanced Analytics</li>
+                </ul>
+                <button class="btn">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

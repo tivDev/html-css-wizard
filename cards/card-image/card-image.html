@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>card</title>
+    <style>
+        .card-container {
+            margin-top: 3%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-gap: 20px;
+        }
+    
+        .card {
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .card img {
+            max-width: 100%;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+    
+        .card-title, .card-text {
+            margin: 0;
+            line-height: 1.5;
+        }
+    
+        .card-title {
+            color:#0794fc;
+            font-size: 18px; 
+        }
+    
+        .card-text {
+            font-size: 14px; 
+        }
+    
+        @media (max-width: 767px) {
+            .card-container {
+                grid-template-columns: 1fr; 
+            }
+    
+            .card-title, .card-text {
+                font-size: 16px; 
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="card-container">
+
+            <div class="card card-1">
+                <img src="images/beautiful-view-sunset-sea.jpg" alt="Card Image" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="card-title">Card Title</h3>
+                    <p class="card-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Voluptates, quibusdam quidem. Eius, quam, quos?
+                    </p>
+                    <a href="#" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+
+            <div class="card card-2">
+                <img src="images/male-system-hacker-coding-security-program-pc-software-programming-firewall-data-encryption-server-using-computer-code-application-script-display.jpg" alt="Card Image" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="card-title">Card Title</h3>
+                    <p class="card-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Voluptates, quibusdam quidem. Eius, quam, quos?
+                    </p>
+                    <a href="#" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+
+            <div class="card card-3">
+                <img src="images/young-students-learning-together-group-study.jpg" alt="Card Image" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="card-title">Card Title</h3>
+                    <p class="card-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Voluptates, quibusdam quidem. Eius, quam, quos?
+                    </p>
+                    <a href="#" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

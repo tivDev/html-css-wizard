@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <title>Background Image Header</title>
+    <style>
+      * {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body{
+        background: #000;
+
+      }
+      .container {
+        width: 100%;
+        height: 80vh;
+        display: flex;
+        position: relative;
+        color: white;
+        padding: 20px;
+      }
+
+      .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("../images/v1016-b-09.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        filter: blur(2px);
+        filter:brightness(30%);
+        z-index: -1;
+      }
+
+      .header-content {
+        max-width: 600px;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .header-content h1 {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      .header-content p {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 30px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      @media (max-width: 768px) {
+        .header-content h1 {
+          font-size: 28px;
+        }
+
+        .header-content p {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="background-image"></div>
+      <header class="header">
+        <div class="header-content">
+          <h1>Welcome to our website</h1>
+          <p>
+            We are thrilled to welcome you to our website. Explore our offerings
+            and unlock the potential for personal and professional growth. Our
+            team is dedicated to providing top-notch services and support to
+            help you achieve your goals.
+          </p>
+          <div class="header-buttons">
+            <button class="btn btn-primary">Read More</button>
+          </div>
+        </div>
+      </header>
+    </div>
+  </body>
+</html>

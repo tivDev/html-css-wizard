@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>sample-alert</title>
+</head>
+<style>
+    * {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .alert {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+        position: relative;
+    }
+    .alert.alert-1 {
+        background-color: #f0f0f5;
+    }
+    .alert.alert-2 {
+        background-color: #ffebee;
+    }
+    .alert.alert-3 {
+        background-color: #fff8e7;
+    }
+    .alert.alert-4 {
+        background-color: #faf2e9;
+    }
+    .alert.alert-5 {
+        background-color: #e8f5e9;
+    }
+    .alert.alert-6 {
+        background-color: #e1ffeb;
+    }
+    .alert.alert-7 {
+        background-color: #e0f7ff;
+    }
+    .alert.alert-8 {
+        background-color: #e0f2ff;
+    }
+    .alert.alert-9 {
+        background-color: #e1e8ff;
+    }
+    .alert.alert-10 {
+        background-color: #f0f0f5;
+    }
+    .alert:hover {
+        background-color: #eee;
+    }
+    .alert.alert-1 i {
+        color: #007bff;
+    }
+    .alert.alert-2 i {
+        color: #dc3545;
+    }
+    .alert.alert-3 i {
+        color: #ffc107;
+    }
+    .alert.alert-4 i {
+        color: #17a2b8;
+    }
+    .alert.alert-5 i {
+        color: #28a745;
+    }
+    .alert.alert-6 i {
+        color: #6f42c1;
+    }
+    .alert.alert-7 i {
+        color: #007bff;
+    }
+    .alert.alert-8 i {
+        color: #6610f2;
+    }
+    .alert.alert-9 i {
+        color: #6f42c1;
+    }
+    .alert.alert-10 i {
+        color: #007bff;
+    }
+    .alert i {
+        margin-right: 10px;
+        font-size: 20px;
+    }
+    .alert .message {
+        font-size: 16px;
+        color: #333;
+        flex: 1;
+    }
+    .alert .close-btn {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #999;
+    }
+    .alert .close-btn:hover {
+        color: #333;
+    }
+</style>
+<body>
+
+    <div class="container">
+        <h2>Alert notifications</h2>
+        <div class="alert alert-1">
+            <i class="fas fa-info-circle"></i>
+            <p class="message">Info alert successfully</p>
+            <button class="close-btn" onclick="hideAlert(this)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="alert alert-2">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p class="message">Warning alert successfully</p>
+            <button class="close-btn" onclick="hideAlert(this)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="alert alert-3">
+            <i class="fas fa-exclamation-circle"></i>
+            <p class="message">Danger alert successfully</p>
+            <button class="close-btn" onclick="hideAlert(this)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="alert alert-4">
+            <i class="fas fa-info-circle"></i>
+            <p class="message">Info alert successfully</p>
+            <button class="close-btn" onclick="hideAlert(this)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="alert alert-5">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p class="message">Warning alert successfully</p>
+            <button class="close-btn" onclick="hideAlert(this)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="alert alert-6">
+            <i class="fas fa-exclamation-circle"></i>
+            <p class="message">Danger alert successfully</p>
+            <button class="close-btn" onclick="hideAlert(this)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="alert alert-7">
+            <i class="fas fa-info-circle"></i>
+            <p class="message">Info alert successfully</p>
+            <button class="close-btn" onclick="hideAlert(this)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="alert alert-8">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p class="message">Warning alert successfully</p>
+            <button class="close-btn" onclick="hideAlert(this)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="alert alert-9">
+            <i class="fas fa-exclamation-circle"></i>
+            <p class="message">Danger alert successfully</p>
+            <button class="close-btn" onclick="hideAlert(this)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="alert alert-10">
+            <i class="fas fa-info-circle"></i>
+            <p class="message">Info alert successfully</p>
+            <button class="close-btn" onclick="hideAlert(this)"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+    <script>
+        function hideAlert(button) {
+            const alert = button.parentElement;
+            alert.style.display = 'none';
+        }
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <title>Professional Header</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+.header-left {
+    max-width: 50%;
+}
+.header-buttons .btn{
+    margin-right: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+.header-buttons .btn:hover{
+    box-shadow: 0 0 10px gray;
+}
+
+.header-left h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.header-left p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.header-right img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+    animation: jump 2s infinite ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes jump {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@media (max-width: 767px) {
+    .header {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+    }
+
+    .header-left {
+        max-width: 100%;
+    }
+
+    .header-right {
+        max-width: 100%;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-left">
+            <h1>Welcome to Our Website</h1>
+            <p class="header-description">
+                We are delighted to have you here. Explore our offerings and discover how we can help you achieve your goals. Our team is dedicated to providing exceptional service and support.
+            </p>
+            <div class="header-buttons">
+                <button class="btn">Get Started</button>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../images/Research paper-pana.png" alt="Welcome Image">
+        </div>
+    </header>
+</body>
+
+</html>
