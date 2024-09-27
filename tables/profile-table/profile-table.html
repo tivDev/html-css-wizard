@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>profile-table</title>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even){background-color: #f2f2f2;}
+        th {
+            white-space: nowrap; /* Prevents text from wrapping */
+            overflow: hidden;    /* Hides overflowing text */
+            text-overflow: ellipsis; /* Adds ellipsis to end of text */
+            background-color: #000;
+            color: white;
+        }
+        .action {
+            display: flex;
+            gap: 10px;
+        }
+        .action button {
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+        .action button.delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        .action button.edit {
+            background-color: #28a745;
+            color: white;
+        }
+        .action button.details {
+            background-color: #17a2b8;
+            color: white;
+        }
+        img {
+            border-radius: 50%;
+        }
+        @media (max-width: 800px) {
+            table, th, td {
+                border: none;
+                width: 100%;
+            }
+            th, td {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Profile Table</h1>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Profile Image</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Date of Birth</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><img src="https://picsum.photos/50/50?random=1" alt="Profile Image"></td>
+                <td>Dana</td>
+                <td>Male</td>
+                <td>1990-01-01</td>
+                <td><a href="mailto:dana@gmail.com">dana@gmail.com</a></td>
+                <td><a href="tel:08123456789">08123456789</a></td>
+                <td class="action">
+                    <button class="delete"><i class="fas fa-trash"></i></button>
+                    <button class="edit"><i class="fas fa-edit"></i></button>
+                    <button class="details"><i class="fas fa-info-circle"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><img src="https://picsum.photos/50/50?random=2" alt="Profile Image"></td>
+                <td>John</td>
+                <td>Male</td>
+                <td>1990-01-01</td>
+                <td><a href="mailto:john@gmail.com">john@gmail.com</a></td>
+                <td><a href="tel:08123456780">08123456780</a></td>
+                <td class="action">
+                    <button class="delete"><i class="fas fa-trash"></i></button>
+                    <button class="edit"><i class="fas fa-edit"></i></button>
+                    <button class="details"><i class="fas fa-info-circle"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><img src="https://picsum.photos/50/50?random=3" alt="Profile Image"></td>
+                <td>John</td>
+                <td>Male</td>
+                <td>1990-01-01</td>
+                <td><a href="mailto:john@gmail.com">john@gmail.com</a></td>
+                <td><a href="tel:08123456780">08123456780</a></td>
+                <td class="action">
+                    <button class="delete"><i class="fas fa-trash"></i></button>
+                    <button class="edit"><i class="fas fa-edit"></i></button>
+                    <button class="details"><i class="fas fa-info-circle"></i></button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>
+

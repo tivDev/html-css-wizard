@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fit image</title>
+</head>
+<style>
+    .img-container {
+        width: 400px;
+        height: 300px;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .img-container img {
+        width: 100%;
+        object-fit: contain;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="img-container">
+            <img src="../../cards/card-sale/images/fried-rice-with-shrimp-prawn-top-white-plate.jpg" alt="">
+        </div>
+    </div>
+</body>
+</html>
