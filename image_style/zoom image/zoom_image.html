@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoom Image on Hover</title>
+    <style>
+        .container {
+            width: 500px;
+            height: 700px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-repeat: no-repeat;
+            background-size: cover;
+            transform: scale(1);
+            transition: transform 0.5s ease-in-out;
+            transform-origin: center; /* Default to the center */
+        }
+    </style>
+</head>
+<body>
+    <h1>Zoom the image when mouseover</h1>
+    <div class="container">
+        <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Zoomable Image">
+    </div>
+
+    <script>
+        const container = document.querySelector('.container');
+        const img = container.querySelector('img');
+
+        // Add mousemove event listener to adjust image position during zoom
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            
+            img.style.transformOrigin = `${x * 100}% ${y * 100}%`; // Adjust zoom position dynamically based on mouse position
+        });
+
+        // Add mouseover event to zoom in the image
+        container.addEventListener('mouseover', () => {
+            img.style.transform = 'scale(4)'; // Zoom in the image
+        });
+
+        // Add mouseout event to zoom out the image
+        container.addEventListener('mouseout', () => {
+            img.style.transform = 'scale(1)'; // Reset zoom when mouse leaves
+            img.style.transformOrigin = 'center'; // Reset zoom origin to center
+        });
+    </script>
+</body>
+</html>
