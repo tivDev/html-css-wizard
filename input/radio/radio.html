@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio</title>
+</head>
+
+<body>
+    <style>
+        :root {
+            --primary-color: #06181d;
+            --secondary-color: #444;
+            --success-color: #1ce61c;
+            --warning-color: #ffd700;
+            --danger-color: #f00707;
+            --background-color: #f2f2f2;
+            --text-color: white;
+            --border-color: #ddd;
+        }
+
+        .container {
+            padding: 20px;
+        }
+        form{
+            display: flex;
+            gap: 20px;
+        }
+        form input[type="radio"] {
+            display: none;
+        }
+
+        form label {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 100px;
+        }
+        form input[type="radio"]:checked + label {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        form label {
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            border-radius: 100px;
+        }
+    </style>
+    <div class="container">
+        <h3>Radio  Button</h3>
+        <p>Select one of the radio buttons to see the result.</p><br>
+        <form action="">
+            <div class="form-control">
+                <input type="radio" name="radio" id="radio1">
+                <label for="radio1">Radio 1</label>
+            </div>
+
+            <div class="form-control">
+                <input type="radio" name="radio" id="radio2">
+                <label for="radio2">Radio 2</label>
+            </div>
+
+        </form>
+    </div>
+</body>
+
+</html>
