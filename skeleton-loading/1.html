@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Skeleton Loader Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 320px;
+      position: relative;
+    }
+
+    .skeleton {
+      background-color: #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+      padding: 20px;
+      animation: pulse 1.5s infinite;
+    }
+
+    .skeleton .line {
+      height: 16px;
+      background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+      background-size: 200% 100%;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      animation: shimmer 1.5s infinite linear;
+    }
+
+    .skeleton .line.short {
+      width: 60%;
+    }
+
+    .card {
+      display: none;
+      opacity: 0;
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: opacity 0.5s ease;
+    }
+
+    .card.show {
+      display: block;
+      opacity: 1;
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.6;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div id="skeleton" class="skeleton">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line short"></div>
+    </div>
+
+    <div id="card" class="card">
+      <h3>Skeleton Card Title</h3>
+      <p>This content appears after the 2-second skeleton loading animation. It uses modern, subtle design elements.</p>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById('skeleton').style.display = 'none';
+      const card = document.getElementById('card');
+      card.classList.add('show');
+    }, 2000); // 2 seconds
+  </script>
+
+</body>
+</html>
