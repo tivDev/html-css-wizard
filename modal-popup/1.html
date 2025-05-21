@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Modal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        .main-page {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-open-modal {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        /* Backdrop */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-backdrop.show-backdrop {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
+        /* Modal Box */
+        .modal {
+            background: #fff;
+            border-radius: 20px 20px 0 0;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.15);
+            text-align: center;
+
+            opacity: 0;
+            transform: translateY(100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .modal p {
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-footer button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-no {
+            background: #eee;
+        }
+
+        .btn-no:hover {
+            background: #ddd;
+        }
+
+        .btn-yes {
+            background: #007aff;
+            color: white;
+        }
+
+        .btn-yes:hover {
+            background: #005fcf;
+        }
+
+        /* For larger screens, center vertically */
+        @media (min-width: 600px) {
+            .modal-backdrop {
+                align-items: center;
+            }
+
+            .modal {
+                border-radius: 20px;
+                transform: scale(0.9);
+                transition: transform 0.3s ease;
+            }
+
+            .modal.show {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-page">
+        <button class="btn-open-modal" onclick="openModal()">Open Modal</button>
+    </div>
+
+    <!-- Modal Structure -->
+    <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal" id="modalBox">
+            <h2>Are you sure?</h2>
+            <p>This action cannot be undone. Do you want to proceed?</p>
+            <div class="modal-footer">
+                <button class="btn-no" onclick="closeModal()">No</button>
+                <button class="btn-yes" onclick="onYes()">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const modalBackdrop = document.getElementById("modalBackdrop");
+        const modalBox = document.getElementById("modalBox");
+
+        function openModal() {
+            modalBackdrop.classList.add("show-backdrop");
+            modalBox.classList.add("show");
+        }
+
+        function closeModal() {
+            modalBox.classList.remove("show");
+            setTimeout(() => {
+                modalBackdrop.classList.remove("show-backdrop");
+            }, 300); // same as transition time
+        }
+
+
+        function onYes() {
+            alert("Confirmed!");
+            closeModal();
+        }
+    </script>
+
+</body>
+
+</html>
