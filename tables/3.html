@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User List Table</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f2f2f7;
+      padding: 20px;
+    }
+
+    .table-container {
+      background: #fff;
+      border-radius: 12px;
+      overflow-x: auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      font-size: 24px;
+      color: #111;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f9f9f9;
+      font-size: 14px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tr {
+      border-bottom: 1px solid #eee;
+    }
+
+    tr:hover {
+      background-color: #f2f2f2;
+    }
+
+    td {
+      font-size: 15px;
+      color: #333;
+    }
+
+    .badge-active {
+      display: inline-block;
+      background-color: #34c759;
+      color: white;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 20px;
+    }
+
+    .badge-inactive {
+      display: inline-block;
+      background-color: #ff3b30;
+      color: white;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 20px;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: #555;
+      margin-right: 10px;
+      transition: color 0.3s;
+    }
+
+    .action-btn:hover {
+      color: #007aff;
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <div class="table-container">
+    <h2>User List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Sex</th>
+          <th>Is Active</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>John Doe</td>
+          <td>john@example.com</td>
+          <td>Male</td>
+          <td><span class="badge-active">Active</span></td>
+          <td>
+            <button class="action-btn"><i class="fas fa-edit"></i></button>
+            <button class="action-btn"><i class="fas fa-trash-alt"></i></button>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Jane Smith</td>
+          <td>jane@example.com</td>
+          <td>Female</td>
+          <td><span class="badge-inactive">Inactive</span></td>
+          <td>
+            <button class="action-btn"><i class="fas fa-edit"></i></button>
+            <button class="action-btn"><i class="fas fa-trash-alt"></i></button>
+          </td>
+        </tr>
+        <!-- Add more users easily by duplicating -->
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
