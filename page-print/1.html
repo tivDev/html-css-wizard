@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document with Covers and Page Layout</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #ccc;
+            font-family: sans-serif;
+        }
+
+        .page-a4 {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            margin: 10px auto;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+            border: 1px solid #bbb;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header,
+        .footer {
+            padding: 10mm 20mm;
+            background: #f2f2f2;
+            font-size: 14px;
+        }
+
+        .header {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .footer {
+            margin-top: auto;
+            border-top: 1px solid #ddd;
+        }
+
+        .content {
+            flex: 1;
+            padding: 10mm 20mm;
+            overflow: hidden;
+        }
+
+        .cover-page {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+
+            .page-a4 {
+                margin: 0;
+                border: none;
+                /* Remove page-break-after from regular pages */
+                page-break-after: inherit;
+            }
+
+            /* Only add page-break-after to specific pages */
+            .page-a4:not(.back-cover):last-child {
+                page-break-after: always;
+            }
+
+            .page-a4>* {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Add this class to your back cover div */
+        .page-a4.back-cover {
+            background-color: white;
+        }
+        
+        @media screen and (max-width: 767px) {
+            body{
+                padding: 0px;
+            }
+            .cover-page{
+                justify-content: flex-start;
+            }
+            .page-a4 {
+                width: 100%;
+            }
+            .content {
+                padding: 5mm 10mm;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- FRONT COVER -->
+    <div class="page-a4 cover-page">
+        <div class="content">
+            <h1>Front Cover</h1>
+            <p>Welcome to the Document</p>
+        </div>
+    </div>
+
+    <!-- Hidden source content -->
+    <div id="content-source" style="display: none;">
+        <!-- Add many paragraphs to generate content pages -->
+        <h2>Introduction</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus...</p>
+        <p>Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue...</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+        <p>Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+
+    </div>
+
+    <!-- Dynamic content pages rendered here -->
+    <div id="pages-output"></div>
+
+    <!-- BACK COVER -->
+    <div class="page-a4 cover-page back-cover">
+        <div class="content">
+            <h1>Back Cover</h1>
+            <p>Thank you for reading!</p>
+        </div>
+    </div>
+
+    <script>
+        const source = document.getElementById("content-source");
+        const output = document.getElementById("pages-output");
+        const pageHeight = 1122; // 297mm at 96dpi
+
+        const contentNodes = Array.from(source.childNodes).filter(
+            node => node.nodeType !== 3 || node.textContent.trim() !== ''
+        );
+
+        function createPage() {
+            const page = document.createElement("div");
+            page.className = "page-a4";
+
+            const header = document.createElement("div");
+            header.className = "header";
+            header.innerText = "Document Header";
+
+            const footer = document.createElement("div");
+            footer.className = "footer";
+            footer.innerText = "Page Footer";
+
+            const content = document.createElement("div");
+            content.className = "content";
+
+            page.appendChild(header);
+            page.appendChild(content);
+            page.appendChild(footer);
+
+            return { page, content };
+        }
+
+        let { page, content } = createPage();
+        output.appendChild(page);
+
+        contentNodes.forEach(node => {
+            content.appendChild(node.cloneNode(true));
+
+            if (page.scrollHeight > pageHeight) {
+                content.removeChild(content.lastChild); // Remove overflow item
+                ({ page, content } = createPage()); // Create new page
+                content.appendChild(node.cloneNode(true)); // Add to new page
+                output.appendChild(page);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
