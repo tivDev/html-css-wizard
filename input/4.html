@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Input with Validation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f4f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .input-wrapper {
+      position: relative;
+      width: 300px;
+      margin: 10px;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .input-wrapper input.invalid {
+      border-color: red;
+    }
+
+    .custom-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      display: none;
+      z-index: 100;
+    }
+
+    .custom-dropdown div {
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    .custom-dropdown div:hover {
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="input-wrapper">
+    <input type="text" input-type="custom-list" data-options="HTML,CSS,JavaScript" placeholder="Select language">
+  </div>
+
+  <div class="input-wrapper">
+    <input type="text" input-type="custom-list" data-options="Python,Go,Rust" placeholder="Select backend">
+  </div>
+
+  <script>
+    document.querySelectorAll('input[input-type="custom-list"]').forEach(input => {
+      const wrapper = input.parentElement;
+      const dropdown = document.createElement('div');
+      dropdown.className = 'custom-dropdown';
+      wrapper.appendChild(dropdown);
+
+      const options = input.dataset.options.split(',').map(opt => opt.trim());
+
+      function renderDropdown(filter = '') {
+        dropdown.innerHTML = '';
+        options
+          .filter(opt => opt.toLowerCase().includes(filter.toLowerCase()))
+          .forEach(opt => {
+            const div = document.createElement('div');
+            div.textContent = opt;
+            div.addEventListener('click', () => {
+              input.value = opt;
+              input.classList.remove('invalid');
+              dropdown.style.display = 'none';
+            });
+            dropdown.appendChild(div);
+          });
+
+        dropdown.style.display = dropdown.children.length ? 'block' : 'none';
+      }
+
+      function validateInput() {
+        const isValid = options.includes(input.value.trim());
+        input.classList.toggle('invalid', !isValid && input.value.trim() !== '');
+      }
+
+      input.addEventListener('focus', () => renderDropdown());
+      input.addEventListener('input', () => {
+        renderDropdown(input.value);
+        validateInput();
+      });
+
+      input.addEventListener('blur', () => {
+        setTimeout(() => {
+          dropdown.style.display = 'none';
+          validateInput();
+        }, 200);
+      });
+
+      document.addEventListener('click', e => {
+        if (!wrapper.contains(e.target)) dropdown.style.display = 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>
