@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Custom DateTime Picker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f3f7;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 80px;
+    }
+
+    .datetime-picker-container {
+      position: relative;
+      width: 320px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      padding: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #333;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 10px 14px;
+      font-size: 16px;
+      border: 1.8px solid #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    input[type="text"]:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    .popup {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+      padding: 16px;
+      display: none;
+      z-index: 100;
+    }
+
+    /* Calendar styles */
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .calendar-header button {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #007bff;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+    }
+
+    .calendar-header button:hover {
+      background-color: #e1f0ff;
+    }
+
+    .calendar-month {
+      font-weight: 700;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .calendar-day-name {
+      font-weight: 600;
+      font-size: 13px;
+      color: #666;
+      text-align: center;
+    }
+
+    .calendar-day {
+      width: 38px;
+      height: 38px;
+      line-height: 38px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+      color: #444;
+      transition: background-color 0.2s ease;
+    }
+
+    .calendar-day:hover {
+      background-color: #e1f0ff;
+    }
+
+    .calendar-day.inactive {
+      color: #bbb;
+      cursor: default;
+    }
+
+    .calendar-day.selected {
+      background-color: #007bff;
+      color: white;
+      font-weight: 700;
+    }
+
+    /* Time picker styles */
+    .time-picker {
+      display: flex;
+      gap: 12px;
+      flex-direction: column;
+    }
+
+    input[type="range"]:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(51, 153, 255, 0.25);
+      border-radius: 100px;
+    }
+
+    .time-value-display {
+      min-width: 60px;
+      text-align: center;
+      font-size: 16px;
+      color: #444;
+      margin-left: 8px;
+    }
+
+    .today-btn {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .today-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="datetime-picker-container">
+    <label for="datetimeInput">Select Date & Time</label>
+    <input type="text" id="datetimeInput" input-type="dateTime" placeholder="YYYY-MM-DD HH:mm:ss" readonly />
+
+  </div>
+  <div class="datetime-picker-container">
+    <label for="datetimeInput">Select Date</label>
+    <input type="text" id="datetimeInput" input-type="date" placeholder="YYYY-MM-DD" readonly />
+
+  </div>
+  <script>
+    function initDatetimePicker(inputSelector) {
+      const input = document.querySelector(inputSelector);
+
+      // Prevent multiple pickers on same input
+      if (!input || input.dataset.pickerAttached === 'true') return;
+      input.dataset.pickerAttached = 'true';
+
+      // Remove previous popup if it exists
+      if (input._popup) {
+        input._popup.remove();
+      }
+
+      const inputType = input.getAttribute('input-type'); // date or dateTime
+
+      const popup = document.createElement('div');
+      popup.className = 'popup';
+
+      popup.innerHTML = `
+    <div class="calendar-header">
+      <button title="Previous month" class="prev-month">&#8592;</button>
+      <div class="calendar-month month-year"></div>
+      <button title="Next month" class="next-month">&#8594;</button>
+    </div>
+    <div class="calendar-grid">
+      ${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+          .map(day => `<div class="calendar-day-name">${day}</div>`).join('')}
+    </div>
+    ${inputType === 'dateTime' ? `
+    <div class="time-picker">
+      <div class="time-picker-row">
+        <input type="range" class="hour" min="0" max="23"><span class="hour-val">00</span>
+      </div>
+      <div class="time-picker-row">
+        <input type="range" class="minute" min="0" max="59"><span class="minute-val">00</span>
+      </div>
+      <div class="time-picker-row">
+        <input type="range" class="second" min="0" max="59"><span class="second-val">00</span>
+      </div>
+    </div>` : ''}
+    <button class="today-btn">Today</button>
+  `;
+      document.body.appendChild(popup);
+      input._popup = popup;
+
+      let selectedDate = new Date();
+      let viewYear = selectedDate.getFullYear();
+      let viewMonth = selectedDate.getMonth();
+
+      const grid = popup.querySelector('.calendar-grid');
+      const monthYear = popup.querySelector('.month-year');
+      const hour = popup.querySelector('.hour');
+      const minute = popup.querySelector('.minute');
+      const second = popup.querySelector('.second');
+      const hourVal = popup.querySelector('.hour-val');
+      const minuteVal = popup.querySelector('.minute-val');
+      const secondVal = popup.querySelector('.second-val');
+
+      const updateTimeDisplay = () => {
+        if (!hour || !minute || !second) return;
+        hourVal.textContent = hour.value.padStart(2, '0');
+        minuteVal.textContent = minute.value.padStart(2, '0');
+        secondVal.textContent = second.value.padStart(2, '0');
+      };
+
+      const renderCalendar = () => {
+        while (grid.children.length > 7) grid.removeChild(grid.lastChild);
+        const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+        const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+        monthYear.textContent = `${new Date(viewYear, viewMonth).toLocaleString('default', { month: 'long' })} ${viewYear}`;
+
+        // Add blank spaces for days before the first of the month
+        for (let i = 0; i < firstDay; i++) {
+          const blank = document.createElement('div');
+          blank.className = 'calendar-day inactive';
+          grid.appendChild(blank);
+        }
+
+        for (let d = 1; d <= daysInMonth; d++) {
+          const dayDiv = document.createElement('div');
+          dayDiv.className = 'calendar-day';
+          dayDiv.textContent = d;
+
+          // Check if this day is the selected day
+          if (
+            d === selectedDate.getDate() &&
+            viewMonth === selectedDate.getMonth() &&
+            viewYear === selectedDate.getFullYear()
+          ) {
+            dayDiv.classList.add('selected');
+          }
+
+          dayDiv.addEventListener('click', () => {
+            selectedDate = new Date(viewYear, viewMonth, d,
+              hour ? hour.value : 0,
+              minute ? minute.value : 0,
+              second ? second.value : 0);
+            input.value = inputType === 'date'
+              ? selectedDate.toISOString().substring(0, 10)
+              : selectedDate.toISOString().replace('T', ' ').substring(0, 19);
+            popup.style.display = 'none';
+          });
+
+          grid.appendChild(dayDiv);
+        }
+      };
+
+
+      const openPopup = () => {
+        const rect = input.getBoundingClientRect();
+        const scrollTop = window.scrollY;
+        const scrollLeft = window.scrollX;
+
+        // Default position: below input, left aligned
+        let top = scrollTop + rect.bottom;
+        let left = scrollLeft + rect.left;
+
+        popup.style.display = 'block'; // Must display first to get width/height
+
+        const popupRect = popup.getBoundingClientRect();
+        const popupWidth = popupRect.width;
+        const popupHeight = popupRect.height;
+
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        // Adjust horizontal position if popup overflows right edge
+        if (left + popupWidth > scrollLeft + viewportWidth) {
+          left = scrollLeft + viewportWidth - popupWidth - 10; // 10px margin from edge
+          if (left < scrollLeft) left = scrollLeft; // prevent negative left
+        }
+
+        // Adjust vertical position if popup overflows bottom edge
+        if (top + popupHeight > scrollTop + viewportHeight) {
+          // Try to show above the input if not enough space below
+          const aboveTop = scrollTop + rect.top - popupHeight;
+          if (aboveTop > scrollTop) {
+            top = aboveTop;
+          } else {
+            // Otherwise clamp to bottom edge minus popup height
+            top = scrollTop + viewportHeight - popupHeight - 10;
+            if (top < scrollTop) top = scrollTop;
+          }
+        }
+
+        popup.style.top = `${top}px`;
+        popup.style.left = `${left}px`;
+
+        // Set date/time from input or current
+        selectedDate = input.value
+          ? new Date(input.value.replace(' ', 'T'))
+          : new Date();
+        viewYear = selectedDate.getFullYear();
+        viewMonth = selectedDate.getMonth();
+
+        if (hour) hour.value = selectedDate.getHours();
+        if (minute) minute.value = selectedDate.getMinutes();
+        if (second) second.value = selectedDate.getSeconds();
+
+        updateTimeDisplay();
+        renderCalendar();
+      };
+
+
+      // Event bindings
+      input.addEventListener('click', openPopup);
+      popup.querySelector('.prev-month').onclick = () => {
+        viewMonth--;
+        if (viewMonth < 0) {
+          viewMonth = 11;
+          viewYear--;
+        }
+        renderCalendar();
+      };
+      popup.querySelector('.next-month').onclick = () => {
+        viewMonth++;
+        if (viewMonth > 11) {
+          viewMonth = 0;
+          viewYear++;
+        }
+        renderCalendar();
+      };
+      popup.querySelector('.today-btn').onclick = () => {
+        selectedDate = new Date();
+        if (hour) hour.value = selectedDate.getHours();
+        if (minute) minute.value = selectedDate.getMinutes();
+        if (second) second.value = selectedDate.getSeconds();
+        updateTimeDisplay();
+        input.value = inputType === 'date'
+          ? selectedDate.toISOString().substring(0, 10)
+          : selectedDate.toISOString().replace('T', ' ').substring(0, 19);
+        popup.style.display = 'none';
+      };
+
+      if (hour) hour.oninput = updateTimeDisplay;
+      if (minute) minute.oninput = updateTimeDisplay;
+      if (second) second.oninput = updateTimeDisplay;
+
+      // Hide popup on outside click
+      document.addEventListener('click', (e) => {
+        setTimeout(() => {
+          if (!popup.contains(document.activeElement) && document.activeElement !== input) {
+            popup.style.display = 'none';
+          }
+        }, 100);
+      });
+
+      // Hide popup on window resize
+      window.addEventListener('resize', () => {
+        popup.style.display = 'none';
+      });
+    }
+
+    // Init
+    initDatetimePicker('input[input-type="date"]');
+    initDatetimePicker('input[input-type="dateTime"]');
+
+  </script>
+
+</body>
+
+</html>
