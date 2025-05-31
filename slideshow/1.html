@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+
+    .slideshow-container {
+      max-width: 1000px;
+      position: relative;
+      margin: 40px auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Changed: all slides are stacked, positioned absolute for fade effect */
+    .mySlides {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      display: block;
+      pointer-events: none; /* prevent clicks on hidden slides */
+    }
+
+    /* Show the active slide */
+    .mySlides.show {
+      opacity: 1;
+      position: relative; /* make the visible slide take normal position */
+      pointer-events: auto;
+    }
+
+    img {
+      vertical-align: middle;
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+    }
+
+    .prev, .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 12px;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: white;
+      border-radius: 50%;
+      font-size: 20px;
+      transition: background-color 0.3s;
+      user-select: none;
+      z-index: 10;
+    }
+
+    .next {
+      right: 20px;
+    }
+
+    .prev {
+      left: 20px;
+    }
+
+    .prev:hover, .next:hover {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .text {
+      color: #ffffff;
+      font-size: 17px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 12px;
+      border-radius: 0 0 20px 20px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    .numbertext {
+      color: #fff;
+      font-size: 14px;
+      padding: 10px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+    }
+
+    .dot {
+      cursor: pointer;
+      height: 12px;
+      width: 12px;
+      margin: 0 4px;
+      background-color: #d0d0d0;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+
+    .active, .dot:hover {
+      background-color: #007aff; /* iOS blue */
+    }
+
+    @media only screen and (max-width: 600px) {
+      .text {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .prev, .next {
+        padding: 10px;
+        font-size: 16px;
+      }
+    }
+
+    /* Dots container */
+    .dot-container {
+      text-align: center;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slideshow-container">
+
+    <div class="mySlides">
+      <div class="numbertext">1 / 3</div>
+      <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" alt="Nature">
+      <div class="text">Caption One</div>
+    </div>
+
+    <div class="mySlides">
+      <div class="numbertext">2 / 3</div>
+      <img src="https://www.w3schools.com/howto/img_snow_wide.jpg" alt="Snow">
+      <div class="text">Caption Two</div>
+    </div>
+
+    <div class="mySlides">
+      <div class="numbertext">3 / 3</div>
+      <img src="https://www.w3schools.com/howto/img_mountains_wide.jpg" alt="Mountains">
+      <div class="text">Caption Three</div>
+    </div>
+
+    <a class="prev" onclick="plusSlides(-1)">❮</a>
+    <a class="next" onclick="plusSlides(1)">❯</a>
+  </div>
+
+  <div class="dot-container">
+    <span class="dot" onclick="currentSlide(1)"></span> 
+    <span class="dot" onclick="currentSlide(2)"></span> 
+    <span class="dot" onclick="currentSlide(3)"></span> 
+  </div>
+
+  <script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+      const slides = document.getElementsByClassName("mySlides");
+      const dots = document.getElementsByClassName("dot");
+
+      if (n > slides.length) { slideIndex = 1 }
+      if (n < 1) { slideIndex = slides.length }
+
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].classList.remove('show');
+      }
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex - 1].classList.add('show');
+      dots[slideIndex - 1].className += " active";
+    }
+
+    let autoplayInterval = setInterval(() => {
+      plusSlides(1);
+    }, 3000);
+
+    const slideshowContainer = document.querySelector('.slideshow-container');
+
+    slideshowContainer.addEventListener('mouseover', () => {
+      clearInterval(autoplayInterval);
+    });
+
+    slideshowContainer.addEventListener('mouseout', () => {
+      autoplayInterval = setInterval(() => {
+        plusSlides(1);
+      }, 3000);
+    });
+  </script>
+
+</body>
+</html>
