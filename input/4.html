@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Custom Input with Validation</title>
@@ -44,11 +45,13 @@
       border: 1px solid #ccc;
       border-top: none;
       border-radius: 0 0 8px 8px;
-      max-height: 150px;
+      max-height: 200px;
+      /* 5 items * 40px each */
       overflow-y: auto;
       display: none;
       z-index: 100;
     }
+
 
     .custom-dropdown div {
       padding: 10px 12px;
@@ -60,18 +63,19 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="input-wrapper">
-    <input type="text" input-type="custom-list" data-options="HTML,CSS,JavaScript" placeholder="Select language">
+    <input type="text" input-type="autocomplete" data-options="HTML,CSS,JavaScript,PHP,Java,Python" placeholder="Select language">
   </div>
 
   <div class="input-wrapper">
-    <input type="text" input-type="custom-list" data-options="Python,Go,Rust" placeholder="Select backend">
+    <input type="text" input-type="autocomplete" data-options="Python,Go,Rust" placeholder="Select backend">
   </div>
 
   <script>
-    document.querySelectorAll('input[input-type="custom-list"]').forEach(input => {
+    document.querySelectorAll('input[input-type="autocomplete"]').forEach(input => {
       const wrapper = input.parentElement;
       const dropdown = document.createElement('div');
       dropdown.className = 'custom-dropdown';
@@ -122,4 +126,5 @@
   </script>
 
 </body>
+
 </html>
