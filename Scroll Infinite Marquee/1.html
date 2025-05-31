@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Animation Scroll</title>
+    <style>
+        :root {
+            --scroll-duration: 15s;
+            /* Adjust this to make it slower or faster */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        .page-wrapper {
+            margin-top: 50px ;
+        }
+        .page-wrapper h2{
+            text-align: center;
+        }
+
+        .wrapper {
+            /* width: 90%; */
+            height: 100px;
+            background: #f2f2f7;
+            display: flex;
+            align-items: center;
+            margin-top: 2rem;
+            margin-inline: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes scrollleft {
+            to {
+                left: -200px;
+            }
+        }
+
+        .item {
+            width: 100px;
+            height: 50px;
+            position: absolute;
+            left: 100%;
+            animation-name: scrollleft;
+            animation-duration: var(--scroll-duration);
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-play-state: running;
+        }
+
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .wrapper:hover .item {
+            animation-play-state: paused;
+        }
+
+        /* Delay calculations using CSS var for duration */
+        .item1 {
+            animation-delay: calc(var(--scroll-duration) / 5 * (5 - 1) * -1);
+        }
+
+        .item2 {
+            animation-delay: calc(var(--scroll-duration) / 5 * (5 - 2) * -1);
+        }
+
+        .item3 {
+            animation-delay: calc(var(--scroll-duration) / 5 * (5 - 3) * -1);
+        }
+
+        .item4 {
+            animation-delay: calc(var(--scroll-duration) / 5 * (5 - 4) * -1);
+        }
+
+        .item5 {
+            animation-delay: calc(var(--scroll-duration) / 5 * (5 - 5) * -1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <h2>Scroll Infinite Marquee</h2>
+        <div class="wrapper">
+            <div class="item item1"><img
+                    src="https://i.pinimg.com/originals/01/ca/da/01cada77a0a7d326d85b7969fe26a728.jpg" alt="Logo 1">
+            </div>
+            <div class="item item2"><img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/800px-Google_%22G%22_logo.svg.png"
+                    alt="Logo 2"></div>
+            <div class="item item3"><img
+                    src="https://static.vecteezy.com/system/resources/previews/019/136/325/non_2x/apple-logo-apple-icon-free-free-vector.jpg"
+                    alt="Logo 3"></div>
+            <div class="item item4"><img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfKro8-mDA4bswAZ_EiNw7JcNhGIUQ7s_B1Q&s"
+                    alt="Logo 4"></div>
+            <div class="item item5"><img src="https://companieslogo.com/img/orig/BABA-2884ac04.png?t=1720244490"
+                    alt="Logo 5"></div>
+        </div>
+    </div>
+</body>
+
+</html>
