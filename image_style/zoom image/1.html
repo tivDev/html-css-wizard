@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>iOS Style Product Card with Zoom</title>
+  <title>iOS Style Product Card with Zoom Attribute</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -34,6 +35,13 @@
       text-align: center;
     }
 
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
     .product-card {
       background: #fff;
       width: 320px;
@@ -61,19 +69,25 @@
       border-top-right-radius: 20px;
     }
 
-    .container img {
+
+    /* Base image style */
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      background-repeat: no-repeat;
-      background-size: cover;
-      transform: scale(1);
-      transition: transform 0.5s ease-in-out;
-      transform-origin: center;
+      display: block;
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
+    }
+
+    /* Only apply zoom behavior to those with image-zoom */
+    img[image-zoom] {
+      transition: transform 0.5s ease-in-out;
+      transform: scale(1);
+      transform-origin: center;
       will-change: transform;
     }
+
 
     .product-info {
       padding: 20px 24px 28px;
@@ -98,49 +112,70 @@
       font-weight: 700;
       color: #007aff;
     }
+
+    .main {
+      width: 200px;
+      height: 200px;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    .main img {
+      border-radius: 16px;
+    }
   </style>
 </head>
+
 <body>
   <h1>Welcome to Our Product Showcase</h1>
   <p class="intro">Hover over the product image below to zoom in and see the details up close.</p>
 
-  <div class="product-card" tabindex="0" role="group" aria-label="Product card with zoomable image">
-    <div class="container">
+  <div class="card-container" >
+    <div class="product-card" tabindex="0" role="group" aria-label="Product card with zoomable image">
+      <div class="container">
+        <img
+          src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Stylish Product" image-zoom />
+      </div>
+      <div class="product-info">
+        <h2 class="product-title">Elegant Lamp</h2>
+        <p class="product-description">
+          A sleek, modern lamp with adjustable brightness and elegant design,
+          perfect for your workspace or living room.
+        </p>
+        <div class="product-price">$89.99</div>
+      </div>
+    </div>
+    <div class="main">
       <img
         src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Stylish Product"
-      />
-    </div>
-    <div class="product-info">
-      <h2 class="product-title">Elegant Lamp</h2>
-      <p class="product-description">
-        A sleek, modern lamp with adjustable brightness and elegant design,
-        perfect for your workspace or living room.
-      </p>
-      <div class="product-price">$89.99</div>
+        alt="Stylish Product" image-zoom />
     </div>
   </div>
 
   <script>
-    const container = document.querySelector('.container');
-    const img = container.querySelector('img');
+    // Apply zoom effect to all images with the 'image-zoom' attribute
+    document.querySelectorAll('img[image-zoom]').forEach(img => {
+      const container = img.parentElement;
 
-    container.addEventListener('mousemove', (e) => {
-      const rect = container.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        img.style.transformOrigin = `${x * 100}% ${y * 100}%`;
+      });
 
-      img.style.transformOrigin = `${x * 100}% ${y * 100}%`;
+      container.addEventListener('mouseover', () => {
+        img.style.transform = 'scale(4)';
+      });
+
+      container.addEventListener('mouseout', () => {
+        img.style.transform = 'scale(1)';
+        img.style.transformOrigin = 'center';
+      });
     });
 
-    container.addEventListener('mouseover', () => {
-      img.style.transform = 'scale(4)';
-    });
-
-    container.addEventListener('mouseout', () => {
-      img.style.transform = 'scale(1)';
-      img.style.transformOrigin = 'center';
-    });
   </script>
 </body>
+
 </html>
