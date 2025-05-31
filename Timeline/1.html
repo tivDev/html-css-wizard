@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #474e5d;
+      font-family: Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      background-color: white;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -3px;
+    }
+
+    .container {
+      padding: 10px 40px;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+    }
+
+    .container::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      right: -17px;
+      background-color: white;
+      border: 4px solid #FF9F55;
+      top: 15px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .left {
+      left: 0;
+    }
+
+    .right {
+      left: 50%;
+    }
+
+    .left::before {
+      content: " ";
+      height: 0;
+      position: absolute;
+      top: 22px;
+      width: 0;
+      z-index: 1;
+      right: 30px;
+      border: medium solid white;
+      border-width: 10px 0 10px 10px;
+      border-color: transparent transparent transparent white;
+    }
+
+    .right::before {
+      content: " ";
+      height: 0;
+      position: absolute;
+      top: 22px;
+      width: 0;
+      z-index: 1;
+      left: 30px;
+      border: medium solid white;
+      border-width: 10px 10px 10px 0;
+      border-color: transparent white transparent transparent;
+    }
+
+    .right::after {
+      left: -16px;
+    }
+
+    .content {
+      padding: 20px 30px;
+      background-color: white;
+      position: relative;
+      border-radius: 6px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .timeline::after {
+        left: 31px;
+      }
+
+      .container {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+
+      .container::before {
+        left: 60px;
+        border: medium solid white;
+        border-width: 10px 10px 10px 0;
+        border-color: transparent white transparent transparent;
+      }
+
+      .left::after, .right::after {
+        left: 15px;
+      }
+
+      .right {
+        left: 0%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="timeline" id="timeline"></div>
+
+  <script>
+    const timelineData = [
+      { year: '2023', text: 'Launched mobile version of the product with iOS-style UI.' },
+      { year: '2022', text: 'Reached 1 million users milestone.' },
+      { year: '2021', text: 'Expanded into three new international markets.' },
+      { year: '2020', text: 'Released version 2.0 with major redesign.' },
+      { year: '2019', text: 'Secured Series A funding.' },
+      { year: '2018', text: 'Founded and started development.' }
+    ];
+
+    const timeline = document.getElementById('timeline');
+
+    timelineData.forEach((item, index) => {
+      const side = index % 2 === 0 ? 'left' : 'right';
+      const html = `
+        <div class="container ${side}">
+          <div class="content">
+            <h2>${item.year}</h2>
+            <p>${item.text}</p>
+          </div>
+        </div>
+      `;
+      timeline.innerHTML += html;
+    });
+  </script>
+
+</body>
+</html>
