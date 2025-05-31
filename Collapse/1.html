@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dynamic iOS Style Collapsible</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: #f2f2f7;
+    margin: 0;
+    padding: 20px;
+    color: #1c1c1e;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+  }
+
+  h2 {
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .section {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    /* margin-bottom: 32px; */
+  }
+
+  button.collapsible {
+    background: #fff;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 18px 16px;
+    font-size: 17px;
+    font-weight: 400;
+    color: #1c1c1e;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid #c6c6c8;
+    transition: background-color 0.25s ease;
+  }
+
+  button.collapsible:last-child {
+    border-bottom: none;
+  }
+
+  button.collapsible:active {
+    background-color: #e5e5ea;
+  }
+
+  .icon {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #8e8e93;
+    font-size: 17px;
+    font-weight: 600;
+    user-select: none;
+    line-height: 1;
+  }
+
+  button.collapsible.active .icon {
+    transform: rotate(90deg);
+    color: #007aff;
+  }
+
+  .content {
+    max-height: 0;
+    overflow: hidden;
+    background: #fff;
+    padding: 0 16px;
+    font-size: 15px;
+    color: #3c3c4399;
+    line-height: 1.4;
+    transition: max-height 0.3s ease;
+    border-top: 1px solid #c6c6c8;
+  }
+
+  .content.open {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Dynamic iOS Style Collapsibles</h2>
+
+  <div class="section" id="collapsible-container">
+    <!-- Collapsibles will be generated here dynamically -->
+  </div>
+</div>
+
+<script>
+  // After DOM loads
+  document.addEventListener("DOMContentLoaded", () => {
+    // Find all buttons with attribute [collapsible]
+    const buttons = document.querySelectorAll("button[collapsible]");
+
+    // Get the container where collapsibles will be appended
+    const container = document.getElementById("collapsible-container");
+
+    buttons.forEach((btn, idx) => {
+      // Get content from attribute
+      const contentText = btn.getAttribute("collapsible-content") || "";
+
+      // Create a new section div to hold button and content
+      const section = document.createElement("div");
+      section.className = "section";
+
+      // Clone the button and add icon span inside
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "collapsible";
+      button.innerHTML = btn.innerHTML + `<span class="icon">›</span>`;
+
+      // Create content div with the content text inside a <p>
+      const content = document.createElement("div");
+      content.className = "content";
+      content.innerHTML = `<p>${contentText}</p>`;
+
+      // Append button and content to the section
+      section.appendChild(button);
+      section.appendChild(content);
+
+      // Append section to container
+      container.appendChild(section);
+
+      // Add click event for toggling
+      button.addEventListener("click", () => {
+        button.classList.toggle("active");
+
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+          content.classList.remove("open");
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+          content.classList.add("open");
+        }
+      });
+    });
+
+    // Optionally, remove original buttons from DOM if you want
+    buttons.forEach(btn => btn.remove());
+  });
+</script>
+
+<!-- Your simple buttons with attributes here -->
+<button collapsible collapsible-content="This is dynamic content for first collapsible.">First Collapsible</button>
+<button collapsible collapsible-content="More content inside the second collapsible, loaded dynamically!">Second Collapsible</button>
+<button collapsible collapsible-content="Third collapsible content. Customize this easily!">Third Collapsible</button>
+
+</body>
+</html>
