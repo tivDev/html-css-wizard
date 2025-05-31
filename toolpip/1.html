@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Dynamic iOS Style Tooltip with Position</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f8f8f8;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
+
+    /* Tooltip styling */
+    #tooltip {
+      position: absolute;
+      max-width: 200px;
+      background-color: #333;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.4;
+      text-align: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+      pointer-events: none;
+      z-index: 1000;
+      user-select: none;
+    }
+
+    /* Tooltip arrow base */
+    #tooltip::after {
+      content: "";
+      position: absolute;
+      border-style: solid;
+    }
+
+    /* Positions */
+
+    /* Top */
+    #tooltip.top::after {
+      top: 100%;
+      left: 50%;
+      margin-left: -6px;
+      border-width: 6px;
+      border-color: #333 transparent transparent transparent;
+    }
+
+    /* Bottom */
+    #tooltip.bottom::after {
+      bottom: 100%;
+      left: 50%;
+      margin-left: -6px;
+      border-width: 6px;
+      border-color: transparent transparent #333 transparent;
+    }
+
+    /* Left */
+    #tooltip.left::after {
+      top: 50%;
+      right: -12px;
+      margin-top: -6px;
+      border-width: 6px;
+      border-color: transparent transparent transparent #333;
+    }
+
+    /* Right */
+    #tooltip.right::after {
+      top: 50%;
+      left: -12px;
+      margin-top: -6px;
+      border-width: 6px;
+      border-color: transparent #333 transparent transparent;
+    }
+
+    /* Example buttons */
+    button {
+      padding: 10px 20px;
+      background-color: #007aff;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button data-tooltip="Tooltip on top (default)">Top (default)</button>
+  <button data-tooltip="Tooltip on bottom" tooltip-bottom>Bottom</button>
+  <button data-tooltip="Tooltip on left" tooltip-left>Left</button>
+  <button data-tooltip="Tooltip on right" tooltip-right>Right</button>
+
+  <div id="tooltip"></div>
+
+  <script>
+    const tooltip = document.getElementById('tooltip');
+
+    function getTooltipPosition(element) {
+      if (element.hasAttribute('tooltip-top')) return 'top';
+      if (element.hasAttribute('tooltip-bottom')) return 'bottom';
+      if (element.hasAttribute('tooltip-left')) return 'left';
+      if (element.hasAttribute('tooltip-right')) return 'right';
+      return 'top'; // default
+    }
+
+    function showTooltip(event) {
+      const el = event.currentTarget;
+      const text = el.getAttribute('data-tooltip');
+      if (!text) return;
+
+      const pos = getTooltipPosition(el);
+
+      tooltip.textContent = text;
+      tooltip.className = pos; // set position class for arrow
+
+      tooltip.style.visibility = 'visible';
+      tooltip.style.opacity = '1';
+
+      const rect = el.getBoundingClientRect();
+      const ttRect = tooltip.getBoundingClientRect();
+
+      let top, left;
+
+      switch (pos) {
+        case 'top':
+          top = window.scrollY + rect.top - ttRect.height - 12;
+          left = window.scrollX + rect.left + rect.width / 2 - ttRect.width / 2;
+          break;
+        case 'bottom':
+          top = window.scrollY + rect.bottom + 12;
+          left = window.scrollX + rect.left + rect.width / 2 - ttRect.width / 2;
+          break;
+        case 'left':
+          top = window.scrollY + rect.top + rect.height / 2 - ttRect.height / 2;
+          left = window.scrollX + rect.left - ttRect.width - 12;
+          break;
+        case 'right':
+          top = window.scrollY + rect.top + rect.height / 2 - ttRect.height / 2;
+          left = window.scrollX + rect.right + 12;
+          break;
+      }
+
+      tooltip.style.top = `${top}px`;
+      tooltip.style.left = `${left}px`;
+    }
+
+    function hideTooltip() {
+      tooltip.style.visibility = 'hidden';
+      tooltip.style.opacity = '0';
+      tooltip.className = ''; // reset class
+    }
+
+    document.querySelectorAll('[data-tooltip]').forEach(el => {
+      el.addEventListener('mouseenter', showTooltip);
+      el.addEventListener('focus', showTooltip);
+      el.addEventListener('mouseleave', hideTooltip);
+      el.addEventListener('blur', hideTooltip);
+    });
+  </script>
+
+</body>
+
+</html>
