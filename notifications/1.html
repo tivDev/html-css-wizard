@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iOS Style Notifications</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "San Francisco", Arial, sans-serif;
+      background-color: #f2f2f7;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      color: #1c1c1e;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .notification {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 14px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      position: relative;
+      transition: background-color 0.3s ease;
+    }
+
+    .notification img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 15px;
+      object-fit: cover;
+      border: 1px solid #e5e5ea;
+    }
+
+    .notification .metadata {
+      flex: 1;
+    }
+
+    .notification h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+      color: #1c1c1e;
+    }
+
+    .notification p {
+      font-size: 14px;
+      color: #3a3a3c;
+      margin: 5px 0;
+    }
+
+    .notification time {
+      font-size: 12px;
+      color: #8e8e93;
+    }
+
+    .actions {
+      position: relative;
+    }
+
+    .ellipsis {
+      background: none;
+      border: none;
+      font-size: 20px;
+      line-height: 1;
+      padding: 5px 10px;
+      cursor: pointer;
+      color: #8e8e93;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 30px;
+      right: 0;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      min-width: 120px;
+      z-index: 1000;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+    }
+
+    .dropdown-menu button {
+      background: none;
+      border: none;
+      padding: 10px 15px;
+      text-align: left;
+      font-size: 14px;
+      color: #007aff;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .dropdown-menu button:hover {
+      background-color: #f2f2f7;
+    }
+
+    .dropdown-menu .delete {
+      color: #ff3b30;
+    }
+
+    .status-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #007aff;
+    }
+
+    .notification.read .status-indicator {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Notifications</h2>
+
+    <div class="notification unread">
+      <div class="status-indicator"></div>
+      <img
+        src="image/confident-attractive-caucasian-guy-beige-pullon-smiling-broadly-while-standing-against-gray (1).jpg"
+        alt="Profile Picture">
+      <div class="metadata">
+        <h4>John Doe</h4>
+        <p>Liked your post</p>
+        <time datetime="2023-05-15T17:30:00Z">15 minutes ago</time>
+      </div>
+      <div class="actions">
+        <button class="ellipsis">⋯</button>
+        <div class="dropdown-menu">
+          <button class="edit">Edit</button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="notification read">
+      <img
+        src="image/confident-attractive-caucasian-guy-beige-pullon-smiling-broadly-while-standing-against-gray (1).jpg"
+        alt="Profile Picture">
+      <div class="metadata">
+        <h4>Jane Doe</h4>
+        <p>Commented on your photo</p>
+        <time datetime="2023-05-14T10:00:00Z">1 day ago</time>
+      </div>
+      <div class="actions">
+        <button class="ellipsis">⋯</button>
+        <div class="dropdown-menu">
+          <button class="edit">Edit</button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const ellipses = document.querySelectorAll('.ellipsis');
+
+      ellipses.forEach(ellipsis => {
+        ellipsis.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // Close any other open dropdowns
+          document.querySelectorAll('.dropdown-menu').forEach(menu => menu.style.display = 'none');
+
+          const dropdown = ellipsis.nextElementSibling;
+          dropdown.style.display = 'flex';
+        });
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', () => {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => menu.style.display = 'none');
+      });
+
+      // Mark as read on click anywhere on notification
+      document.querySelectorAll('.notification').forEach(notif => {
+        notif.addEventListener('click', () => {
+          notif.classList.add('read');
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
