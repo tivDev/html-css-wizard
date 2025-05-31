@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User List Table</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f2f2f7;
+      padding: 20px;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .page-wrapper {
+      padding: 30px;
+      max-width: 1200px;
+      margin: 50px auto;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      border-radius: 15px;
+    }
+
+    .table-container {
+      margin-top: 20px;
+      height: 70vh;
+      overflow: auto;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      font-size: 24px;
+      color: #111;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    /* Sticky header of the table */
+    thead th {
+      position: sticky;
+      top: 0;
+      background-color: #f9f9f9;
+      font-size: 14px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      z-index: 10;
+      border-bottom: 2px solid #ddd;
+      padding: 12px 15px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: left;
+      white-space: nowrap;
+      font-size: 15px;
+      color: #333;
+    }
+
+    tr {
+      border-bottom: 1px solid #eee;
+    }
+
+    tr:hover {
+      background-color: #f2f2f2;
+    }
+
+    .badge-active {
+      display: inline-block;
+      background-color: #165e28;
+      color: white;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 20px;
+    }
+
+    .badge-inactive {
+      display: inline-block;
+      background-color: #e91c11;
+      color: white;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 20px;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: #555;
+      margin-right: 10px;
+      transition: color 0.3s;
+    }
+
+    .action-btn:hover {
+      color: #007aff;
+    }
+    @media (max-width: 768px) {
+      .page-wrapper {
+        margin: 0px auto;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-wrapper">
+    <h2>User List</h2>
+    <p>This is a simple user list table with freeze header.</p>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th><i class="fas fa-id-badge"></i> ID</th>
+            <th><i class="fas fa-user"></i> Name</th>
+            <th><i class="fas fa-envelope"></i> Email</th>
+            <th><i class="fas fa-venus-mars"></i> Sex</th>
+            <th><i class="fas fa-check-circle"></i> Is Active</th>
+            <th><i class="fas fa-cogs"></i> Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>John Doe</td>
+            <td>john@example.com</td>
+            <td>Male</td>
+            <td><span class="badge-active">Active</span></td>
+            <td><button class="action-btn"><i class="fas fa-info-circle"></i></button><button class="action-btn"><i
+                  class="fas fa-edit"></i></button><button class="action-btn"><i class="fas fa-trash-alt"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Jane Smith</td>
+            <td>jane@example.com</td>
+            <td>Female</td>
+            <td><span class="badge-inactive">Inactive</span></td>
+            <td>
+              <button class="action-btn"><i class="fas fa-info-circle"></i></button><button class="action-btn"><i
+                  class="fas fa-edit"></i></button><button class="action-btn"><i class="fas fa-trash-alt"></i></button>
+            </td>
+          </tr>
+          <!-- Add more rows to test scrolling -->
+          <script>
+            for (let i = 3; i <= 30; i++) {
+              document.write(`<tr>
+              <td>${i}</td>
+              <td>User ${i}</td>
+              <td>user${i}@example.com</td>
+              <td>${i % 2 === 0 ? 'Female' : 'Male'}</td>
+              <td><span class="${i % 2 === 0 ? 'badge-active' : 'badge-inactive'}">${i % 2 === 0 ? 'Active' : 'Inactive'}</span></td>
+              <td><button class="action-btn"><i class="fas fa-info-circle"></i></button><button class="action-btn"><i class="fas fa-edit"></i></button><button class="action-btn"><i class="fas fa-trash-alt"></i></button></td>
+            </tr>`);
+            }
+          </script>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</body>
+
+</html>

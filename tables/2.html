@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>iOS Style Table</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #000;
+    }
+
+    .members {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+      max-width: 800px;
+      margin: 2rem auto;
+      overflow-x: auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.25rem;
+      margin: 1rem 0;
+      font-weight: 600;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      color: #111;
+    }
+
+    thead {
+      background-color: #f2f2f7;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      font-weight: 600;
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    tbody tr {
+      transition: background 0.2s;
+      border-top: 1px solid #eee;
+    }
+
+    tbody tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    td:first-child {
+      width: 48px;
+    }
+
+    table img {
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      object-fit: cover;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: none;
+      font-size: 0.95rem;
+      background-color: #fff;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      border-color: #007aff;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0,122,255,0.2);
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    td:not(:has(input)) {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    @media (max-width: 600px) {
+      th, td {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+      }
+
+      input[type="text"],
+      input[type="email"] {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+      }
+
+      table img {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Edit Name / Email</h1>
+  <div class="members">
+    <h1>Members Table</h1>
+    <table role="grid">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Subscription</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><img src="https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/40.jpg" alt=""/></td>
+          <td><input aria-label="name" type="text" value="Emily Hoffman" /></td>
+          <td><input aria-label="email" type="email" value="emhoff3245@msn.com" /></td>
+          <td>Paid</td>
+        </tr>
+        <tr>
+          <td><img src="https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/96.jpg" alt=""/></td>
+          <td><input aria-label="name" type="text" value="Michel Lewin" /></td>
+          <td><input aria-label="email" type="email" value="michel@lewin.dev" /></td>
+          <td>Unconfirmed</td>
+        </tr>
+        <tr>
+          <td><img src="https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/49.jpg" alt=""/></td>
+          <td><input aria-label="name" type="text" value="Tessa Dietrich" /></td>
+          <td><input aria-label="email" type="email" value="tessa@pixelcraft.com" /></td>
+          <td>Confirmed</td>
+        </tr>
+        <tr>
+          <td><img src="https://assets.codepen.io/605876/cropped-headshot--saturated-low-res.jpg" alt=""/></td>
+          <td><input aria-label="name" type="text" value="John Doe" /></td>
+          <td><input aria-label="email" type="email" value="johnny.doe@me.com" /></td>
+          <td>Paid</td>
+        </tr>
+        <tr>
+          <td><img src="https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/72.jpg" alt=""/></td>
+          <td><input aria-label="name" type="text" value="Niels Grau" /></td>
+          <td><input aria-label="email" type="email" value="grau@gmail.com" /></td>
+          <td>Pending</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
