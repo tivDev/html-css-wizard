@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>iOS Style Flip Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    .page-wrapper {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f2f2f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .card-container {
+      perspective: 1000px;
+      width: 100%;
+      max-width: 400px;
+      min-height: 520px;
+      position: relative;
+    }
+
+    .card {
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+      position: relative;
+      height: 100%;
+      
+    }
+
+    .card.flip {
+      transform: rotateY(180deg);
+    }
+
+    form {
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      width: 100%;
+      padding: 24px;
+      position: absolute;
+      backface-visibility: hidden;
+
+    }
+
+
+    .form-back {
+      transform: rotateY(180deg);
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #111;
+    }
+
+    p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    input[type=text], input[type=password] {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      margin-bottom: 16px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type=text]:focus, input[type=password]:focus {
+      border-color: #007aff;
+      background-color: #fff;
+      outline: none;
+    }
+
+    input[type=checkbox] {
+      transform: scale(1.2);
+      margin-right: 8px;
+    }
+
+    a {
+      color: #007aff;
+      text-decoration: none;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      flex: 1;
+    }
+
+    .signupbtn {
+      background-color: #007aff;
+      color: #fff;
+    }
+
+    .signupbtn:hover {
+      background-color: #005ecc;
+    }
+
+    .cancelbtn {
+      background-color: #d1d1d6;
+      color: #000;
+    }
+
+    .cancelbtn:hover {
+      background-color: #c0c0c7;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      text-align: center;
+      margin-top: 20px;
+      color: #999;
+    }
+
+    .toggle-link {
+      margin-top: 15px;
+      font-size: 14px;
+      text-align: center;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <div class="card-container">
+      <div class="card" id="card">
+
+        <!-- Sign Up Form (Front) -->
+        <form action="#" class="form-front">
+          <h1>Create Account</h1>
+          <p>Please fill in this form to create an account.</p>
+
+          <label for="email">Email</label>
+          <input type="text" placeholder="Enter Email" name="email" required>
+
+          <label for="psw">Password</label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+
+          <label for="psw-repeat">Repeat Password</label>
+          <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+
+          <label><input type="checkbox" checked name="remember"> Remember me</label>
+
+          <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+
+          <div class="button-group">
+            <button type="button" class="cancelbtn">Cancel</button>
+            <button type="submit" class="signupbtn">Sign Up</button>
+          </div>
+
+          <a class="toggle-link" href="#" onclick="flipCard()">Already have an account? Log In</a>
+          <div class="footer-text">iOS Style Sign-Up Form</div>
+        </form>
+
+        <!-- Login Form (Back) -->
+        <form action="#" class="form-back">
+          <h1>Login</h1>
+          <p>Welcome back! Please login to your account.</p>
+
+          <label for="login-email">Email</label>
+          <input type="text" placeholder="Enter Email" name="login-email" required>
+
+          <label for="login-psw">Password</label>
+          <input type="password" placeholder="Enter Password" name="login-psw" required>
+
+          <label><input type="checkbox" name="remember"> Remember me</label>
+
+          <div class="button-group">
+            <button type="button" class="cancelbtn">Cancel</button>
+            <button type="submit" class="signupbtn">Log In</button>
+          </div>
+
+          <a class="toggle-link" href="#" onclick="flipCard()">Don't have an account? Sign Up</a>
+          <div class="footer-text">iOS Style Login Form</div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function flipCard() {
+      document.getElementById('card').classList.toggle('flip');
+    }
+  </script>
+
+</body>
+</html>
