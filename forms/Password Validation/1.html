@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iOS Password Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --ios-blue: #007aff;
+      --ios-gray: #f2f2f7;
+      --ios-border: #d1d1d6;
+      --text-color: #000;
+      --placeholder-color: #aaa;
+      --success: #28cd41;
+      --error: #ff3b30;
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--ios-gray);
+      color: var(--text-color);
+      padding: 20px;
+    }
+
+    .form-container {
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 24px;
+      max-width: 380px;
+      margin: 60px auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #000;
+    }
+
+    p {
+      font-size: 16px;
+      color: #5e5e5e;
+      margin-bottom: 24px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      display: block;
+      margin: 18px 0 8px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border: 1px solid var(--ios-border);
+      border-radius: 12px;
+      background-color: #f9f9f9;
+      color: var(--text-color);
+      transition: all 0.2s ease;
+    }
+
+    input::placeholder {
+      color: var(--placeholder-color);
+    }
+
+    input:focus {
+      border-color: var(--ios-blue);
+      background-color: #fff;
+      outline: none;
+    }
+
+    .password-toggle {
+      position: relative;
+    }
+
+    .toggle-icon {
+      position: absolute;
+      top: 50%;
+      right: 14px;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: var(--ios-blue);
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 17px;
+      color: white;
+      background-color: var(--ios-blue);
+      border: none;
+      border-radius: 14px;
+      margin-top: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .submit-btn:active {
+      background-color: #0051cc;
+    }
+
+    #message {
+      display: none;
+      background: #fff;
+      padding: 16px;
+      border-radius: 14px;
+      margin-top: 20px;
+      font-size: 14px;
+      border: 1px solid #e5e5ea;
+    }
+
+    #message h4 {
+      margin: 0 0 12px 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    #message p {
+      padding-left: 28px;
+      position: relative;
+      margin: 6px 0;
+    }
+
+    .valid {
+      color: var(--success);
+    }
+
+    .valid::before {
+      content: "✔";
+      position: absolute;
+      left: 0;
+      color: var(--success);
+    }
+
+    .invalid {
+      color: var(--error);
+    }
+
+    .invalid::before {
+      content: "✖";
+      position: absolute;
+      left: 0;
+      color: var(--error);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Create Account</h2>
+    <p>Enter a strong password to continue</p>
+
+    <form>
+      <label for="username">Username</label>
+      <input type="text" id="username" required placeholder="Enter your username">
+
+      <label for="password">Password</label>
+      <div class="password-toggle">
+        <input type="password" id="password" required placeholder="Enter password"
+          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+          title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters">
+        <i class="fa-solid fa-eye toggle-icon" onclick="togglePassword(this)"></i>
+      </div>
+
+      <button type="submit" class="submit-btn">Continue</button>
+    </form>
+
+    <div id="message">
+      <h4>Password must contain:</h4>
+      <p id="letter" class="invalid">A lowercase letter</p>
+      <p id="capital" class="invalid">An uppercase letter</p>
+      <p id="number" class="invalid">A number</p>
+      <p id="length" class="invalid">At least 8 characters</p>
+    </div>
+  </div>
+
+  <script>
+    const passwordInput = document.getElementById("password");
+    const messageBox = document.getElementById("message");
+    const letter = document.getElementById("letter");
+    const capital = document.getElementById("capital");
+    const number = document.getElementById("number");
+    const length = document.getElementById("length");
+
+    passwordInput.onfocus = () => {
+      messageBox.style.display = "block";
+    };
+
+    passwordInput.onblur = () => {
+      messageBox.style.display = "none";
+    };
+
+    passwordInput.onkeyup = () => {
+      const lowerCaseLetters = /[a-z]/g;
+      const upperCaseLetters = /[A-Z]/g;
+      const numbers = /[0-9]/g;
+
+      letter.className = lowerCaseLetters.test(passwordInput.value) ? "valid" : "invalid";
+      capital.className = upperCaseLetters.test(passwordInput.value) ? "valid" : "invalid";
+      number.className = numbers.test(passwordInput.value) ? "valid" : "invalid";
+      length.className = passwordInput.value.length >= 8 ? "valid" : "invalid";
+    };
+
+    function togglePassword(icon) {
+      const input = document.getElementById("password");
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      icon.classList.toggle("fa-eye");
+      icon.classList.toggle("fa-eye-slash");
+    }
+  </script>
+
+</body>
+</html>

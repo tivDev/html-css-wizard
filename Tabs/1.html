@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabs</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+                Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            background-color: #f9f9f9;
+            margin: 40px auto;
+            max-width: 800px;
+            color: #333;
+        }
+
+        /* Tabs container - horizontal flex */
+        .tab {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            background-color: #fff;
+            border-radius: 14px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            user-select: none;
+            margin-bottom: 25px;
+        }
+
+        /* Tab buttons style */
+        .tab button {
+            flex: 1;
+            padding: 16px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #007aff;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Hover for non-active */
+        .tab button:hover:not(.active) {
+            background-color: rgba(0, 122, 255, 0.1);
+        }
+
+        /* Active tab style */
+        .tab button.active {
+            color: white;
+            background-color: #007aff;
+            box-shadow: 0 8px 16px rgba(0, 122, 255, 0.3);
+            border-radius: 14px 14px 0 0;
+            font-weight: 700;
+            z-index: 1;
+        }
+
+        /* Tab content area */
+        .tabcontent {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 0 14px 14px 14px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        /* Headings inside tab content */
+        .tabcontent h3 {
+            margin-top: 0;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 12px;
+        }
+
+        /* Paragraph inside tab content */
+        .tabcontent p {
+            color: #555;
+            margin-bottom: 0;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 600px) {
+            body {
+                margin: 20px;
+                max-width: 100%;
+            }
+
+            .tab button {
+                font-size: 16px;
+                padding: 14px 0;
+            }
+
+            .tabcontent {
+                padding: 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 style="font-weight: 700; margin-bottom: 10px;">Tabs</h1>
+    <p style="font-size: 16px; color: #666; margin-top: 0; margin-bottom: 30px;">Click on the tabs below:</p>
+
+    <div class="tab">
+        <button class="tablinks" onclick="openCity(event, 'London')">London</button>
+        <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
+        <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+    </div>
+
+    <div id="London" class="tabcontent">
+        <h3>London</h3>
+        <p>London is the capital city of England.</p>
+    </div>
+
+    <div id="Paris" class="tabcontent">
+        <h3>Paris</h3>
+        <p>Paris is the capital of France.</p>
+    </div>
+
+    <div id="Tokyo" class="tabcontent">
+        <h3>Tokyo</h3>
+        <p>Tokyo is the capital of Japan.</p>
+    </div>
+
+    <script>
+        // Open the first tab by default
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".tablinks").click();
+        });
+
+        function openCity(evt, cityName) {
+            const tabcontent = document.getElementsByClassName("tabcontent");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            const tablinks = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+
+</body>
+
+</html>

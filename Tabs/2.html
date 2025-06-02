@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabs 2</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #f2f2f7;
+  color: #1c1c1e;
+}
+
+/* Container for the tabs */
+.tablink {
+  flex: 1;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 16px 0;
+  font-size: 17px;
+  font-weight: 600;
+  background-color: transparent;
+  color: #007aff;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  border-radius: 12px 12px 0 0;
+  box-shadow: none;
+  user-select: none;
+  margin: 0 6px;
+  /* Make them inline-flex and full width container */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 80px;
+  max-width: 200px;
+}
+
+/* Container holding all tabs horizontally */
+.tabs-container {
+  background-color: #fff;
+  padding: 10px 10px 0 10px;
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+  display: flex;
+  justify-content: center;
+  margin: 20px auto 0;
+  max-width: 600px;
+}
+
+/* Active tab */
+.tablink.active {
+  background-color: #007aff;
+  color: white;
+  box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+}
+
+/* Hover effect for inactive tabs */
+.tablink:not(.active):hover {
+  background-color: rgba(0, 122, 255, 0.1);
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 0 14px 14px 14px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+  padding: 40px 30px;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #1c1c1e;
+  min-height: 300px;
+}
+
+.tabcontent h3 {
+  margin-top: 0;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .tabs-container {
+    flex-wrap: wrap;
+  }
+  .tablink {
+    margin: 6px 4px;
+    flex: 1 1 45%;
+    max-width: none;
+  }
+  .tabcontent {
+    padding: 30px 20px;
+    font-size: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="tabs-container">
+  <button class="tablink" onclick="openPage('Home', this)" id="defaultOpen">Home</button>
+  <button class="tablink" onclick="openPage('News', this)">News</button>
+  <button class="tablink" onclick="openPage('Contact', this)">Contact</button>
+  <button class="tablink" onclick="openPage('About', this)">About</button>
+</div>
+
+<div id="Home" class="tabcontent">
+  <h3>Home</h3>
+  <p>Home is where the heart is..</p>
+</div>
+
+<div id="News" class="tabcontent">
+  <h3>News</h3>
+  <p>Some news this fine day!</p> 
+</div>
+
+<div id="Contact" class="tabcontent">
+  <h3>Contact</h3>
+  <p>Get in touch, or swing by for a cup of coffee.</p>
+</div>
+
+<div id="About" class="tabcontent">
+  <h3>About</h3>
+  <p>Who we are and what we do.</p>
+</div>
+
+<script>
+function openPage(pageName, elmnt) {
+  const tabcontent = document.getElementsByClassName("tabcontent");
+  for (const content of tabcontent) {
+    content.style.display = "none";
+  }
+  const tablinks = document.getElementsByClassName("tablink");
+  for (const tab of tablinks) {
+    tab.classList.remove("active");
+  }
+  document.getElementById(pageName).style.display = "block";
+  elmnt.classList.add("active");
+}
+
+// Open the default tab on page load
+document.getElementById("defaultOpen").click();
+</script>
+
+</body>
+</html>
