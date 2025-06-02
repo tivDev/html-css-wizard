@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <title>Prevent Image Drag</title>
+  <style>
+    .app-container {
+      background: #f2f2f7;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      color: #1c1c1e;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+
+    .page-wrapper {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 375px; 
+      width: 100%;
+      padding: 30px 25px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 17px;
+      font-weight: 400;
+      color: #3c3c4399;
+      margin-top: 0;
+      margin-bottom: 24px;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 15px;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: auto;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.12);
+      cursor: grab;
+      transition: box-shadow 0.3s ease;
+    }
+
+    img:active {
+      cursor: grabbing;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="page-wrapper">
+    <h2>Prevent Image Drag</h2>
+    <p>Drag the image below.</p>
+    <img src="https://www.thedotstore.com/wp-content/uploads/sites/1417/2023/11/image-17.jpeg" alt="Placeholder" draggable="false" />
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('dragstart', e => e.preventDefault());
+  });
+</script>
+
+</body>
+</html>

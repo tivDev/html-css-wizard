@@ -1,166 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Dynamic iOS Style Collapsible</title>
-<style>
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    background-color: #f2f2f7;
-    margin: 0;
-    padding: 20px;
-    color: #1c1c1e;
-    display: flex;
-    justify-content: center;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iOS Style Collapse with Icons</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+  />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: #f2f2f7;
+      margin: 40px auto;
+      max-width: 450px;
+      padding: 0 15px;
+      color: #1c1c1e;
+    }
 
-  .container {
-    width: 100%;
-    max-width: 480px;
-  }
+    .ios-collapse {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
 
-  h2 {
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-align: center;
-  }
+    .ios-collapse-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      font-weight: 600;
+      font-size: 17px;
+      user-select: none;
+      cursor: pointer;
+      border-bottom: 1px solid #e5e5ea;
+      transition: background-color 0.25s ease;
+    }
 
-  .section {
-    background: #fff;
-    border-radius: 14px;
-    overflow: hidden;
-    /* margin-bottom: 32px; */
-  }
+    .ios-collapse-header:hover {
+      background-color: #f0f0f5;
+    }
 
-  button.collapsible {
-    background: #fff;
-    border: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 18px 16px;
-    font-size: 17px;
-    font-weight: 400;
-    color: #1c1c1e;
-    cursor: pointer;
-    user-select: none;
-    border-bottom: 1px solid #c6c6c8;
-    transition: background-color 0.25s ease;
-  }
+    /* Left side: icon + title container */
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-  button.collapsible:last-child {
-    border-bottom: none;
-  }
+    /* Left icon style */
+    .header-left .fa {
+      font-size: 20px;
+      color: #6e6e73;
+      flex-shrink: 0;
+      width: 24px;
+      text-align: center;
+    }
 
-  button.collapsible:active {
-    background-color: #e5e5ea;
-  }
+    .ios-collapse-content {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 20px;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.4;
+      color: #3c3c4399;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
 
-  .icon {
-    display: inline-block;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    color: #8e8e93;
-    font-size: 17px;
-    font-weight: 600;
-    user-select: none;
-    line-height: 1;
-  }
+    .ios-collapse.active .ios-collapse-content {
+      padding: 15px 20px;
+      max-height: 300px; /* Enough for content */
+    }
 
-  button.collapsible.active .icon {
-    transform: rotate(90deg);
-    color: #007aff;
-  }
+    /* Right icons style */
+    .ios-collapse-header .fa-angle-right,
+    .ios-collapse-header .fa-angle-down {
+      color: #6e6e73;
+      font-size: 14px;
+      margin-left: 5px;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
 
-  .content {
-    max-height: 0;
-    overflow: hidden;
-    background: #fff;
-    padding: 0 16px;
-    font-size: 15px;
-    color: #3c3c4399;
-    line-height: 1.4;
-    transition: max-height 0.3s ease;
-    border-top: 1px solid #c6c6c8;
-  }
+    /* Hide down arrow by default */
+    .ios-collapse-header .fa-angle-down {
+      display: none;
+    }
 
-  .content.open {
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
-</style>
+    /* When active: show down arrow, hide right arrow */
+    .ios-collapse.active .ios-collapse-header .fa-angle-right {
+      display: none;
+    }
+
+    .ios-collapse.active .ios-collapse-header .fa-angle-down {
+      display: inline-block;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>Dynamic iOS Style Collapsibles</h2>
-
-  <div class="section" id="collapsible-container">
-    <!-- Collapsibles will be generated here dynamically -->
+  <div class="ios-collapse">
+    <div class="ios-collapse-header">
+      <div class="header-left">
+        <i class="fa fa-gear"></i>
+        <span>General</span>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+      <i class="fa-solid fa-angle-down"></i>
+    </div>
+    <div class="ios-collapse-content">
+      <p>Settings for general device behavior including software updates, About, and Storage.</p>
+    </div>
   </div>
-</div>
+
+  <div class="ios-collapse">
+    <div class="ios-collapse-header">
+      <div class="header-left">
+        <i class="fa fa-shield-alt"></i>
+        <span>Privacy</span>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+      <i class="fa-solid fa-angle-down"></i>
+    </div>
+    <div class="ios-collapse-content">
+      <p>Manage your privacy preferences and permissions here.</p>
+    </div>
+  </div>
+
+  <div class="ios-collapse">
+    <div class="ios-collapse-header">
+      <div class="header-left">
+        <i class="fa fa-bell"></i>
+        <span>Notifications</span>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+      <i class="fa-solid fa-angle-down"></i>
+    </div>
+    <div class="ios-collapse-content">
+      <p>Control your notification styles, sounds, and display options.</p>
+    </div>
+  </div>
 
 <script>
-  // After DOM loads
-  document.addEventListener("DOMContentLoaded", () => {
-    // Find all buttons with attribute [collapsible]
-    const buttons = document.querySelectorAll("button[collapsible]");
+  const headers = document.querySelectorAll('.ios-collapse-header');
 
-    // Get the container where collapsibles will be appended
-    const container = document.getElementById("collapsible-container");
+  headers.forEach(header => {
+    header.addEventListener('click', () => {
+      const container = header.parentElement;
 
-    buttons.forEach((btn, idx) => {
-      // Get content from attribute
-      const contentText = btn.getAttribute("collapsible-content") || "";
-
-      // Create a new section div to hold button and content
-      const section = document.createElement("div");
-      section.className = "section";
-
-      // Clone the button and add icon span inside
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "collapsible";
-      button.innerHTML = btn.innerHTML + `<span class="icon">›</span>`;
-
-      // Create content div with the content text inside a <p>
-      const content = document.createElement("div");
-      content.className = "content";
-      content.innerHTML = `<p>${contentText}</p>`;
-
-      // Append button and content to the section
-      section.appendChild(button);
-      section.appendChild(content);
-
-      // Append section to container
-      container.appendChild(section);
-
-      // Add click event for toggling
-      button.addEventListener("click", () => {
-        button.classList.toggle("active");
-
-        if (content.style.maxHeight) {
-          content.style.maxHeight = null;
-          content.classList.remove("open");
-        } else {
-          content.style.maxHeight = content.scrollHeight + "px";
-          content.classList.add("open");
+      // Close other open sections for accordion behavior
+      document.querySelectorAll('.ios-collapse.active').forEach(activeEl => {
+        if(activeEl !== container) {
+          activeEl.classList.remove('active');
         }
       });
-    });
 
-    // Optionally, remove original buttons from DOM if you want
-    buttons.forEach(btn => btn.remove());
+      container.classList.toggle('active');
+    });
   });
 </script>
-
-<!-- Your simple buttons with attributes here -->
-<button collapsible collapsible-content="This is dynamic content for first collapsible.">First Collapsible</button>
-<button collapsible collapsible-content="More content inside the second collapsible, loaded dynamically!">Second Collapsible</button>
-<button collapsible collapsible-content="Third collapsible content. Customize this easily!">Third Collapsible</button>
 
 </body>
 </html>
