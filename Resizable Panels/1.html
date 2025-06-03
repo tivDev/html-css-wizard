@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Resizable Panels</title>
+<style>
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .panel {
+    padding: 20px;
+    overflow: auto;
+  }
+
+  .left-panel {
+    background-color: #f0f0f0;
+    width: 50%; /* initial width */
+    min-width: 100px;
+  }
+
+  .right-panel {
+    background-color: #d0d0d0;
+    flex-grow: 1;
+    min-width: 100px;
+  }
+
+  .divider {
+    width: 8px;
+    cursor: ew-resize;
+    background-color: #999;
+    transition: background-color 0.2s;
+  }
+
+  .divider:hover {
+    background-color: #666;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="panel left-panel">
+    <h2>Left Panel</h2>
+    <p>This panel is resizable by dragging the divider.</p>
+  </div>
+  <div class="divider" id="divider"></div>
+  <div class="panel right-panel">
+    <h2>Right Panel</h2>
+    <p>This panel expands or shrinks based on the left panel size.</p>
+  </div>
+</div>
+
+<script>
+  const divider = document.getElementById('divider');
+  const leftPanel = divider.previousElementSibling;
+  const rightPanel = divider.nextElementSibling;
+
+  let isDragging = false;
+
+  divider.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    document.body.style.cursor = 'ew-resize';
+  });
+
+  window.addEventListener('mouseup', (e) => {
+    if (isDragging) {
+      isDragging = false;
+      document.body.style.cursor = 'default';
+    }
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    // Calculate new width for left panel
+    let containerOffsetLeft = leftPanel.parentElement.getBoundingClientRect().left;
+    let pointerRelativeXpos = e.clientX - containerOffsetLeft;
+
+    // Limit min/max widths
+    const minWidth = 100;
+    const maxWidth = leftPanel.parentElement.clientWidth - minWidth;
+
+    if (pointerRelativeXpos < minWidth) pointerRelativeXpos = minWidth;
+    if (pointerRelativeXpos > maxWidth) pointerRelativeXpos = maxWidth;
+
+    leftPanel.style.width = pointerRelativeXpos + 'px';
+  });
+</script>
+
+</body>
+</html>
