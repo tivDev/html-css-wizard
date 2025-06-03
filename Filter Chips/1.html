@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Filter Chips Design</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .chip {
+      padding: 8px 16px;
+      border-radius: 16px;
+      background-color: #e0e0e0;
+      color: #333;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s, color 0.3s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      border: none;
+    }
+
+    .chip:hover {
+      background-color: #d5d5d5;
+    }
+
+    .chip.active {
+      background-color: #007bff;
+      color: white;
+      box-shadow: 0 2px 6px rgba(0,123,255,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Filter Chips</h1>
+
+  <div class="filter-chips" id="filterChips">
+    <button class="chip">All</button>
+    <button class="chip">Active</button>
+    <button class="chip">Completed</button>
+    <button class="chip">Pending</button>
+    <button class="chip">Archived</button>
+  </div>
+
+  <script>
+const chips = document.querySelectorAll('.chip');
+
+chips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    if (chip.classList.contains('active')) {
+      chip.classList.remove('active');
+    } else {
+      chip.classList.add('active');
+    }
+
+    // Collect all active chips text
+    const activeChips = Array.from(document.querySelectorAll('.chip.active'))
+      .map(c => c.textContent);
+
+    console.log('Active chips:', activeChips);
+  });
+});
+
+  </script>
+
+</body>
+</html>
