@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Swipe to Delete</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .list-item {
+      position: relative;
+      background: #fff;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      touch-action: pan-y;
+    }
+
+    .item-content {
+      padding: 16px;
+      transition: transform 0.3s ease;
+      background: white;
+      z-index: 2;
+      position: relative;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100px;
+      background: #e74c3c;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+<h2 style="text-align:center;">Swipe Left to Delete</h2>
+
+<ul id="list">
+  <li class="list-item">
+    <div class="delete-btn">Delete</div>
+    <div class="item-content">Item 1</div>
+  </li>
+  <li class="list-item">
+    <div class="delete-btn">Delete</div>
+    <div class="item-content">Item 2</div>
+  </li>
+  <li class="list-item">
+    <div class="delete-btn">Delete</div>
+    <div class="item-content">Item 3</div>
+  </li>
+</ul>
+
+<script>
+  const listItems = document.querySelectorAll('.list-item');
+
+  listItems.forEach(item => {
+    const content = item.querySelector('.item-content');
+    const deleteBtn = item.querySelector('.delete-btn');
+
+    let startX = 0;
+    let currentX = 0;
+    let dragging = false;
+
+    const handleStart = (e) => {
+      startX = e.touches ? e.touches[0].clientX : e.clientX;
+      dragging = true;
+      item.classList.add('dragging');
+    };
+
+    const handleMove = (e) => {
+      if (!dragging) return;
+      currentX = e.touches ? e.touches[0].clientX : e.clientX;
+      const diff = currentX - startX;
+      if (diff < 0) {
+        content.style.transform = `translateX(${diff}px)`;
+      }
+    };
+
+    const handleEnd = () => {
+      dragging = false;
+      const diff = currentX - startX;
+      if (diff < -60) {
+        content.style.transform = `translateX(-100px)`;
+      } else {
+        content.style.transform = `translateX(0)`;
+      }
+    };
+
+    const handleDelete = () => {
+      item.remove();
+    };
+
+    content.addEventListener('mousedown', handleStart);
+    content.addEventListener('mousemove', handleMove);
+    content.addEventListener('mouseup', handleEnd);
+    content.addEventListener('mouseleave', handleEnd);
+
+    content.addEventListener('touchstart', handleStart);
+    content.addEventListener('touchmove', handleMove);
+    content.addEventListener('touchend', handleEnd);
+
+    deleteBtn.addEventListener('click', handleDelete);
+  });
+</script>
+
+</body>
+</html>
