@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pagination with Sliding Buttons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .item-count {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .item-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .item-list li {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .pagination {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .pagination button {
+      margin: 0 5px;
+      padding: 8px 12px;
+      border: 1px solid #007bff;
+      background: white;
+      color: #007bff;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .pagination button:hover {
+      background: #007bff;
+      color: white;
+    }
+
+    .pagination button.active {
+      background: #007bff;
+      color: white;
+      cursor: default;
+    }
+
+    .pagination button:disabled {
+      border-color: #ccc;
+      color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Pagination Demo</h1>
+  <div class="item-count" id="itemCount"></div>
+
+  <ul class="item-list" id="itemList"></ul>
+
+  <div class="pagination" id="pagination"></div>
+
+  <script>
+    const data = [];
+    for (let i = 1; i <= 50; i++) {
+      data.push({ id: i, name: `Item ${i}` });
+    }
+
+    const itemsPerPage = 5;
+    let currentPage = 1;
+    const maxButtons = 5;
+
+    const itemList = document.getElementById('itemList');
+    const pagination = document.getElementById('pagination');
+    const itemCount = document.getElementById('itemCount');
+
+    function renderList(page) {
+      itemList.innerHTML = '';
+
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const paginatedItems = data.slice(start, end);
+
+      paginatedItems.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.id}. ${item.name}`;
+        itemList.appendChild(li);
+      });
+
+      const showingCount = Math.min(end, data.length);
+      itemCount.textContent = `Showing ${showingCount} of ${data.length} items`;
+    }
+
+    function renderPagination() {
+      pagination.innerHTML = '';
+
+      const totalPages = Math.ceil(data.length / itemsPerPage);
+
+      // Prev button
+      const prevBtn = document.createElement('button');
+      prevBtn.textContent = 'Prev';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => {
+        if (currentPage > 1) {
+          currentPage--;
+          update();
+        }
+      };
+      pagination.appendChild(prevBtn);
+
+      // Calculate sliding window of page buttons
+      // Calculate start page for the sliding window of maxButtons pages
+      let startPage = Math.floor((currentPage - 1) / maxButtons) * maxButtons + 1;
+      let endPage = Math.min(startPage + maxButtons - 1, totalPages);
+
+      for (let i = startPage; i <= endPage; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        if (i === currentPage) {
+          btn.classList.add('active');
+          btn.disabled = true;
+        }
+        btn.onclick = () => {
+          currentPage = i;
+          update();
+        };
+        pagination.appendChild(btn);
+      }
+
+      // Next button
+      const nextBtn = document.createElement('button');
+      nextBtn.textContent = 'Next';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.onclick = () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          update();
+        }
+      };
+      pagination.appendChild(nextBtn);
+    }
+
+    function update() {
+      renderList(currentPage);
+      renderPagination();
+    }
+
+    update();
+  </script>
+
+</body>
+</html>
