@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>App Splash Screen</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body, html {
+    margin: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden; /* prevent scroll during splash */
+  }
+
+  /* Splash screen container */
+  #splash-screen {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #4a90e2, #145da0);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 9999;
+    animation: fadeOut 1s ease forwards;
+    animation-delay: 3s;
+  }
+
+  /* Splash screen animation */
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  /* Logo style */
+  #splash-logo {
+    width: 120px;
+    height: 120px;
+    background: white;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #4a90e2;
+    font-size: 48px;
+    user-select: none;
+  }
+
+  /* Loading text */
+  #loading-text {
+    font-size: 18px;
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+
+  /* Main content hidden initially */
+  #main-content {
+    opacity: 0;
+    transition: opacity 1s ease;
+    padding: 40px;
+    text-align: center;
+  }
+
+  /* Show main content after splash fades */
+  #splash-screen.fadeout-done + #main-content {
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- Splash Screen -->
+<div id="splash-screen">
+  <div id="splash-logo">App</div>
+  <div id="loading-text">Loading...</div>
+</div>
+
+<!-- Main Content -->
+<div id="main-content">
+  <h1>Welcome to Your App!</h1>
+  <p>This is the main content of the app that appears after the splash screen.</p>
+</div>
+
+<script>
+  const splash = document.getElementById('splash-screen');
+  const mainContent = document.getElementById('main-content');
+
+  // After animation ends, hide splash and show main content
+  splash.addEventListener('animationend', () => {
+    splash.style.display = 'none';
+    mainContent.style.opacity = '1';
+    document.body.style.overflow = 'auto'; // re-enable scrolling
+  });
+</script>
+
+</body>
+</html>
