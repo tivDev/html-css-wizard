@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>File Upload Area</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+    background: #f9f9f9;
+    display: flex;
+    justify-content: center;
+  }
+
+  .upload-area {
+    border: 3px dashed #4a90e2;
+    border-radius: 10px;
+    width: 400px;
+    height: 200px;
+    background-color: #eaf3ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    text-align: center;
+    color: #4a90e2;
+    user-select: none;
+  }
+
+  .upload-area.dragover {
+    background-color: #d0e4ff;
+    border-color: #357abd;
+  }
+
+  .upload-area input[type="file"] {
+    display: none;
+  }
+
+  .upload-area p {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .file-list {
+    margin-top: 20px;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .file-item {
+    padding: 6px 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .file-item:last-child {
+    border-bottom: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="upload-area" id="uploadArea">
+  <p>Drag & Drop files here or click to browse</p>
+  <input type="file" id="fileInput" multiple />
+</div>
+
+<div class="file-list" id="fileList"></div>
+
+<script>
+  const uploadArea = document.getElementById('uploadArea');
+  const fileInput = document.getElementById('fileInput');
+  const fileList = document.getElementById('fileList');
+
+  // Highlight on drag over
+  uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+  });
+
+  // Remove highlight on drag leave
+  uploadArea.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+  });
+
+  // Handle file drop
+  uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    handleFiles(files);
+  });
+
+  // Click to open file browser
+  uploadArea.addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  // Handle files selected by file input
+  fileInput.addEventListener('change', () => {
+    handleFiles(fileInput.files);
+  });
+
+  function handleFiles(files) {
+    if (files.length === 0) return;
+
+    // Clear previous list
+    fileList.innerHTML = '';
+
+    Array.from(files).forEach(file => {
+      const fileSizeKB = (file.size / 1024).toFixed(2);
+      const item = document.createElement('div');
+      item.classList.add('file-item');
+      item.textContent = `${file.name} — ${fileSizeKB} KB`;
+      fileList.appendChild(item);
+    });
+  }
+</script>
+
+</body>
+</html>
