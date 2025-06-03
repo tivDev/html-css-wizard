@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Multiple Image Upload with Preview</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .upload-area {
+    border: 3px dashed #4a90e2;
+    border-radius: 10px;
+    width: 420px;
+    height: 200px;
+    background-color: #eaf3ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    text-align: center;
+    color: #4a90e2;
+    user-select: none;
+    margin-bottom: 20px;
+  }
+
+  .upload-area.dragover {
+    background-color: #d0e4ff;
+    border-color: #357abd;
+  }
+
+  .upload-area input[type="file"] {
+    display: none;
+  }
+
+  .upload-area p {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: 420px;
+    margin-bottom: 20px;
+  }
+
+  .preview {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+
+  button {
+    background-color: #4a90e2;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  button:hover {
+    background-color: #357abd;
+  }
+</style>
+</head>
+<body>
+
+<div class="upload-area" id="uploadArea">
+  <p>Drag & Drop images here or click to browse</p>
+  <input type="file" id="fileInput" multiple accept="image/*" />
+</div>
+
+<div class="preview-container" id="previewContainer"></div>
+
+<button id="submitBtn">Submit</button>
+
+<script>
+  const uploadArea = document.getElementById('uploadArea');
+  const fileInput = document.getElementById('fileInput');
+  const previewContainer = document.getElementById('previewContainer');
+  const submitBtn = document.getElementById('submitBtn');
+
+  let selectedFiles = [];
+
+  // Highlight on drag over
+  uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+  });
+
+  uploadArea.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+  });
+
+  // Handle dropped files
+  uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    handleFiles(e.dataTransfer.files);
+  });
+
+  // Click to open file picker
+  uploadArea.addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  // Handle files selected by input
+  fileInput.addEventListener('change', () => {
+    handleFiles(fileInput.files);
+  });
+
+  function handleFiles(files) {
+    // Convert FileList to array and filter only images
+    const filesArray = Array.from(files).filter(file => file.type.startsWith('image/'));
+
+    if (filesArray.length === 0) {
+      alert('Please select image files only.');
+      return;
+    }
+
+    // Add new files to selectedFiles (avoid duplicates by name+size)
+    filesArray.forEach(newFile => {
+      const exists = selectedFiles.some(f => f.name === newFile.name && f.size === newFile.size);
+      if (!exists) selectedFiles.push(newFile);
+    });
+
+    updatePreviews();
+  }
+
+  function updatePreviews() {
+    previewContainer.innerHTML = '';
+    selectedFiles.forEach(file => {
+      const img = document.createElement('img');
+      img.classList.add('preview');
+      img.file = file;
+
+      previewContainer.appendChild(img);
+
+      // Use FileReader to read and display image preview
+      const reader = new FileReader();
+      reader.onload = (function(aImg) { 
+        return function(e) { 
+          aImg.src = e.target.result; 
+        }; 
+      })(img);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  submitBtn.addEventListener('click', () => {
+    if (selectedFiles.length === 0) {
+      alert('No images selected to upload.');
+      return;
+    }
+    // Simulate upload, here just log file names & sizes
+    console.log('Uploading files:');
+    selectedFiles.forEach(file => {
+      console.log(`${file.name} (${(file.size / 1024).toFixed(2)} KB)`);
+    });
+    alert('Files uploaded! Check console for details.');
+
+    // Clear selection & previews after upload
+    selectedFiles = [];
+    updatePreviews();
+    fileInput.value = ''; // reset input
+  });
+</script>
+
+</body>
+</html>
