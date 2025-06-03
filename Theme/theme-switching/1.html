@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Style Theme Toggle</title>
+<style>
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #1c1c1e;
+    --primary-color: #007aff;
+    --toggle-bg-light: #e5e5ea;
+    --toggle-bg-dark: #3a3a3c;
+    --toggle-thumb-light: #ffffff;
+    --toggle-thumb-dark: #1c1c1e;
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-dark: rgba(0, 0, 0, 0.6);
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  [data-theme="dark"] {
+    --bg-color: #1c1c1e;
+    --text-color: #f2f2f7;
+    --shadow-color: var(--shadow-dark);
+  }
+  [data-theme="light"] {
+    --shadow-color: var(--shadow-light);
+  }
+
+  /* Reset and base styles */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .container {
+    max-width: 480px;
+    margin: 3rem auto 0;
+    padding: 0 1.5rem 3rem;
+    text-align: center;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #ccc;
+    user-select: none;
+  }
+
+  [data-theme="dark"] header {
+    border-color: #444;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 1.75rem;
+    margin: 0;
+  }
+
+  /* iOS style toggle switch */
+  .switch {
+    position: relative;
+    width: 52px;
+    height: 32px;
+    flex-shrink: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    inset: 0;
+    background-color: var(--toggle-bg-light);
+    border-radius: 16px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 1px 2px var(--shadow-light);
+  }
+
+  [data-theme="dark"] .slider {
+    box-shadow: 0 1px 3px var(--shadow-dark);
+  }
+
+  .slider::before {
+    content: "";
+    position: absolute;
+    height: 26px;
+    width: 26px;
+    left: 3px;
+    top: 3px;
+    background-color: var(--toggle-thumb-light);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  input:checked + .slider {
+    background-color: var(--toggle-bg-dark);
+    box-shadow: 0 0 8px var(--primary-color);
+  }
+
+  input:checked + .slider::before {
+    transform: translateX(20px);
+    background-color: var(--toggle-thumb-dark);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  }
+
+  /* Focus outline for accessibility */
+  input:focus-visible + .slider {
+    box-shadow:
+      0 0 0 3px var(--primary-color),
+      0 1px 2px var(--shadow-light);
+  }
+
+  /* Icons inside the toggle */
+  .icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .icon.sun {
+    left: 8px;
+    color: #f39c12;
+    opacity: 1;
+  }
+
+  .icon.moon {
+    right: 8px;
+    color: #f1c40f;
+    opacity: 0;
+  }
+
+  input:checked ~ .icon.sun {
+    opacity: 0;
+  }
+
+  input:checked ~ .icon.moon {
+    opacity: 1;
+  }
+
+  main p {
+    font-size: 1.125rem;
+    margin-top: 3rem;
+    color: var(--text-color);
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Responsive scaling for smaller screens */
+  @media (max-width: 400px) {
+    .container {
+      max-width: 95%;
+      padding: 0 1rem 2rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    main p {
+      font-size: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Theme Switching Style Site</h1>
+      <label class="switch" aria-label="Toggle Dark Mode" role="switch" aria-checked="false" tabindex="0">
+        <input type="checkbox" id="theme-toggle" />
+        <span class="slider"></span>
+        <span class="icon sun">🌞</span>
+        <span class="icon moon">🌙</span>
+      </label>
+    </header>
+    <main>
+      <p>Welcome to the theme-switching website! Toggle the switch to change between light and dark mode for a comfortable viewing experience.</p>
+    </main>
+  </div>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const switchLabel = toggle.parentElement;
+
+  // Load saved theme on page load
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  toggle.checked = savedTheme === 'dark';
+  switchLabel.setAttribute('aria-checked', toggle.checked);
+
+  function updateTheme() {
+    const theme = toggle.checked ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    switchLabel.setAttribute('aria-checked', toggle.checked);
+  }
+
+  toggle.addEventListener('change', updateTheme);
+
+  // Accessibility: allow toggle by keyboard space or enter
+  switchLabel.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      toggle.checked = !toggle.checked;
+      updateTheme();
+    }
+  });
+</script>
+</body>
+</html>
