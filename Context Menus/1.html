@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Custom Context Menu with Title</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+
+    .box {
+      width: 300px;
+      height: 150px;
+      border: 2px dashed #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: context-menu;
+      user-select: none;
+      margin-bottom: 30px;
+      background: #f9f9f9;
+    }
+
+    .context-menu {
+      position: absolute;
+      background-color: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      border-radius: 6px;
+      width: 200px;
+      display: none;
+      z-index: 1000;
+      padding: 8px 0;
+      font-size: 0.95rem;
+    }
+
+    .context-menu__title {
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 1rem;
+      border-bottom: 1px solid #eee;
+      color: #333;
+      user-select: none;
+    }
+
+    .context-menu__item {
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .context-menu__item:hover {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box" id="box">
+    Right-click inside this box
+  </div>
+
+  <div class="context-menu" id="contextMenu">
+    <div class="context-menu__title">Options</div>
+    <div class="context-menu__item" data-action="cut">Cut</div>
+    <div class="context-menu__item" data-action="copy">Copy</div>
+    <div class="context-menu__item" data-action="paste">Paste</div>
+    <div class="context-menu__item" data-action="delete">Delete</div>
+  </div>
+
+  <script>
+    const box = document.getElementById('box');
+    const contextMenu = document.getElementById('contextMenu');
+
+    box.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+
+      // Position the menu at mouse location
+      contextMenu.style.top = `${e.pageY}px`;
+      contextMenu.style.left = `${e.pageX}px`;
+      contextMenu.style.display = 'block';
+    });
+
+    // Hide context menu on clicking elsewhere
+    document.addEventListener('click', () => {
+      contextMenu.style.display = 'none';
+    });
+
+    // Handle clicks on menu items
+    contextMenu.addEventListener('click', (e) => {
+      const item = e.target.closest('.context-menu__item');
+      if (!item) return;
+
+      alert(`Action: ${item.dataset.action}`);
+      contextMenu.style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>
