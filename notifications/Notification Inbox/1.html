@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Notification Panel / Inbox</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .notification-panel {
+    background: #fff;
+    width: 360px;
+    max-height: 480px;
+    border-radius: 8px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #ddd;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  .notifications-list {
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+
+  .notification-item {
+    display: flex;
+    padding: 12px 20px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .notification-item.unread {
+    background-color: #e6f0ff;
+  }
+
+  .notification-item:hover {
+    background-color: #f5f7fa;
+  }
+
+  .notification-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 16px;
+  }
+
+  .notification-content {
+    flex-grow: 1;
+  }
+
+  .notification-title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: #222;
+  }
+
+  .notification-message {
+    font-size: 13px;
+    color: #555;
+  }
+
+  .notification-time {
+    font-size: 11px;
+    color: #999;
+    margin-left: 12px;
+    white-space: nowrap;
+  }
+
+  /* Scrollbar styling for modern browsers */
+  .notifications-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .notifications-list::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 3px;
+  }
+  .notifications-list::-webkit-scrollbar-thumb:hover {
+    background: #999;
+  }
+</style>
+</head>
+<body>
+
+<div class="notification-panel" role="region" aria-label="Notifications">
+  <div class="panel-header">Notifications</div>
+  <div class="notifications-list" id="notificationsList">
+    <!-- Notifications will be rendered here -->
+  </div>
+</div>
+
+<script>
+  // Sample notification data
+  const notifications = [
+    {
+      id: 1,
+      icon: '🔔',
+      title: 'System Update',
+      message: 'Your system will restart at midnight.',
+      time: '2h ago',
+      read: false
+    },
+    {
+      id: 2,
+      icon: '✉️',
+      title: 'New Message',
+      message: 'You have a new message from John.',
+      time: '4h ago',
+      read: true
+    },
+    {
+      id: 3,
+      icon: '⚠️',
+      title: 'Alert',
+      message: 'Unusual login activity detected.',
+      time: '1d ago',
+      read: false
+    },
+    {
+      id: 4,
+      icon: '🎉',
+      title: 'Congratulations!',
+      message: 'You earned a new badge.',
+      time: '3d ago',
+      read: true
+    },
+    {
+      id: 5,
+      icon: '📢',
+      title: 'Announcement',
+      message: 'New features have been added.',
+      time: '5d ago',
+      read: true
+    }
+  ];
+
+  const listEl = document.getElementById('notificationsList');
+
+  function renderNotifications() {
+    listEl.innerHTML = '';
+    notifications.forEach((notif) => {
+      const item = document.createElement('div');
+      item.className = 'notification-item' + (notif.read ? '' : ' unread');
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('role', 'button');
+      item.setAttribute('aria-pressed', notif.read ? 'true' : 'false');
+      item.dataset.id = notif.id;
+
+      item.innerHTML = `
+        <div class="notification-icon">${notif.icon}</div>
+        <div class="notification-content">
+          <div class="notification-title">${notif.title}</div>
+          <div class="notification-message">${notif.message}</div>
+        </div>
+        <div class="notification-time">${notif.time}</div>
+      `;
+
+      item.addEventListener('click', () => {
+        toggleReadStatus(notif.id);
+      });
+
+      listEl.appendChild(item);
+    });
+  }
+
+  function toggleReadStatus(id) {
+    const notif = notifications.find(n => n.id === id);
+    if (notif) {
+      notif.read = !notif.read;
+      renderNotifications();
+    }
+  }
+
+  renderNotifications();
+</script>
+
+</body>
+</html>
