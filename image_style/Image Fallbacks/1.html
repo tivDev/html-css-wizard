@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Cards</title>
+  <style>
+    .card-wrapper {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f8;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .products-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 24px;
+      max-width: 960px;
+      width: 100%;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .product-card:hover,
+    .product-card:focus-within {
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      outline: none;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 180px;
+      background: #00000038;
+      color: rgba(39, 29, 29, 0.65);
+      font-size: 36px;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-info {
+      padding: 16px 14px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-name {
+      font-weight: 600;
+      font-size: 18px;
+      color: #222;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .product-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: #4f46e5;
+      margin-bottom: 14px;
+    }
+
+    .btn-add-cart {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 12px;
+      background-color: #4f46e5;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+      user-select: none;
+    }
+
+    .btn-add-cart:hover,
+    .btn-add-cart:focus {
+      background-color: #4338ca;
+      outline: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-wrapper">
+    <h1 style="text-align:center; margin-bottom: 24px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+      Image Fallbacks
+    </h1>
+    <p style="text-align:center">The image fallback will be applied if the image fails to load by item's name</p>
+    <div class="card-wrapper">
+      <main class="products-container" id="productsContainer" role="list"></main>
+    </div>
+
+  </div>
+<script>
+ const products = [
+  { name: 'iPhone 16', price: 1299, image: '' },
+  { name: 'Samsung Galaxy 24', price: 999, image: 'https://www.autoshippers.co.uk/blog/wp-content/uploads/bugatti-centodieci.jpg' },
+  { name: 'MacBook Pro', price: 2399, image: 'https://example.com/invalid-image.jpg' }, // broken
+  { name: 'Dell XPS 15re', price: 1899, image: 'https://via.placeholder.com/300?text=DX15' }
+];
+
+const container = document.getElementById('productsContainer');
+
+// Create text-based fallback placeholder
+function createPlaceholder(name) {
+  const div = document.createElement('div');
+  div.className = 'product-image';
+  div.setAttribute('aria-label', `Placeholder image for ${name}`);
+
+  const words = name.trim().split(' ');
+  let initials = '';
+  if (words.length >= 2) {
+    const firstLetter = words[0][0];
+    const numberPart = words[1].match(/\d+/);
+    initials = firstLetter + (numberPart ? numberPart[0] : words[1][0]);
+  } else {
+    initials = name.slice(0, 2);
+  }
+
+  div.textContent = initials.toUpperCase();
+  return div;
+}
+
+// Add product info (name, price, button)
+function addInfoSection(product, card) {
+  const info = document.createElement('div');
+  info.className = 'product-info';
+
+  const nameEl = document.createElement('div');
+  nameEl.className = 'product-name';
+  nameEl.textContent = product.name;
+
+  const priceEl = document.createElement('div');
+  priceEl.className = 'product-price';
+  priceEl.textContent = `$${product.price.toFixed(2)}`;
+
+  const btn = document.createElement('button');
+  btn.className = 'btn-add-cart';
+  btn.textContent = 'Add to Cart';
+  btn.type = 'button';
+  btn.onclick = () => alert(`Added "${product.name}" to cart!`);
+
+  info.appendChild(nameEl);
+  info.appendChild(priceEl);
+  info.appendChild(btn);
+  card.appendChild(info);
+}
+
+// Render each product card
+products.forEach(product => {
+  const card = document.createElement('article');
+  card.className = 'product-card';
+  card.setAttribute('role', 'listitem');
+  card.tabIndex = 0;
+
+  // Show placeholder immediately
+  const placeholder = createPlaceholder(product.name);
+  card.appendChild(placeholder);
+
+  // Try to load image (replace placeholder if successful)
+  if (product.image) {
+    const img = new Image();
+    img.src = product.image;
+    img.alt = product.name;
+
+    img.onload = () => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'product-image';
+      wrapper.appendChild(img);
+      card.replaceChild(wrapper, placeholder);
+    };
+    // No onerror — if it fails, placeholder stays
+  }
+
+  addInfoSection(product, card);
+  container.appendChild(card);
+});
+
+</script>
+
+
+</body>
+
+</html>
