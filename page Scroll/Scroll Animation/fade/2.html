@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scroll Animation Fade</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 50px 0;
+      font-size: 2.5rem;
+      color: #333;
+    }
+
+    .page-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 100px;
+    }
+
+    .scroll {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .block {
+      height: 200px;
+      border-radius: 12px;
+      transform: scale(0.85);
+      animation: scaleUp 0.6s ease-out forwards;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    @keyframes scaleUp {
+      from {
+        transform: scale(0.5);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+
+    /* Color variations */
+    .block:nth-child(odd)  { background: #007bff; }
+    .block:nth-child(even) { background: #17a2b8; }
+    .block:nth-child(3n)   { background: #28a745; }
+    .block:nth-child(4n)   { background: #ffc107; }
+    .block:nth-child(5n)   { background: #dc3545; }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <h1>Scroll Animation Fade CSS</h1>
+    <div class="page-content">
+      <div class="scroll">
+        <!-- Example blocks -->
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
