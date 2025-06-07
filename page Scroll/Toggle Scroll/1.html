@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Disable Scroll but Keep Scrollbar</title>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll; /* always show scrollbar */
+  }
+  .content {
+    height: 200vh;
+    background: linear-gradient(to bottom, #a8edea, #fed6e3);
+    padding: 20px;
+  }
+  button {
+    position: fixed;
+    top: 10px; right: 10px;
+    z-index: 10;
+    padding: 10px 15px;
+  }
+</style>
+</head>
+<body>
+  <button id="toggleScroll">Disable Scroll</button>
+  <div class="content">
+    <h1>Scroll the page</h1>
+    <p>Scrollbar stays visible, but scroll is disabled when toggled.</p>
+  </div>
+
+<script>
+  const btn = document.getElementById('toggleScroll');
+  let scrollDisabled = false;
+
+  function preventScroll(e) {
+    e.preventDefault();
+  }
+
+  function preventKeyScroll(e) {
+    // keys that cause scroll: arrow keys, space, page up/down, home/end
+    const keys = [32, 33, 34, 35, 36, 37, 38, 39, 40];
+    if (keys.includes(e.keyCode)) {
+      e.preventDefault();
+    }
+  }
+
+  btn.addEventListener('click', () => {
+    if (!scrollDisabled) {
+      // disable scroll
+      window.addEventListener('wheel', preventScroll, { passive: false });
+      window.addEventListener('touchmove', preventScroll, { passive: false });
+      window.addEventListener('keydown', preventKeyScroll, { passive: false });
+      btn.textContent = 'Enable Scroll';
+    } else {
+      // enable scroll
+      window.removeEventListener('wheel', preventScroll);
+      window.removeEventListener('touchmove', preventScroll);
+      window.removeEventListener('keydown', preventKeyScroll);
+      btn.textContent = 'Disable Scroll';
+    }
+    scrollDisabled = !scrollDisabled;
+  });
+</script>
+</body>
+</html>
