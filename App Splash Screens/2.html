@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My App Splash</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0d0d0d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+
+    .splash-container {
+      text-align: center;
+      animation: fadeIn 1s ease-out forwards, fadeOut 1s ease-in-out 5s forwards;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0 auto 20px;
+      animation: bounce 1.2s infinite ease-in-out;
+    }
+
+    .message-input-style {
+      display: inline-block;
+      background: #1e1e1e;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      border: 1px solid #444;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      animation: slideUp 1s ease-out 1s forwards;
+      transform: translateY(40px);
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes slideUp {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash-container">
+    <div class="logo">M</div>
+    <div class="message-input-style">My App</div>
+  </div>
+
+  <script>
+    // Optional: Redirect after splash
+    setTimeout(() => {
+      document.body.innerHTML = '<h1 style="color:white; text-align:center;">Welcome to My App!</h1>';
+    }, 6000);
+  </script>
+</body>
+</html>

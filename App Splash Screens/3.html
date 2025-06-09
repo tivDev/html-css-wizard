@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My App Splash</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #121212;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+
+    .splash-container {
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 1s ease-out forwards, fadeOut 1s ease-in-out 4.5s forwards;
+    }
+
+    .logo {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 0 auto 20px;
+      animation: bounce 1.2s infinite ease-in-out;
+      box-shadow: 0 5px 20px rgba(255, 75, 43, 0.4);
+    }
+
+    #app-name {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.15em;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash-container">
+    <div class="logo">M</div>
+    <div id="app-name">My App</div>
+  </div>
+
+  <script>
+    // Optional: Redirect or show main content after splash
+    setTimeout(() => {
+      document.body.innerHTML = '<h1 style="color:white; text-align:center;">Welcome to My App!</h1>';
+    }, 5500);
+  </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tree with Icons</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 40px;
+            background: #f9f9f9;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        ul.tree {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul.tree li {
+            margin: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        ul.tree li span {
+            cursor: pointer;
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        ul.tree li ul {
+            display: none;
+            margin-left: 18px;
+            padding-left: 12px;
+        }
+
+        ul.tree li.expanded>ul {
+            display: block;
+        }
+
+        .tree-icon {
+            color: #007bff;
+            width: 18px;
+        }
+
+        /* Add dotted bottom border for items with children */
+        ul.tree li.has-children>span {
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 6px;
+            margin-bottom: 6px;
+            display: inline-flex;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Tree Structure (Font Awesome)</h2>
+    <ul id="iconTree" class="tree"></ul>
+
+    <script>
+        const treeData = [
+            {
+                name: "Fruits",
+                children: [
+                    { name: "Apple" },
+                    { name: "Banana" },
+                    { name: "Orange" }
+                ]
+            },
+            {
+                name: "Vegetables",
+                children: [
+                    { name: "Carrot" },
+                    { name: "Tomato",
+                        children: [
+                            { name: "Red Tomato" },
+                            { name: "Green Tomato" }
+                        ]
+                     },
+                    {
+                        name: "Leafy Greens",
+                        children: [
+                            { name: "Spinach" },
+                            { name: "Lettuce" }
+                        ]
+                    }
+                ]
+            },
+            { name: "Grains" }
+        ];
+
+        function createTree(data) {
+            const ul = document.createElement('ul');
+            data.forEach(item => {
+                const li = document.createElement('li');
+                const span = document.createElement('span');
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-folder tree-icon';
+
+                span.appendChild(icon);
+                span.appendChild(document.createTextNode(item.name));
+                li.appendChild(span);
+
+                if (item.children) {
+                    const childTree = createTree(item.children);
+                    li.appendChild(childTree);
+                    li.classList.add('has-children');
+
+                    span.addEventListener('click', () => {
+                        li.classList.toggle('expanded');
+                        icon.className = li.classList.contains('expanded')
+                            ? 'fas fa-folder-open tree-icon'
+                            : 'fas fa-folder tree-icon';
+                    });
+                }
+
+                ul.appendChild(li);
+            });
+            return ul;
+        }
+
+        document.getElementById('iconTree').appendChild(createTree(treeData));
+    </script>
+</body>
+
+</html>
