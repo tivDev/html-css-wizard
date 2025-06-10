@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>iOS Style Register Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f2f2f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background-color: #f1f1f1;
+      font-size: 16px;
+      outline: none;
+      transition: background-color 0.3s;
+    }
+
+    .input-group input:focus {
+      background-color: #e6e6ea;
+    }
+
+    .suggestion-box {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 14px;
+      color: #333;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 10;
+    }
+
+    .suggestion-box:hover {
+      background-color: #f2f2f2;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: #007aff;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: #005ecb;
+    }
+  </style>
+</head>
+
+<body>
+  <form class="form-container">
+    <h2>Create Account</h2>
+
+    <div class="input-group">
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" placeholder="Enter your name" required>
+    </div>
+
+    <div class="input-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+    </div>
+
+    <div class="input-group">
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" placeholder="Enter your phone number" required>
+    </div>
+
+    <div class="input-group" id="password-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required>
+      <div class="suggestion-box" id="suggestion-box"></div>
+    </div>
+
+    <button type="submit" class="submit-btn">Register</button>
+  </form>
+
+  <script>
+    const passwordInput = document.getElementById('password');
+    const suggestionBox = document.getElementById('suggestion-box');
+
+    function generateStrongPassword(length = 12) {
+      const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const lower = 'abcdefghijklmnopqrstuvwxyz';
+      const numbers = '0123456789';
+      const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+      const all = upper + lower + numbers + symbols;
+      let password = [
+        upper[Math.floor(Math.random() * upper.length)],
+        lower[Math.floor(Math.random() * lower.length)],
+        numbers[Math.floor(Math.random() * numbers.length)],
+        symbols[Math.floor(Math.random() * symbols.length)],
+      ];
+
+      for (let i = password.length; i < length; i++) {
+        password.push(all[Math.floor(Math.random() * all.length)]);
+      }
+
+      return password.sort(() => Math.random() - 0.5).join('');
+    }
+
+    passwordInput.addEventListener('focus', () => {
+      if (passwordInput.value.trim() === '') {
+        const newPassword = generateStrongPassword(12);
+        suggestionBox.textContent = `Suggested: ${newPassword}`;
+        suggestionBox.style.display = 'block';
+      } else {
+        suggestionBox.style.display = 'none';
+      }
+    });
+
+    suggestionBox.addEventListener('click', () => {
+      passwordInput.value = suggestionBox.textContent.replace('Suggested: ', '');
+      suggestionBox.style.display = 'none';
+    });
+
+    passwordInput.addEventListener('blur', () => {
+      setTimeout(() => {
+        suggestionBox.style.display = 'none';
+      }, 200);
+    });
+
+    passwordInput.addEventListener('input', () => {
+      if (passwordInput.value.trim() !== '') {
+        suggestionBox.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+
+</html>
