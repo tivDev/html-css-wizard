@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Image Modal Zoom & Drag with Reset</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .image-container {
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    #myImg {
+      max-width: 100%;
+      height: auto;
+      cursor: pointer;
+      border: 2px solid #555;
+      display: block;
+
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      padding-top: 60px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: rgb(0, 0, 0);
+      text-align: center;
+      /* center the modal content wrapper horizontally */
+    }
+
+    .modal-content-wrapper {
+      position: relative;
+      display: inline-block;
+      max-width: 90%;
+      max-height: 80vh;
+      overflow: hidden;
+      /* hide overflow so dragging doesn't show outside */
+      cursor: grab;
+      vertical-align: middle;
+    }
+
+    .modal-content-wrapper:active {
+      cursor: grabbing;
+    }
+
+    .modal-content {
+      display: block;
+      max-width: 100%;
+      max-height: 80vh;
+      transition: transform 0.1s ease;
+      position: relative;
+      z-index: 1;
+      user-select: none;
+      -webkit-user-drag: none;
+      margin: 0 auto;
+    }
+
+    .zoom-controls {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      padding: 8px 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .zoom-controls button {
+      background-color: #444;
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      user-select: none;
+      line-height: 40px;
+      text-align: center;
+      padding: 0;
+    }
+
+    .zoom-controls button:hover {
+      background-color: #666;
+    }
+
+    .close {
+      position: absolute;
+      top: 25px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      z-index: 20;
+    }
+
+    .close:hover {
+      color: #bbb;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-wrapper">
+    <div class="image-container">
+      <h2>Click on the image to open modal</h2>
+      <img id="myImg" src="https://picsum.photos/id/1015/500/300" alt="Nature Image" />
+
+    </div>
+
+    <div id="myModal" class="modal">
+      <span class="close" title="Close">&times;</span>
+      <div class="modal-content-wrapper" id="modalWrapper">
+        <img class="modal-content" id="modalImg" src="" alt="Zoomed Image" />
+        <div class="zoom-controls">
+          <button id="zoomIn" aria-label="Zoom In" title="Zoom In">+</button>
+          <button id="zoomOut" aria-label="Zoom Out" title="Zoom Out">−</button>
+          <button id="resetZoom" aria-label="Reset Zoom" title="Reset Zoom">⟳</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("myModal");
+    const img = document.getElementById("myImg");
+    const modalImg = document.getElementById("modalImg");
+    const closeBtn = document.querySelector(".close");
+    const zoomInBtn = document.getElementById("zoomIn");
+    const zoomOutBtn = document.getElementById("zoomOut");
+    const resetZoomBtn = document.getElementById("resetZoom");
+    const modalWrapper = document.getElementById("modalWrapper");
+
+    let scale = 1; // zoom scale
+    const scaleStep = 0.2;
+    const maxScale = 3;
+    const minScale = 0.5;
+
+    // position for drag (in pixels)
+    let posX = 0;
+    let posY = 0;
+
+    // store starting point of drag
+    let startX = 0;
+    let startY = 0;
+
+    // is dragging flag
+    let isDragging = false;
+
+    // Update image transform
+    function updateTransform() {
+      modalImg.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+    }
+
+    // Open modal
+    img.onclick = () => {
+      modal.style.display = "block";
+      modalImg.src = img.src;
+      scale = 1;
+      posX = 0;
+      posY = 0;
+      updateTransform();
+    };
+
+    // Close modal
+    closeBtn.onclick = () => {
+      modal.style.display = "none";
+    };
+
+    // Zoom In
+    zoomInBtn.onclick = () => {
+      if (scale < maxScale) {
+        scale += scaleStep;
+        updateTransform();
+      }
+    };
+
+    // Zoom Out
+    zoomOutBtn.onclick = () => {
+      if (scale > minScale) {
+        scale -= scaleStep;
+        // Reset position when zooming out fully to avoid image going out of view
+        if (scale === 1) {
+          posX = 0;
+          posY = 0;
+        }
+        updateTransform();
+      }
+    };
+
+    // Reset Zoom
+    resetZoomBtn.onclick = () => {
+      scale = 1;
+      posX = 0;
+      posY = 0;
+      updateTransform();
+    };
+
+    // Drag handlers
+    modalWrapper.addEventListener("mousedown", (e) => {
+      if (scale <= 1) return; // only drag if zoomed in
+      e.preventDefault();
+      isDragging = true;
+      startX = e.clientX - posX;
+      startY = e.clientY - posY;
+    });
+
+    window.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      posX = e.clientX - startX;
+      posY = e.clientY - startY;
+      updateTransform();
+    });
+
+    // Touch events for mobile dragging
+    modalWrapper.addEventListener("touchstart", (e) => {
+      if (scale <= 1) return;
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        isDragging = true;
+        startX = touch.clientX - posX;
+        startY = touch.clientY - posY;
+      }
+    });
+
+    window.addEventListener("touchend", () => {
+      isDragging = false;
+    });
+
+    window.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      if (e.touches.length !== 1) return;
+      const touch = e.touches[0];
+      posX = touch.clientX - startX;
+      posY = touch.clientY - startY;
+      updateTransform();
+    });
+
+    // Close modal when clicking outside the wrapper
+    modal.onclick = (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    };
+  </script>
+
+</body>
+
+</html>

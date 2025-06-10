@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Broken Image Handler</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #f9f9f9;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    img {
+      margin: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Broken Image Placeholder Example</h2>
+
+  <!-- Usage with different dimensions and text -->
+  <img src="not-found.jpg" onerror="handleBrokenImage(this, 300, 150, 'Not Found')" alt="Broken Image">
+  <img src="missing.jpg" onerror="handleBrokenImage(this, 200, 200, 'No Image')" alt="Broken Image">
+  <img src="invalid.jpg" onerror="handleBrokenImage(this)" alt="Broken Image">
+  <img src="invalid.jpg" onerror="handleBrokenImage(this, 100, 100)" alt="Broken Image">
+
+  <script>
+    function handleBrokenImage(img, w = 150, h = 150, text = '') {
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      const ctx = c.getContext('2d');
+
+      ctx.fillStyle = '#ccc';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.fillStyle = '#333';
+      ctx.font = `${Math.min(w, h) / 8}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      ctx.shadowBlur = 2;
+      ctx.shadowOffsetX = 1;
+      ctx.shadowOffsetY = 1;
+
+      ctx.fillText(text || `${w}x${h}`, w / 2, h / 2);
+
+      img.src = c.toDataURL();
+    }
+  </script>
+
+</body>
+</html>
