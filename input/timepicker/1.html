@@ -366,268 +366,265 @@
 
   <script>
 
-    const dateOnlyInput = document.getElementById('dateOnlyInput');
-    const dateTimeInput = document.getElementById('dateTimeInput');
-    const picker = document.getElementById('datetimePicker');
+    class DateTimePicker {
+      constructor(dateOnlyInput, dateTimeInput, picker) {
+        this.dateOnlyInput = dateOnlyInput;
+        this.dateTimeInput = dateTimeInput;
+        this.picker = picker;
 
-    // Month names and years data
-    const monthNames = [...Array(12).keys()].map(i =>
-      new Date(0, i).toLocaleString('default', { month: 'long' })
-    );
-    const currentYear = new Date().getFullYear();
-    const years = Array.from({ length: 101 }, (_, i) => currentYear - 50 + i);
+        this.monthNames = [...Array(12).keys()].map(i =>
+          new Date(0, i).toLocaleString('default', { month: 'long' })
+        );
+        const currentYear = new Date().getFullYear();
+        this.years = Array.from({ length: 101 }, (_, i) => currentYear - 50 + i);
 
-    let selectedDate = new Date();
-    let currentInput = null;
+        this.selectedDate = new Date();
+        this.currentInput = null;
 
-    // Initialize picker
-    function initPicker() {
-      // Event listeners for input fields
-      dateOnlyInput.addEventListener('click', () => {
-        currentInput = dateOnlyInput;
-        picker.classList.add('date-only');
-        showPicker();
-      });
+        this.initPicker();
+      }
 
-      dateTimeInput.addEventListener('click', () => {
-        currentInput = dateTimeInput;
-        picker.classList.remove('date-only');
-        showPicker();
-      });
+      initPicker() {
+        this.dateOnlyInput.addEventListener('click', () => {
+          this.currentInput = this.dateOnlyInput;
+          this.picker.classList.add('date-only');
+          this.showPicker();
+        });
 
-      // Picker controls
-      picker.querySelector('.prevMonthBtn').addEventListener('click', () => navigateMonth(-1));
-      picker.querySelector('.nextMonthBtn').addEventListener('click', () => navigateMonth(1));
-      picker.querySelector('.resetBtn').addEventListener('click', reset);
-      picker.querySelector('.nowBtn').addEventListener('click', setToNow);
-      picker.querySelector('.setBtn').addEventListener('click', setDateTime);
+        this.dateTimeInput.addEventListener('click', () => {
+          this.currentInput = this.dateTimeInput;
+          this.picker.classList.remove('date-only');
+          this.showPicker();
+        });
 
-      // Time controls
-      const hourRange = picker.querySelector('.hourRange');
-      const minuteRange = picker.querySelector('.minuteRange');
-      const hourValue = picker.querySelector('.hourValue');
-      const minuteValue = picker.querySelector('.minuteValue');
+        this.picker.querySelector('.prevMonthBtn').addEventListener('click', () => this.navigateMonth(-1));
+        this.picker.querySelector('.nextMonthBtn').addEventListener('click', () => this.navigateMonth(1));
+        this.picker.querySelector('.resetBtn').addEventListener('click', () => this.reset());
+        this.picker.querySelector('.nowBtn').addEventListener('click', () => this.setToNow());
+        this.picker.querySelector('.setBtn').addEventListener('click', () => this.setDateTime());
 
-      hourRange.addEventListener('input', () => {
-        hourValue.textContent = String(hourRange.value).padStart(2, '0');
-      });
+        const hourRange = this.picker.querySelector('.hourRange');
+        const minuteRange = this.picker.querySelector('.minuteRange');
+        const hourValue = this.picker.querySelector('.hourValue');
+        const minuteValue = this.picker.querySelector('.minuteValue');
 
-      minuteRange.addEventListener('input', () => {
-        minuteValue.textContent = String(minuteRange.value).padStart(2, '0');
-      });
+        hourRange.addEventListener('input', () => {
+          hourValue.textContent = String(hourRange.value).padStart(2, '0');
+        });
 
-      // Calendar day click
-      picker.querySelector('.calendar').addEventListener('click', (e) => {
-        if (e.target.classList.contains('day')) {
-          selectedDate.setDate(parseInt(e.target.dataset.day));
-          [...picker.querySelectorAll('.day')].forEach(d => d.classList.remove('selected'));
-          e.target.classList.add('selected');
+        minuteRange.addEventListener('input', () => {
+          minuteValue.textContent = String(minuteRange.value).padStart(2, '0');
+        });
+
+        this.picker.querySelector('.calendar').addEventListener('click', (e) => {
+          if (e.target.classList.contains('day')) {
+            this.selectedDate.setDate(parseInt(e.target.dataset.day));
+            [...this.picker.querySelectorAll('.day')].forEach(d => d.classList.remove('selected'));
+            e.target.classList.add('selected');
+          }
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!this.picker.contains(e.target)) {
+            if (e.target !== this.dateOnlyInput && e.target !== this.dateTimeInput) {
+              this.picker.style.display = 'none';
+            }
+          }
+        });
+
+        this.initAutocomplete();
+      }
+
+      showPicker() {
+        this.picker.style.display = 'block';
+        const rect = this.currentInput.getBoundingClientRect();
+        this.picker.style.top = `${rect.bottom + window.scrollY}px`;
+        this.picker.style.left = `${rect.left + window.scrollX}px`;
+
+        if (this.currentInput.value) {
+          const parsed = new Date(this.currentInput.value);
+          if (!isNaN(parsed)) this.selectedDate = parsed;
+        } else {
+          this.selectedDate = new Date();
         }
-      });
 
-      // Close picker when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!picker.contains(e.target)) {
-          const isInput = e.target === dateOnlyInput || e.target === dateTimeInput;
-          if (!isInput) picker.style.display = 'none';
+        this.generateCalendar();
+
+        if (!this.picker.classList.contains('date-only')) {
+          const hour = this.selectedDate.getHours();
+          this.picker.querySelector('.hourRange').value = hour === 0 ? 24 : hour;
+          this.picker.querySelector('.hourValue').textContent = String(hour === 0 ? 24 : hour).padStart(2, '0');
+
+          const roundedMinutes = Math.floor(this.selectedDate.getMinutes() / 5) * 5;
+          this.picker.querySelector('.minuteRange').value = roundedMinutes;
+          this.picker.querySelector('.minuteValue').textContent = String(roundedMinutes).padStart(2, '0');
         }
-      });
-
-      // Initialize autocomplete
-      initAutocomplete();
-    }
-
-    function showPicker() {
-      picker.style.display = 'block';
-      const rect = currentInput.getBoundingClientRect();
-      picker.style.top = `${rect.bottom + window.scrollY}px`;
-      picker.style.left = `${rect.left + window.scrollX}px`;
-
-      if (currentInput.value) {
-        const parsed = new Date(currentInput.value);
-        if (!isNaN(parsed)) selectedDate = parsed;
-      } else {
-        selectedDate = new Date();
       }
 
-      generateCalendar();
+      generateCalendar() {
+        const calendar = this.picker.querySelector('.calendar');
+        calendar.innerHTML = '';
+        const year = this.selectedDate.getFullYear();
+        const month = this.selectedDate.getMonth();
 
-      // Sync time controls if not date-only
-      if (!picker.classList.contains('date-only')) {
-        const hour = selectedDate.getHours();
-        picker.querySelector('.hourRange').value = hour === 0 ? 24 : hour;
-        picker.querySelector('.hourValue').textContent = String(hour === 0 ? 24 : hour).padStart(2, '0');
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        const roundedMinutes = Math.floor(selectedDate.getMinutes() / 5) * 5;
-        picker.querySelector('.minuteRange').value = roundedMinutes;
-        picker.querySelector('.minuteValue').textContent = String(roundedMinutes).padStart(2, '0');
-      }
-    }
+        const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+        weekdays.forEach(d => calendar.innerHTML += `<div class="header">${d}</div>`);
 
-    function generateCalendar() {
-      const calendar = picker.querySelector('.calendar');
-      calendar.innerHTML = '';
-      const year = selectedDate.getFullYear();
-      const month = selectedDate.getMonth();
+        for (let i = 0; i < firstDay; i++) {
+          calendar.innerHTML += `<div></div>`;
+        }
 
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const today = new Date();
+        const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
 
-      const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-      weekdays.forEach(d => calendar.innerHTML += `<div class="header">${d}</div>`);
-
-      for (let i = 0; i < firstDay; i++) {
-        calendar.innerHTML += `<div></div>`;
-      }
-
-      const today = new Date();
-      const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
-
-      for (let i = 1; i <= daysInMonth; i++) {
-        const isToday = isCurrentMonth && i === today.getDate();
-        const isSelected = i === selectedDate.getDate() &&
-          month === selectedDate.getMonth() &&
-          year === selectedDate.getFullYear();
-        calendar.innerHTML += `<div class="day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}" 
+        for (let i = 1; i <= daysInMonth; i++) {
+          const isToday = isCurrentMonth && i === today.getDate();
+          const isSelected = i === this.selectedDate.getDate();
+          calendar.innerHTML += `<div class="day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}" 
         data-day="${i}">${i}</div>`;
+        }
+
+        this.picker.querySelector('.monthInput').value = this.monthNames[month];
+        this.picker.querySelector('.yearInput').value = year;
       }
 
-      // Update month/year inputs
-      picker.querySelector('.monthInput').value = monthNames[month];
-      picker.querySelector('.yearInput').value = year;
-    }
-
-    function navigateMonth(offset) {
-      let m = selectedDate.getMonth() + offset;
-      if (m < 0) {
-        selectedDate.setFullYear(selectedDate.getFullYear() - 1);
-        m = 11;
-      } else if (m > 11) {
-        selectedDate.setFullYear(selectedDate.getFullYear() + 1);
-        m = 0;
+      navigateMonth(offset) {
+        let m = this.selectedDate.getMonth() + offset;
+        if (m < 0) {
+          this.selectedDate.setFullYear(this.selectedDate.getFullYear() - 1);
+          m = 11;
+        } else if (m > 11) {
+          this.selectedDate.setFullYear(this.selectedDate.getFullYear() + 1);
+          m = 0;
+        }
+        this.selectedDate.setMonth(m);
+        this.generateCalendar();
       }
-      selectedDate.setMonth(m);
-      generateCalendar();
-    }
 
-    function reset() {
-      currentInput.value = '';
-      selectedDate = new Date();
-      generateCalendar();
+      reset() {
+        this.currentInput.value = '';
+        this.selectedDate = new Date();
+        this.generateCalendar();
 
-      if (!picker.classList.contains('date-only')) {
-        const hour = selectedDate.getHours();
-        picker.querySelector('.hourRange').value = hour === 0 ? 24 : hour;
-        picker.querySelector('.hourValue').textContent = String(hour === 0 ? 24 : hour).padStart(2, '0');
+        if (!this.picker.classList.contains('date-only')) {
+          const hour = this.selectedDate.getHours();
+          this.picker.querySelector('.hourRange').value = hour === 0 ? 24 : hour;
+          this.picker.querySelector('.hourValue').textContent = String(hour === 0 ? 24 : hour).padStart(2, '0');
 
-        const roundedMinutes = Math.floor(selectedDate.getMinutes() / 5) * 5;
-        picker.querySelector('.minuteRange').value = roundedMinutes;
-        picker.querySelector('.minuteValue').textContent = String(roundedMinutes).padStart(2, '0');
+          const roundedMinutes = Math.floor(this.selectedDate.getMinutes() / 5) * 5;
+          this.picker.querySelector('.minuteRange').value = roundedMinutes;
+          this.picker.querySelector('.minuteValue').textContent = String(roundedMinutes).padStart(2, '0');
+        }
       }
-    }
 
-    function setToNow() {
-      const now = new Date();
-      selectedDate = new Date(now);
-      currentInput.value = formatDateTime(now);
+      setToNow() {
+        const now = new Date();
+        this.selectedDate = new Date(now);
+        this.currentInput.value = this.formatDateTime(now);
 
-      const hour = now.getHours();
-      picker.querySelector('.hourRange').value = hour === 0 ? 24 : hour;
-      picker.querySelector('.hourValue').textContent = String(hour === 0 ? 24 : hour).padStart(2, '0');
+        const hour = now.getHours();
+        this.picker.querySelector('.hourRange').value = hour === 0 ? 24 : hour;
+        this.picker.querySelector('.hourValue').textContent = String(hour === 0 ? 24 : hour).padStart(2, '0');
 
-      const roundedMinutes = Math.floor(now.getMinutes() / 5) * 5;
-      picker.querySelector('.minuteRange').value = roundedMinutes;
-      picker.querySelector('.minuteValue').textContent = String(roundedMinutes).padStart(2, '0');
+        const roundedMinutes = Math.floor(now.getMinutes() / 5) * 5;
+        this.picker.querySelector('.minuteRange').value = roundedMinutes;
+        this.picker.querySelector('.minuteValue').textContent = String(roundedMinutes).padStart(2, '0');
 
-      generateCalendar();
-      picker.style.display = 'none';
-    }
-
-    function setDateTime() {
-      if (!picker.classList.contains('date-only')) {
-        const hour = parseInt(picker.querySelector('.hourRange').value) % 24;
-        const minute = parseInt(picker.querySelector('.minuteRange').value);
-        selectedDate.setHours(hour);
-        selectedDate.setMinutes(minute);
-        currentInput.value = formatDateTime(selectedDate);
-      } else {
-        currentInput.value = formatDate(selectedDate);
+        this.generateCalendar();
+        this.picker.style.display = 'none';
       }
-      picker.style.display = 'none';
-    }
 
-    function formatDate(date) {
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric', month: 'short', day: 'numeric'
-      });
-    }
+      setDateTime() {
+        if (!this.picker.classList.contains('date-only')) {
+          const hour = parseInt(this.picker.querySelector('.hourRange').value) % 24;
+          const minute = parseInt(this.picker.querySelector('.minuteRange').value);
+          this.selectedDate.setHours(hour);
+          this.selectedDate.setMinutes(minute);
+          this.currentInput.value = this.formatDateTime(this.selectedDate);
+        } else {
+          this.currentInput.value = this.formatDate(this.selectedDate);
+        }
+        this.picker.style.display = 'none';
+      }
 
-    function formatDateTime(date) {
-      return date.toLocaleString('en-US', {
-        year: 'numeric', month: 'short', day: 'numeric',
-        hour: '2-digit', minute: '2-digit', hour12: false
-      }).replace(/\u202F/g, ' ');
-    }
-
-    function initAutocomplete() {
-      const monthInput = picker.querySelector('.monthInput');
-      const monthDropdown = picker.querySelector('.monthDropdown');
-      const yearInput = picker.querySelector('.yearInput');
-      const yearDropdown = picker.querySelector('.yearDropdown');
-
-      // Month autocomplete
-      monthInput.addEventListener('input', () => {
-        monthDropdown.innerHTML = '';
-        const filter = monthInput.value.toLowerCase();
-        monthNames.forEach((month, index) => {
-          if (month.toLowerCase().includes(filter)) {
-            const div = document.createElement('div');
-            div.textContent = month;
-            div.addEventListener('click', () => {
-              monthInput.value = month;
-              selectedDate.setMonth(index);
-              generateCalendar();
-              monthDropdown.style.display = 'none';
-            });
-            monthDropdown.appendChild(div);
-          }
+      formatDate(date) {
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric', month: 'short', day: 'numeric'
         });
-        monthDropdown.style.display = monthDropdown.children.length ? 'block' : 'none';
-      });
+      }
 
-      // Year autocomplete
-      yearInput.addEventListener('input', () => {
-        yearDropdown.innerHTML = '';
-        const filter = yearInput.value;
-        years.forEach(year => {
-          if (year.toString().includes(filter)) {
-            const div = document.createElement('div');
-            div.textContent = year;
-            div.addEventListener('click', () => {
-              yearInput.value = year;
-              selectedDate.setFullYear(year);
-              generateCalendar();
-              yearDropdown.style.display = 'none';
-            });
-            yearDropdown.appendChild(div);
-          }
-        });
-        yearDropdown.style.display = yearDropdown.children.length ? 'block' : 'none';
-      });
+      formatDateTime(date) {
+        return date.toLocaleString('en-US', {
+          year: 'numeric', month: 'short', day: 'numeric',
+          hour: '2-digit', minute: '2-digit', hour12: false
+        }).replace(/\u202F/g, ' ');
+      }
 
-      // Hide dropdowns when focus is lost
-      [monthInput, yearInput].forEach(input => {
-        input.addEventListener('blur', () => {
-          setTimeout(() => {
-            if (input === monthInput) monthDropdown.style.display = 'none';
-            else yearDropdown.style.display = 'none';
-          }, 200);
+      initAutocomplete() {
+        const monthInput = this.picker.querySelector('.monthInput');
+        const monthDropdown = this.picker.querySelector('.monthDropdown');
+        const yearInput = this.picker.querySelector('.yearInput');
+        const yearDropdown = this.picker.querySelector('.yearDropdown');
+
+        monthInput.addEventListener('input', () => {
+          monthDropdown.innerHTML = '';
+          const filter = monthInput.value.toLowerCase();
+          this.monthNames.forEach((month, index) => {
+            if (month.toLowerCase().includes(filter)) {
+              const div = document.createElement('div');
+              div.textContent = month;
+              div.addEventListener('click', () => {
+                monthInput.value = month;
+                this.selectedDate.setMonth(index);
+                this.generateCalendar();
+                monthDropdown.style.display = 'none';
+              });
+              monthDropdown.appendChild(div);
+            }
+          });
+          monthDropdown.style.display = monthDropdown.children.length ? 'block' : 'none';
         });
-      });
+
+        yearInput.addEventListener('input', () => {
+          yearDropdown.innerHTML = '';
+          const filter = yearInput.value;
+          this.years.forEach(year => {
+            if (year.toString().includes(filter)) {
+              const div = document.createElement('div');
+              div.textContent = year;
+              div.addEventListener('click', () => {
+                yearInput.value = year;
+                this.selectedDate.setFullYear(year);
+                this.generateCalendar();
+                yearDropdown.style.display = 'none';
+              });
+              yearDropdown.appendChild(div);
+            }
+          });
+          yearDropdown.style.display = yearDropdown.children.length ? 'block' : 'none';
+        });
+
+        [monthInput, yearInput].forEach(input => {
+          input.addEventListener('blur', () => {
+            setTimeout(() => {
+              if (input === monthInput) monthDropdown.style.display = 'none';
+              else yearDropdown.style.display = 'none';
+            }, 200);
+          });
+        });
+      }
     }
 
-    // Initialize the picker
-    initPicker();
+    // Usage:
+    const picker = new DateTimePicker(
+      document.getElementById('dateOnlyInput'),
+      document.getElementById('dateTimeInput'),
+      document.getElementById('datetimePicker')
+    );
+
   </script>
 
 </body>
