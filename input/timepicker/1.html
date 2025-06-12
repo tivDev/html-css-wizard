@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Custom DateTime Pickers</title>
   <!-- Font Awesome CDN (put this in your <head>) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -10,20 +11,35 @@
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      padding: 40px;
+      padding: 20px;
       background-color: #f7f7f7;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .input-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
     }
 
     .date-input {
       padding: 12px 15px;
       font-size: 16px;
-      width: 220px;
+      width: 100%;
       cursor: pointer;
       display: block;
       border: 1px solid #d1d1d6;
       background-color: white;
       color: #000;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      box-sizing: border-box;
     }
 
     .date-input:focus {
@@ -35,11 +51,12 @@
     .input-group {
       display: flex;
       align-items: center;
-      margin-bottom: 20px;
-      max-width: 300px;
+      flex: 1;
+      min-width: 250px;
       border: 1px solid #ccc;
       border-radius: 8px;
       overflow: hidden;
+      background: white;
     }
 
     .date-input {
@@ -74,8 +91,10 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
       user-select: none;
       width: 300px;
+      max-width: calc(100vw - 40px);
       border-radius: 12px;
       overflow: hidden;
+      box-sizing: border-box;
     }
 
     .calendar {
@@ -144,6 +163,7 @@
       background: #d1d1d6;
       border-radius: 2px;
       outline: none;
+      min-width: 0;
     }
 
     .time-control input[type="range"]::-webkit-slider-thumb {
@@ -161,6 +181,7 @@
       text-align: center;
       font-size: 15px;
       font-weight: 500;
+      flex-shrink: 0;
     }
 
     .datetime-picker button {
@@ -183,6 +204,7 @@
       padding: 4px 8px;
       border-radius: 6px;
       transition: background-color 0.2s ease;
+      flex-shrink: 0;
     }
 
     .prevMonthBtn:hover,
@@ -196,11 +218,14 @@
       align-items: center;
       margin-bottom: 15px;
       gap: 8px;
+      /* flex-wrap: wrap; */
     }
 
     .autocomplete-wrapper {
       position: relative;
       width: 100px;
+      flex-grow: 1;
+      min-width: 80px;
     }
 
     .autocomplete-wrapper input {
@@ -221,7 +246,7 @@
     }
 
     .autocomplete-dropdown {
-      width: 110px;
+      width: 100%;
       position: absolute;
       top: 100%;
       left: 0;
@@ -307,65 +332,144 @@
       background: white;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        padding: 10px;
+      }
+
+      .input-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .input-group {
+        min-width: 100%;
+      }
+
+      .datetime-picker {
+        width: calc(100vw - 20px);
+        left: 10px !important;
+        right: 10px !important;
+      }
+
+      .header-controls {
+        gap: 4px;
+      }
+
+      .autocomplete-wrapper {
+        min-width: 60px;
+      }
+
+      .calendar div {
+        padding: 6px 0;
+        font-size: 14px;
+      }
+
+      .time-control {
+        gap: 8px;
+      }
+
+      .time-control label {
+        width: 30px;
+        font-size: 13px;
+      }
+
+      .time-value {
+        width: 25px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .calendar div {
+        padding: 4px 0;
+        font-size: 13px;
+      }
+
+      .header-controls {
+        gap: 2px;
+      }
+
+      .prevMonthBtn,
+      .nextMonthBtn {
+        font-size: 20px !important;
+        padding: 2px 4px;
+      }
+
+      .autocomplete-wrapper input {
+        padding: 4px 6px;
+        font-size: 14px;
+      }
+
+      .datetime-picker {
+        padding: 10px;
+      }
+    }
   </style>
 </head>
 
 <body>
-
-
-  <!-- Input group with calendar icon -->
-  <div class="input-group" style="max-width: 300px;">
-    <input type="text" class="form-control date-input" id="dateOnlyInput" readonly placeholder="Select date" />
-    <span class="input-group-text">
-      <i class="fa-solid fa-calendar-days"></i>
-    </span>
-  </div>
-  <div class="input-group" style="max-width: 300px;">
-    <input type="text" class="date-input" id="dateTimeInput" readonly placeholder="Select date and time" />
-    <span class="input-group-text">
-      <i class="fa-solid fa-calendar-days"></i>
-    </span>
-  </div>
-
-
-  <div class="datetime-picker" id="datetimePicker">
-    <div class="header-controls">
-      <button class="prevMonthBtn">←</button>
-      <div class="autocomplete-wrapper">
-        <input type="text" class="monthInput" placeholder="Month">
-        <div class="autocomplete-dropdown monthDropdown"></div>
+  <div class="container">
+    <h1>DateTime Picker</h1>
+    
+    <div class="input-row">
+      <div class="input-group">
+        <input type="text" class="form-control date-input" id="dateOnlyInput" readonly placeholder="Select date" />
+        <span class="input-group-text">
+          <i class="fa-solid fa-calendar-days"></i>
+        </span>
       </div>
-      <div class="autocomplete-wrapper">
-        <input type="text" class="yearInput" placeholder="Year">
-        <div class="autocomplete-dropdown yearDropdown"></div>
-      </div>
-      <button class="nextMonthBtn">→</button>
-    </div>
-
-    <div class="calendar"></div>
-
-    <div class="time-section">
-      <div class="time-control">
-        <label for="">Hour:</label>
-        <input type="range" class="hourRange" min="1" max="24" step="1" value="12">
-        <span class="time-value hourValue">12</span>
-      </div>
-      <div class="time-control">
-        <label for="">Minute:</label>
-        <input type="range" class="minuteRange" min="0" max="59" step="1" value="0">
-        <span class="time-value minuteValue">00</span>
+      <div class="input-group">
+        <input type="text" class="date-input" id="dateTimeInput" readonly placeholder="Select date and time" />
+        <span class="input-group-text">
+          <i class="fa-solid fa-calendar-days"></i>
+        </span>
       </div>
     </div>
 
-    <div class="picker-footer">
-      <button class="nowBtn">Now</button>
-      <button class="resetBtn">Reset</button>
-      <button class="setBtn">Set</button>
+    <div class="datetime-picker" id="datetimePicker">
+      <div class="header-controls">
+        <button class="prevMonthBtn">←</button>
+        <div class="autocomplete-wrapper">
+          <input type="text" class="monthInput" placeholder="Month">
+          <div class="autocomplete-dropdown monthDropdown"></div>
+        </div>
+        <div class="autocomplete-wrapper">
+          <input type="text" class="yearInput" placeholder="Year">
+          <div class="autocomplete-dropdown yearDropdown"></div>
+        </div>
+        <button class="nextMonthBtn">→</button>
+      </div>
+
+      <div class="calendar"></div>
+
+      <div class="time-section">
+        <div class="time-control">
+          <label for="">Hour:</label>
+          <input type="range" class="hourRange" min="1" max="24" step="1" value="12">
+          <span class="time-value hourValue">12</span>
+        </div>
+        <div class="time-control">
+          <label for="">Minute:</label>
+          <input type="range" class="minuteRange" min="0" max="59" step="1" value="0">
+          <span class="time-value minuteValue">00</span>
+        </div>
+      </div>
+
+      <div class="picker-footer">
+        <button class="nowBtn">Now</button>
+        <button class="resetBtn">Reset</button>
+        <button class="setBtn">Set</button>
+      </div>
     </div>
   </div>
 
   <script>
-
     class DateTimePicker {
       constructor(dateOnlyInput, dateTimeInput, picker) {
         this.dateOnlyInput = dateOnlyInput;
@@ -433,13 +537,12 @@
         });
 
         this.initAutocomplete();
+        window.addEventListener('resize', this.positionPicker.bind(this));
       }
 
       showPicker() {
         this.picker.style.display = 'block';
-        const rect = this.currentInput.getBoundingClientRect();
-        this.picker.style.top = `${rect.bottom + window.scrollY}px`;
-        this.picker.style.left = `${rect.left + window.scrollX}px`;
+        this.positionPicker();
 
         if (this.currentInput.value) {
           const parsed = new Date(this.currentInput.value);
@@ -458,6 +561,26 @@
           const roundedMinutes = Math.floor(this.selectedDate.getMinutes() / 5) * 5;
           this.picker.querySelector('.minuteRange').value = roundedMinutes;
           this.picker.querySelector('.minuteValue').textContent = String(roundedMinutes).padStart(2, '0');
+        }
+      }
+
+      positionPicker() {
+        if (this.currentInput) {
+          const rect = this.currentInput.getBoundingClientRect();
+          const pickerWidth = this.picker.offsetWidth;
+          const viewportWidth = window.innerWidth;
+          
+          // Position below the input
+          this.picker.style.top = `${rect.bottom + window.scrollY}px`;
+          
+          // Adjust horizontal position to stay within viewport
+          let leftPos = rect.left + window.scrollX;
+          if (leftPos + pickerWidth > viewportWidth) {
+            leftPos = viewportWidth - pickerWidth - 10;
+          }
+          if (leftPos < 0) leftPos = 10;
+          
+          this.picker.style.left = `${leftPos}px`;
         }
       }
 
@@ -484,7 +607,7 @@
           const isToday = isCurrentMonth && i === today.getDate();
           const isSelected = i === this.selectedDate.getDate();
           calendar.innerHTML += `<div class="day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}" 
-        data-day="${i}">${i}</div>`;
+            data-day="${i}">${i}</div>`;
         }
 
         this.picker.querySelector('.monthInput').value = this.monthNames[month];
@@ -606,6 +729,11 @@
           });
           yearDropdown.style.display = yearDropdown.children.length ? 'block' : 'none';
         });
+        
+        // while window change size hide the picker
+        window.addEventListener('resize', () => {
+          this.picker.style.display = 'none';
+        });
 
         [monthInput, yearInput].forEach(input => {
           input.addEventListener('blur', () => {
@@ -624,9 +752,6 @@
       document.getElementById('dateTimeInput'),
       document.getElementById('datetimePicker')
     );
-
   </script>
-
 </body>
-
 </html>
