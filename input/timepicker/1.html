@@ -221,56 +221,48 @@
       /* flex-wrap: wrap; */
     }
 
-    .autocomplete-wrapper {
-      position: relative;
-      width: 100px;
-      flex-grow: 1;
-      min-width: 80px;
-    }
-
-    .autocomplete-wrapper input {
-      width: 100%;
+    .monthSelect,
+    .yearSelect {
       padding: 6px 10px;
       font-size: 15px;
       border: 1px solid #d1d1d6;
       border-radius: 8px;
-      box-sizing: border-box;
-      text-align: center;
-      font-weight: 500;
+      background: white;
       color: #000;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      flex-grow: 1;
+      min-width: 80px;
     }
 
-    .autocomplete-wrapper input:focus {
+    .monthSelect:focus,
+    .yearSelect:focus {
       outline: none;
       border-color: #007AFF;
     }
 
-    .autocomplete-dropdown {
-      width: 100%;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      border: 1px solid #d1d1d6;
-      border-top: none;
-      border-radius: 0 0 8px 8px;
-      max-height: 200px;
-      overflow-y: auto;
-      display: none;
-      z-index: 101;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    @media (max-width: 600px) {
+
+      .monthSelect,
+      .yearSelect {
+        min-width: 60px;
+        font-size: 14px;
+        padding: 4px 6px;
+      }
     }
 
-    .autocomplete-dropdown div {
-      padding: 8px 10px;
-      cursor: pointer;
-      font-size: 14px;
-      text-align: center;
-    }
+    @media (max-width: 400px) {
 
-    .autocomplete-dropdown div:hover {
-      background: #f2f2f7;
+      .monthSelect,
+      .yearSelect {
+        min-width: 50px;
+        font-size: 13px;
+        padding: 2px 4px;
+      }
     }
 
     .date-only .time-section {
@@ -435,14 +427,21 @@
     <div class="datetime-picker" id="datetimePicker">
       <div class="header-controls">
         <button class="prevMonthBtn">←</button>
-        <div class="autocomplete-wrapper">
-          <input type="text" class="monthInput" placeholder="Month">
-          <div class="autocomplete-dropdown monthDropdown"></div>
-        </div>
-        <div class="autocomplete-wrapper">
-          <input type="text" class="yearInput" placeholder="Year">
-          <div class="autocomplete-dropdown yearDropdown"></div>
-        </div>
+        <select class="monthSelect">
+          <option value="0">January</option>
+          <option value="1">February</option>
+          <option value="2">March</option>
+          <option value="3">April</option>
+          <option value="4">May</option>
+          <option value="5">June</option>
+          <option value="6">July</option>
+          <option value="7">August</option>
+          <option value="8">September</option>
+          <option value="9">October</option>
+          <option value="10">November</option>
+          <option value="11">December</option>
+        </select>
+        <select class="yearSelect"></select>
         <button class="nextMonthBtn">→</button>
       </div>
 
@@ -610,8 +609,9 @@
             data-day="${i}">${i}</div>`;
         }
 
-        this.picker.querySelector('.monthInput').value = this.monthNames[month];
-        this.picker.querySelector('.yearInput').value = year;
+        // Update select values
+        this.picker.querySelector('.monthSelect').value = month;
+        this.picker.querySelector('.yearSelect').value = year;
       }
 
       navigateMonth(offset) {
@@ -687,69 +687,33 @@
       }
 
       initAutocomplete() {
-        const monthInput = this.picker.querySelector('.monthInput');
-        const monthDropdown = this.picker.querySelector('.monthDropdown');
-        const yearInput = this.picker.querySelector('.yearInput');
-        const yearDropdown = this.picker.querySelector('.yearDropdown');
+        const monthSelect = this.picker.querySelector('.monthSelect');
+        const yearSelect = this.picker.querySelector('.yearSelect');
 
-        monthInput.addEventListener('input', () => {
-          monthDropdown.innerHTML = '';
-          const filter = monthInput.value.toLowerCase();
-          this.monthNames.forEach((month, index) => {
-            if (month.toLowerCase().includes(filter)) {
-              const div = document.createElement('div');
-              div.textContent = month;
-              div.addEventListener('click', () => {
-                monthInput.value = month;
-                this.selectedDate.setMonth(index);
-                this.generateCalendar();
-                monthDropdown.style.display = 'none';
-              });
-              monthDropdown.appendChild(div);
-            }
-          });
-          monthDropdown.style.display = monthDropdown.children.length ? 'block' : 'none';
+        // Populate years
+        yearSelect.innerHTML = '';
+        this.years.forEach(year => {
+          const option = document.createElement('option');
+          option.value = year;
+          option.textContent = year;
+          yearSelect.appendChild(option);
         });
 
-        yearInput.addEventListener('input', () => {
-          yearDropdown.innerHTML = '';
-          const filter = yearInput.value;
-          this.years.forEach(year => {
-            if (year.toString().includes(filter)) {
-              const div = document.createElement('div');
-              div.textContent = year;
-              div.addEventListener('click', () => {
-                yearInput.value = year;
-                this.selectedDate.setFullYear(year);
-                this.generateCalendar();
-                yearDropdown.style.display = 'none';
-              });
-              yearDropdown.appendChild(div);
-            }
-          });
-          yearDropdown.style.display = yearDropdown.children.length ? 'block' : 'none';
+        // Set up event listeners
+        monthSelect.addEventListener('change', () => {
+          this.selectedDate.setMonth(parseInt(monthSelect.value));
+          this.generateCalendar();
+        });
+
+        yearSelect.addEventListener('change', () => {
+          this.selectedDate.setFullYear(parseInt(yearSelect.value));
+          this.generateCalendar();
         });
 
         // while window change size hide the picker
         window.addEventListener('resize', () => {
           this.picker.style.display = 'none';
         });
-
-        [monthInput, yearInput].forEach(input => {
-          input.addEventListener('blur', (e) => {
-            // Check if the new focused element is inside the dropdown
-            const dropdown = input === monthInput ? monthDropdown : yearDropdown;
-            if (!dropdown.contains(e.relatedTarget)) {
-              setTimeout(() => {
-                dropdown.style.display = 'none';
-              }, 200);
-            }
-          });
-        });
-
-        // Add this inside the dropdown item click handlers
-        monthDropdown.addEventListener('click', (e) => e.stopPropagation());
-        yearDropdown.addEventListener('click', (e) => e.stopPropagation());
       }
     }
 
@@ -763,4 +727,3 @@
 </body>
 
 </html>
-
