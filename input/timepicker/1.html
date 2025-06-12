@@ -416,7 +416,7 @@
 <body>
   <div class="container">
     <h1>DateTime Picker</h1>
-    
+
     <div class="input-row">
       <div class="input-group">
         <input type="text" class="form-control date-input" id="dateOnlyInput" readonly placeholder="Select date" />
@@ -569,17 +569,17 @@
           const rect = this.currentInput.getBoundingClientRect();
           const pickerWidth = this.picker.offsetWidth;
           const viewportWidth = window.innerWidth;
-          
+
           // Position below the input
           this.picker.style.top = `${rect.bottom + window.scrollY}px`;
-          
+
           // Adjust horizontal position to stay within viewport
           let leftPos = rect.left + window.scrollX;
           if (leftPos + pickerWidth > viewportWidth) {
             leftPos = viewportWidth - pickerWidth - 10;
           }
           if (leftPos < 0) leftPos = 10;
-          
+
           this.picker.style.left = `${leftPos}px`;
         }
       }
@@ -729,20 +729,27 @@
           });
           yearDropdown.style.display = yearDropdown.children.length ? 'block' : 'none';
         });
-        
+
         // while window change size hide the picker
         window.addEventListener('resize', () => {
           this.picker.style.display = 'none';
         });
 
         [monthInput, yearInput].forEach(input => {
-          input.addEventListener('blur', () => {
-            setTimeout(() => {
-              if (input === monthInput) monthDropdown.style.display = 'none';
-              else yearDropdown.style.display = 'none';
-            }, 200);
+          input.addEventListener('blur', (e) => {
+            // Check if the new focused element is inside the dropdown
+            const dropdown = input === monthInput ? monthDropdown : yearDropdown;
+            if (!dropdown.contains(e.relatedTarget)) {
+              setTimeout(() => {
+                dropdown.style.display = 'none';
+              }, 200);
+            }
           });
         });
+
+        // Add this inside the dropdown item click handlers
+        monthDropdown.addEventListener('click', (e) => e.stopPropagation());
+        yearDropdown.addEventListener('click', (e) => e.stopPropagation());
       }
     }
 
@@ -754,4 +761,6 @@
     );
   </script>
 </body>
+
 </html>
+
