@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Facebook Post Style with Scrollable Image Cards</title>
+  <title>Facebook Post Style with Reactions</title>
   <style>
     :root {
       --primary-text: #050505;
@@ -14,6 +14,12 @@
       --body-bg: #f0f2f5;
       --hover-bg: #f2f2f2;
       --overlay-bg: rgba(0, 0, 0, 0.6);
+      --blue: #1877f2;
+      --red: #f3425f;
+      --yellow: #f7b928;
+      --green: #45bd62;
+      --purple: #9360f7;
+      --teal: #6bcceb;
     }
 
     * {
@@ -147,6 +153,7 @@
       padding-top: 8px;
       display: flex;
       justify-content: space-around;
+      position: relative;
     }
 
     .footer-btn {
@@ -161,11 +168,88 @@
       border-radius: 4px;
       flex: 1;
       transition: background-color 0.2s ease;
+      position: relative;
     }
 
     .footer-btn:hover {
       background-color: var(--hover-bg);
     }
+
+    .reaction-btn {
+      position: relative;
+    }
+
+    .reaction-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      background: var(--card-bg);
+      padding: 8px;
+      border-radius: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 4px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .reaction-btn:hover .reaction-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .reaction-emoji {
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .reaction-emoji:hover {
+      transform: scale(1.2) translateY(-5px);
+    }
+
+    .reaction-count {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      background: var(--card-bg);
+      padding: 4px 8px;
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+      white-space: nowrap;
+      display: none;
+    }
+
+    .reaction-count.show {
+      display: block;
+    }
+
+    .reaction-emoji.like { color: var(--blue); }
+    .reaction-emoji.love { color: var(--red); }
+    .reaction-emoji.care { color: var(--yellow); }
+    .reaction-emoji.haha { color: var(--yellow); }
+    .reaction-emoji.wow { color: var(--yellow); }
+    .reaction-emoji.sad { color: var(--yellow); }
+    .reaction-emoji.angry { color: var(--purple); }
+
+    .active-reaction {
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    .active-reaction.like { color: var(--blue); }
+    .active-reaction.love { color: var(--red); }
+    .active-reaction.care { color: var(--yellow); }
+    .active-reaction.haha { color: var(--yellow); }
+    .active-reaction.wow { color: var(--yellow); }
+    .active-reaction.sad { color: var(--yellow); }
+    .active-reaction.angry { color: var(--purple); }
 
     /* Modal styles */
     .modal {
@@ -299,13 +383,18 @@
       </div>
       <div class="images-grid" id="imageContainer"></div>
       <div class="card-footer">
-        <div class="footer-btn">
-          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
-            <path
-              d="M16,9.1c0-0.8-0.7-1.5-1.5-1.5H13V4.8c0-1.4-1.1-2.5-2.5-2.5H1.5C0.7,2.3,0,3,0,3.8v9.3c0,0.8,0.7,1.5,1.5,1.5h3.7l3.1,2.7c0.3,0.3,0.8,0.3,1.1,0l3.1-2.7h3.7c0.8,0,1.5-0.7,1.5-1.5V9.1z M4.5,7.6H3v5.5h1.5V7.6z M8.5,7.6H7v5.5h1.5V7.6z">
-            </path>
-          </svg>
-          Like
+        <div class="footer-btn reaction-btn" id="postLikeBtn">
+          <div class="reaction-tooltip">
+            <div class="reaction-emoji like" data-reaction="like">👍</div>
+            <div class="reaction-emoji love" data-reaction="love">❤️</div>
+            <div class="reaction-emoji care" data-reaction="care">🥰</div>
+            <div class="reaction-emoji haha" data-reaction="haha">😆</div>
+            <div class="reaction-emoji wow" data-reaction="wow">😯</div>
+            <div class="reaction-emoji sad" data-reaction="sad">😢</div>
+            <div class="reaction-emoji angry" data-reaction="angry">😡</div>
+          </div>
+          <span id="postLikeText">Like</span>
+          <div class="reaction-count" id="postReactionCount"></div>
         </div>
         <div class="footer-btn">
           <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
@@ -340,55 +429,123 @@
   </div>
 
   <script>
-    const images = [
-      "https://placehold.co/600x400?text=1",
-      "https://placehold.co/600x400?text=2",
-      "https://placehold.co/600x400?text=3",
-      "https://placehold.co/600x400?text=4",
-      "https://placehold.co/600x400?text=5",
-      "https://placehold.co/600x400?text=6"
-    ];
+    // Data setup
+    const postData = {
+      user: {
+        name: "Tiv Nguot",
+        avatar: "https://placehold.co/40x40"
+      },
+      content: "This is from my last weekend adventure! 📸🌴",
+      timestamp: "Just now",
+      images: [
+        { id: 1, url: "https://placehold.co/600x400?text=1", reactions: [] },
+        { id: 2, url: "https://placehold.co/600x400?text=2", reactions: [] },
+        { id: 3, url: "https://placehold.co/600x400?text=3", reactions: [] },
+        { id: 4, url: "https://placehold.co/600x400?text=4", reactions: [] },
+        { id: 5, url: "https://placehold.co/600x400?text=5", reactions: [] },
+        { id: 6, url: "https://placehold.co/600x400?text=6", reactions: [] }
+      ],
+      reactions: [],
+      comments: [],
+      shares: 0
+    };
 
     const maxVisible = 4;
     const imageContainer = document.getElementById("imageContainer");
     const imageModal = document.getElementById("imageModal");
     const modalContent = document.getElementById("modalContent");
     const closeBtn = document.getElementById("closeBtn");
+    const postLikeBtn = document.getElementById("postLikeBtn");
+    const postLikeText = document.getElementById("postLikeText");
+    const postReactionCount = document.getElementById("postReactionCount");
 
-    function openSingleImage(src) {
+    // Current user reaction state
+    let currentUserPostReaction = null;
+    let currentUserImageReactions = {};
+
+    // Reaction emoji map
+    const reactionEmojiMap = {
+      like: "👍",
+      love: "❤️",
+      care: "🥰",
+      haha: "😆",
+      wow: "😯",
+      sad: "😢",
+      angry: "😡"
+    };
+
+    // Reaction text map
+    const reactionTextMap = {
+      like: "Like",
+      love: "Love",
+      care: "Care",
+      haha: "Haha",
+      wow: "Wow",
+      sad: "Sad",
+      angry: "Angry"
+    };
+
+    // Open single image modal
+    function openSingleImage(imageId) {
+      const image = postData.images.find(img => img.id === imageId);
+      if (!image) return;
+      
       imageModal.className = "modal single active";
-      modalContent.innerHTML = `<img src="${src}" alt="Image">`;
+      modalContent.innerHTML = `
+        <img src="${image.url}" alt="Image">
+      `;
     }
 
-    function openAllImages(images) {
+    // Open all images modal
+    function openAllImages() {
       imageModal.className = "modal multi active";
 
       modalContent.innerHTML = `
         <div class="modal-header">
-          <img class="avatar" src="https://placehold.co/40x40" alt="Profile">
+          <img class="avatar" src="${postData.user.avatar}" alt="Profile">
           <div class="user-info">
-            <div class="user-name">Tiv Nguot</div>
-            <div class="post-meta">Just now · 🌍</div>
+            <div class="user-name">${postData.user.name}</div>
+            <div class="post-meta">${postData.timestamp} · 🌍</div>
           </div>
         </div>
         <div class="modal-scroll">
           <div class="card" style="margin-bottom: 0; border-radius: 0; border-top: none;">
             <div class="post-content">
-              <p class="post-desc">This is from my last weekend adventure! 📸🌴</p>
+              <p class="post-desc">${postData.content}</p>
             </div>
-                          <div class="card-footer">
-                <div class="footer-btn">👍 Like</div>
-                <div class="footer-btn">💬 Comment</div>
-                <div class="footer-btn">↪️ Share</div>
+            <div class="card-footer">
+              <div class="footer-btn reaction-btn" data-image-id="all">
+                <div class="reaction-tooltip">
+                  ${Object.entries(reactionEmojiMap).map(([type, emoji]) => 
+                    `<div class="reaction-emoji ${type}" data-reaction="${type}">${emoji}</div>`
+                  ).join('')}
+                </div>
+                <span>${getReactionText(postData.reactions)}</span>
+                ${postData.reactions.length > 0 ? 
+                  `<div class="reaction-count show">${getReactionCountText(postData.reactions)}</div>` : 
+                  '<div class="reaction-count"></div>'}
               </div>
+              <div class="footer-btn">💬 Comment</div>
+              <div class="footer-btn">↪️ Share</div>
+            </div>
           </div>
-          ${images.map((src, index) => `
+          ${postData.images.map(image => `
             <div class="card" style="margin-bottom: 0; border-radius: 0; border-top: 1px solid var(--divider);">
               <div class="image-card">
-                <img src="${src}" alt="Image ${index + 1}">
+                <img src="${image.url}" alt="Image ${image.id}">
               </div>
               <div class="card-footer">
-                <div class="footer-btn">👍 Like</div>
+                <div class="footer-btn reaction-btn" data-image-id="${image.id}">
+                  <div class="reaction-tooltip">
+                    ${Object.entries(reactionEmojiMap).map(([type, emoji]) => 
+                      `<div class="reaction-emoji ${type}" data-reaction="${type}">${emoji}</div>`
+                    ).join('')}
+                  </div>
+                  <span>${getReactionText(image.reactions)}</span>
+                  ${image.reactions.length > 0 ? 
+                    `<div class="reaction-count show">${getReactionCountText(image.reactions)}</div>` : 
+                    '<div class="reaction-count"></div>'}
+                </div>
                 <div class="footer-btn">💬 Comment</div>
                 <div class="footer-btn">↪️ Share</div>
               </div>
@@ -396,6 +553,142 @@
           `).join('')}
         </div>
       `;
+
+      // Add event listeners to modal reaction buttons
+      document.querySelectorAll('.modal .reaction-btn').forEach(btn => {
+        const imageId = btn.dataset.imageId;
+        
+        btn.addEventListener('mouseenter', () => {
+          const tooltip = btn.querySelector('.reaction-tooltip');
+          tooltip.style.opacity = '1';
+          tooltip.style.visibility = 'visible';
+          tooltip.style.transform = 'translateX(-50%) translateY(0)';
+        });
+        
+        btn.addEventListener('mouseleave', () => {
+          const tooltip = btn.querySelector('.reaction-tooltip');
+          tooltip.style.opacity = '0';
+          tooltip.style.visibility = 'hidden';
+          tooltip.style.transform = 'translateX(-50%) translateY(-10px)';
+        });
+        
+        btn.querySelectorAll('.reaction-emoji').forEach(emoji => {
+          emoji.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const reactionType = emoji.dataset.reaction;
+            handleReactionClick(imageId, reactionType, btn);
+          });
+        });
+      });
+    }
+
+    // Get reaction text for button
+    function getReactionText(reactions) {
+      if (reactions.length === 0) return "Like";
+      const uniqueReactions = [...new Set(reactions)];
+      if (uniqueReactions.length === 1) {
+        return reactionTextMap[uniqueReactions[0]];
+      }
+      return "React";
+    }
+
+    // Get reaction count text
+    function getReactionCountText(reactions) {
+      if (reactions.length === 0) return "";
+      const reactionCounts = {};
+      reactions.forEach(r => {
+        reactionCounts[r] = (reactionCounts[r] || 0) + 1;
+      });
+      
+      return Object.entries(reactionCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([type, count]) => `${reactionEmojiMap[type]} ${count}`)
+        .join(' ');
+    }
+
+    // Handle reaction click
+    function handleReactionClick(targetId, reactionType, buttonElement) {
+      let targetReactions;
+      
+      if (targetId === "all") {
+        // Post reaction
+        targetReactions = postData.reactions;
+        
+        // Remove previous reaction if exists
+        if (currentUserPostReaction) {
+          const index = targetReactions.indexOf(currentUserPostReaction);
+          if (index > -1) {
+            targetReactions.splice(index, 1);
+          }
+        }
+        
+        // Add new reaction if different
+        if (!currentUserPostReaction || currentUserPostReaction !== reactionType) {
+          targetReactions.push(reactionType);
+          currentUserPostReaction = reactionType;
+        } else {
+          currentUserPostReaction = null;
+        }
+        
+        // Update post reaction button
+        updateReactionButton(buttonElement, targetReactions);
+        
+        // Also update the main post button if this is the modal
+        if (buttonElement.closest('.modal')) {
+          updateReactionButton(postLikeBtn, targetReactions);
+        }
+      } else {
+        // Image reaction
+        const image = postData.images.find(img => img.id === parseInt(targetId));
+        if (!image) return;
+        
+        targetReactions = image.reactions;
+        const currentReaction = currentUserImageReactions[targetId];
+        
+        // Remove previous reaction if exists
+        if (currentReaction) {
+          const index = targetReactions.indexOf(currentReaction);
+          if (index > -1) {
+            targetReactions.splice(index, 1);
+          }
+        }
+        
+        // Add new reaction if different
+        if (!currentReaction || currentReaction !== reactionType) {
+          targetReactions.push(reactionType);
+          currentUserImageReactions[targetId] = reactionType;
+        } else {
+          delete currentUserImageReactions[targetId];
+        }
+        
+        // Update image reaction button
+        updateReactionButton(buttonElement, targetReactions);
+      }
+    }
+
+    // Update reaction button appearance
+    function updateReactionButton(button, reactions) {
+      const textSpan = button.querySelector('span');
+      const countElement = button.querySelector('.reaction-count');
+      
+      if (reactions.length === 0) {
+        textSpan.textContent = "Like";
+        textSpan.className = "";
+        countElement.className = "reaction-count";
+        countElement.textContent = "";
+      } else {
+        const uniqueReactions = [...new Set(reactions)];
+        if (uniqueReactions.length === 1) {
+          textSpan.textContent = reactionTextMap[uniqueReactions[0]];
+          textSpan.className = `active-reaction ${uniqueReactions[0]}`;
+        } else {
+          textSpan.textContent = "React";
+          textSpan.className = "";
+        }
+        
+        countElement.className = "reaction-count show";
+        countElement.textContent = getReactionCountText(reactions);
+      }
     }
 
     // Close modal
@@ -405,26 +698,53 @@
     };
 
     // Render image cards
-    images.slice(0, maxVisible).forEach((src, i) => {
+    postData.images.slice(0, maxVisible).forEach((image, i) => {
       const card = document.createElement("div");
       card.className = "image-card";
 
       const img = document.createElement("img");
-      img.src = src;
+      img.src = image.url;
       img.loading = "lazy";
-      img.alt = `Image ${i + 1}`;
+      img.alt = `Image ${image.id}`;
 
-      if (i === maxVisible - 1 && images.length > maxVisible) {
+      if (i === maxVisible - 1 && postData.images.length > maxVisible) {
         card.classList.add("overlay");
-        card.setAttribute("data-count", images.length - maxVisible);
-        card.addEventListener("click", () => openAllImages(images));
+        card.setAttribute("data-count", postData.images.length - maxVisible);
+        card.addEventListener("click", () => openAllImages());
       } else {
-        card.addEventListener("click", () => openSingleImage(src));
+        card.addEventListener("click", () => openSingleImage(image.id));
       }
 
       card.appendChild(img);
       imageContainer.appendChild(card);
     });
+
+    // Post reaction button hover effect
+    postLikeBtn.addEventListener('mouseenter', () => {
+      const tooltip = postLikeBtn.querySelector('.reaction-tooltip');
+      tooltip.style.opacity = '1';
+      tooltip.style.visibility = 'visible';
+      tooltip.style.transform = 'translateX(-50%) translateY(0)';
+    });
+    
+    postLikeBtn.addEventListener('mouseleave', () => {
+      const tooltip = postLikeBtn.querySelector('.reaction-tooltip');
+      tooltip.style.opacity = '0';
+      tooltip.style.visibility = 'hidden';
+      tooltip.style.transform = 'translateX(-50%) translateY(-10px)';
+    });
+
+    // Post reaction emoji clicks
+    postLikeBtn.querySelectorAll('.reaction-emoji').forEach(emoji => {
+      emoji.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const reactionType = emoji.dataset.reaction;
+        handleReactionClick("all", reactionType, postLikeBtn);
+      });
+    });
+
+    // Initial update of post reaction button
+    updateReactionButton(postLikeBtn, postData.reactions);
   </script>
 
 </body>
