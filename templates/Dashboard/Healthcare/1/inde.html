@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCare Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #50c9ba;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --success-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --sidebar-width: 250px;
+            --header-height: 70px;
+            --card-radius: 10px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--dark-color);
+            color: white;
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h3 {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--light-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-menu span {
+            font-size: 0.9rem;
+        }
+
+        .sidebar-collapse-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: var(--transition);
+        }
+
+        /* Header Styles */
+        .header {
+            /* width: 100%; */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: var(--header-height);
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .search-bar input {
+            padding: 8px 15px 8px 35px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            width: 200px;
+            transition: var(--transition);
+        }
+
+        .search-bar input:focus {
+            width: 250px;
+            border-color: var(--primary-color);
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .user-profile img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .notification-icon {
+            position: relative;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        /* Content Area Styles */
+        .content-wrapper {
+            padding: 20px;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title h2 {
+            font-size: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            color: #777;
+        }
+
+        .card-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .card-icon.patients {
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .card-icon.appointments {
+            background: rgba(80, 201, 186, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .card-icon.prescriptions {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning-color);
+        }
+
+        .card-icon.revenue {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--success-color);
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .card-footer i {
+            margin-right: 5px;
+        }
+
+        .positive {
+            color: var(--success-color);
+        }
+
+        .negative {
+            color: var(--danger-color);
+        }
+
+        /* Charts Section */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .chart-actions select {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* Recent Activity */
+        .activity-card {
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+
+        .activity-header {
+            margin-bottom: 20px;
+        }
+
+        .activity-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.appointment {
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .activity-icon.prescription {
+            background: rgba(80, 201, 186, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .activity-icon.payment {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--success-color);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-content h4 {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .activity-content p {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .activity-time {
+            font-size: 0.7rem;
+            color: #aaa;
+            text-align: right;
+        }
+
+        /* Recent Patients Table */
+        .patients-card {
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+
+        .patients-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .patients-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .view-all {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .patients-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .patients-table th {
+            text-align: left;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.8rem;
+            color: #777;
+            font-weight: normal;
+        }
+
+        .patients-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .patient-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .patient-info img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .patient-name {
+            font-weight: 500;
+        }
+
+        .patient-id {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status.active {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--success-color);
+        }
+
+        .status.pending {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status.inactive {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger-color);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 1000;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 10px;
+            }
+
+            .search-bar input {
+                width: 150px;
+            }
+
+            .search-bar input:focus {
+                width: 180px;
+            }
+
+            .user-profile span {
+                display: none;
+            }
+
+            .content-wrapper {
+                padding: 15px;
+            }
+
+            .card-container {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                display: none;
+            }
+
+            .notification-icon {
+                margin-right: 5px;
+            }
+        }
+
+        /* Menu Toggle Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        /* Overlay for sidebar on mobile */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>HealthCare</h3>
+                <button class="sidebar-collapse-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="sidebar-menu">
+                <ul id="menuItems">
+                    <!-- Menu items will be rendered from JS -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count" id="notificationCount">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User">
+                        <span>Dr. Sarah Smith</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Wrapper -->
+            <div class="content-wrapper">
+                <div class="page-title">
+                    <h2>Dashboard Overview</h2>
+                    <div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Patient
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="card-container" id="statsCards">
+                    <!-- Cards will be rendered from JS -->
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Patient Admissions</h3>
+                            <div class="chart-actions">
+                                <select id="chartTimeRange">
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                    <option value="year">This Year</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="admissionsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Appointment Types</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="appointmentTypesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity and Patients Table -->
+                <div class="charts-container">
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <h3 class="activity-title">Recent Activity</h3>
+                        </div>
+                        <ul class="activity-list" id="recentActivities">
+                            <!-- Activities will be rendered from JS -->
+                        </ul>
+                    </div>
+                    <div class="patients-card">
+                        <div class="patients-header">
+                            <h3 class="patients-title">Recent Patients</h3>
+                            <span class="view-all">View All</span>
+                        </div>
+                        <table class="patients-table" id="patientsTable">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Last Visit</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patientsTableBody">
+                                <!-- Patients will be rendered from JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overlay for sidebar on mobile -->
+        <div class="overlay"></div>
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Data for the dashboard (would typically come from API in real app)
+        const dashboardData = {
+            stats: [
+                {
+                    id: 1,
+                    title: "Total Patients",
+                    value: "1,245",
+                    icon: "fas fa-user-injured",
+                    change: "+12%",
+                    isPositive: true,
+                    colorClass: "patients"
+                },
+                {
+                    id: 2,
+                    title: "Today's Appointments",
+                    value: "32",
+                    icon: "fas fa-calendar-check",
+                    change: "+5%",
+                    isPositive: true,
+                    colorClass: "appointments"
+                },
+                {
+                    id: 3,
+                    title: "Prescriptions",
+                    value: "48",
+                    icon: "fas fa-prescription-bottle-alt",
+                    change: "-3%",
+                    isPositive: false,
+                    colorClass: "prescriptions"
+                },
+                {
+                    id: 4,
+                    title: "Monthly Revenue",
+                    value: "$24,560",
+                    icon: "fas fa-dollar-sign",
+                    change: "+18%",
+                    isPositive: true,
+                    colorClass: "revenue"
+                }
+            ],
+            menuItems: [
+                {
+                    id: 1,
+                    title: "Dashboard",
+                    icon: "fas fa-tachometer-alt",
+                    active: true
+                },
+                {
+                    id: 2,
+                    title: "Patients",
+                    icon: "fas fa-user-injured"
+                },
+                {
+                    id: 3,
+                    title: "Appointments",
+                    icon: "fas fa-calendar-check"
+                },
+                {
+                    id: 4,
+                    title: "Prescriptions",
+                    icon: "fas fa-prescription-bottle-alt"
+                },
+                {
+                    id: 5,
+                    title: "Billing",
+                    icon: "fas fa-file-invoice-dollar"
+                },
+                {
+                    id: 6,
+                    title: "Staff",
+                    icon: "fas fa-users"
+                },
+                {
+                    id: 7,
+                    title: "Settings",
+                    icon: "fas fa-cog"
+                }
+            ],
+            recentActivities: [
+                {
+                    id: 1,
+                    type: "appointment",
+                    title: "New appointment booked",
+                    description: "John Doe booked a checkup for tomorrow",
+                    time: "10 mins ago",
+                    icon: "fas fa-calendar-check"
+                },
+                {
+                    id: 2,
+                    type: "prescription",
+                    title: "Prescription issued",
+                    description: "Dr. Smith issued a prescription for Jane Smith",
+                    time: "45 mins ago",
+                    icon: "fas fa-prescription-bottle-alt"
+                },
+                {
+                    id: 3,
+                    type: "payment",
+                    title: "Payment received",
+                    description: "Payment of $120 received from Robert Johnson",
+                    time: "2 hours ago",
+                    icon: "fas fa-dollar-sign"
+                },
+                {
+                    id: 4,
+                    type: "appointment",
+                    title: "Appointment rescheduled",
+                    description: "Emily Davis rescheduled her appointment",
+                    time: "5 hours ago",
+                    icon: "fas fa-calendar-check"
+                }
+            ],
+            recentPatients: [
+                {
+                    id: "P1001",
+                    name: "John Doe",
+                    image: "https://randomuser.me/api/portraits/men/32.jpg",
+                    lastVisit: "Today, 10:30 AM",
+                    status: "active"
+                },
+                {
+                    id: "P1002",
+                    name: "Jane Smith",
+                    image: "https://randomuser.me/api/portraits/women/44.jpg",
+                    lastVisit: "Yesterday, 2:15 PM",
+                    status: "active"
+                },
+                {
+                    id: "P1003",
+                    name: "Robert Johnson",
+                    image: "https://randomuser.me/api/portraits/men/67.jpg",
+                    lastVisit: "2 days ago",
+                    status: "pending"
+                },
+                {
+                    id: "P1004",
+                    name: "Emily Davis",
+                    image: "https://randomuser.me/api/portraits/women/63.jpg",
+                    lastVisit: "1 week ago",
+                    status: "inactive"
+                },
+                {
+                    id: "P1005",
+                    name: "Michael Wilson",
+                    image: "https://randomuser.me/api/portraits/men/52.jpg",
+                    lastVisit: "2 weeks ago",
+                    status: "active"
+                }
+            ],
+            admissionsData: {
+                week: [15, 22, 18, 25, 20, 30, 28],
+                month: [45, 60, 55, 70, 65, 80, 75, 90, 85, 100, 95, 110],
+                year: [400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950]
+            },
+            appointmentTypesData: {
+                labels: ["Checkup", "Consultation", "Follow-up", "Emergency", "Other"],
+                data: [35, 25, 20, 15, 5]
+            }
+        };
+
+        // DOM Elements
+        const menuToggle = document.querySelector('.menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarCollapseBtn = document.querySelector('.sidebar-collapse-btn');
+        const overlay = document.querySelector('.overlay');
+        const notificationCount = document.getElementById('notificationCount');
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMenuItems();
+            renderStatsCards();
+            renderRecentActivities();
+            renderPatientsTable();
+            initializeCharts();
+            setupEventListeners();
+        });
+
+        // Render menu items from data
+        function renderMenuItems() {
+            const menuContainer = document.getElementById('menuItems');
+            let html = '';
+            
+            dashboardData.menuItems.forEach(item => {
+                html += `
+                    <li>
+                        <a href="#" class="${item.active ? 'active' : ''}">
+                            <i class="${item.icon}"></i>
+                            <span>${item.title}</span>
+                        </a>
+                    </li>
+                `;
+            });
+            
+            menuContainer.innerHTML = html;
+        }
+
+        // Render stats cards from data
+        function renderStatsCards() {
+            const statsContainer = document.getElementById('statsCards');
+            let html = '';
+            
+            dashboardData.stats.forEach(stat => {
+                html += `
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">${stat.title}</h4>
+                            <div class="card-icon ${stat.colorClass}">
+                                <i class="${stat.icon}"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">${stat.value}</div>
+                        <div class="card-footer">
+                            <i class="fas ${stat.isPositive ? 'fa-arrow-up positive' : 'fa-arrow-down negative'}"></i>
+                            <span class="${stat.isPositive ? 'positive' : 'negative'}">${stat.change}</span> from last week
+                        </div>
+                    </div>
+                `;
+            });
+            
+            statsContainer.innerHTML = html;
+        }
+
+        // Render recent activities from data
+        function renderRecentActivities() {
+            const activitiesContainer = document.getElementById('recentActivities');
+            let html = '';
+            
+            dashboardData.recentActivities.forEach(activity => {
+                html += `
+                    <li class="activity-item">
+                        <div class="activity-icon ${activity.type}">
+                            <i class="${activity.icon}"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>${activity.title}</h4>
+                            <p>${activity.description}</p>
+                        </div>
+                        <div class="activity-time">${activity.time}</div>
+                    </li>
+                `;
+            });
+            
+            activitiesContainer.innerHTML = html;
+        }
+
+        // Render patients table from data
+        function renderPatientsTable() {
+            const tableBody = document.getElementById('patientsTableBody');
+            let html = '';
+            
+            dashboardData.recentPatients.forEach(patient => {
+                html += `
+                    <tr>
+                        <td>
+                            <div class="patient-info">
+                                <img src="${patient.image}" alt="${patient.name}">
+                                <div>
+                                    <div class="patient-name">${patient.name}</div>
+                                    <div class="patient-id">ID: ${patient.id}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${patient.lastVisit}</td>
+                        <td><span class="status ${patient.status}">${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}</span></td>
+                        <td><i class="fas fa-ellipsis-v"></i></td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html;
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            // Admissions Chart
+            const admissionsCtx = document.getElementById('admissionsChart').getContext('2d');
+            const admissionsChart = new Chart(admissionsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Patient Admissions',
+                        data: dashboardData.admissionsData.week,
+                        borderColor: '#4a90e2',
+                        backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Appointment Types Chart
+            const appointmentTypesCtx = document.getElementById('appointmentTypesChart').getContext('2d');
+            const appointmentTypesChart = new Chart(appointmentTypesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: dashboardData.appointmentTypesData.labels,
+                    datasets: [{
+                        data: dashboardData.appointmentTypesData.data,
+                        backgroundColor: [
+                            '#4a90e2',
+                            '#50c9ba',
+                            '#f39c12',
+                            '#e74c3c',
+                            '#9b59b6'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // Update chart when time range changes
+            document.getElementById('chartTimeRange').addEventListener('change', function(e) {
+                const timeRange = e.target.value;
+                let labels = [];
+                let data = [];
+                
+                if (timeRange === 'week') {
+                    labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                    data = dashboardData.admissionsData.week;
+                } else if (timeRange === 'month') {
+                    labels = Array.from({length: 12}, (_, i) => `Week ${i+1}`);
+                    data = dashboardData.admissionsData.month;
+                } else if (timeRange === 'year') {
+                    labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    data = dashboardData.admissionsData.year;
+                }
+                
+                admissionsChart.data.labels = labels;
+                admissionsChart.data.datasets[0].data = data;
+                admissionsChart.update();
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Toggle sidebar on mobile
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+            });
+
+            // Close sidebar when clicking the collapse button
+            sidebarCollapseBtn.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // Close sidebar when clicking outside
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // Simulate notification count update (would come from API in real app)
+            setInterval(() => {
+                const count = Math.floor(Math.random() * 5);
+                notificationCount.textContent = count;
+                notificationCount.style.display = count > 0 ? 'flex' : 'none';
+            }, 10000);
+        }
+    </script>
+</body>
+</html>
