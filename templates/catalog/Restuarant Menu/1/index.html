@@ -5,28 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gourmet Haven - Menu Catalog</title>
     <style>
+        /* CSS Variables */
+        :root {
+            /* Colors */
+            --primary-color: #d4a762;
+            --secondary-color: #5a3921;
+            --tertiary-color: #b38b6d;
+            --accent-color: #3a6b8a;
+            --dark-color: #222;
+            --light-color: #fff;
+            --background-light: #f9f5f0;
+            --background-section: #fff;
+            --background-alt: #f5efe8;
+            --background-alt2: #fff9f2;
+            --background-alt3: #f0f5f9;
+            --text-color: #333;
+            --text-light: #666;
+            --text-lighter: #888;
+            --text-lightest: #999;
+            --discount-color: #e74c3c;
+            
+            /* Fonts */
+            --font-main: 'Arial', sans-serif;
+            --font-heading: 'Playfair Display', serif;
+            
+            /* Spacing */
+            --section-padding: 60px 0;
+            --container-padding: 0 20px;
+            --item-padding: 20px;
+            
+            /* Shadows */
+            --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 15px 30px rgba(0, 0, 0, 0.1);
+            
+            /* Borders */
+            --border-radius: 8px;
+            --border-thin: 4px;
+        }
+
         /* Global Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-main);
         }
 
         body {
-            background-color: #f9f5f0;
-            color: #333;
+            background-color: var(--background-light);
+            color: var(--text-color);
             line-height: 1.6;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: var(--container-padding);
         }
 
         section {
-            padding: 60px 0;
+            padding: var(--section-padding);
         }
 
         h2 {
@@ -34,6 +72,7 @@
             margin-bottom: 30px;
             text-align: center;
             position: relative;
+            font-family: var(--font-heading);
         }
 
         h2:after {
@@ -41,7 +80,7 @@
             display: block;
             width: 80px;
             height: 4px;
-            background: #d4a762;
+            background: var(--primary-color);
             margin: 15px auto;
         }
 
@@ -56,7 +95,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            color: white;
+            color: var(--light-color);
             padding: 0 20px;
         }
 
@@ -69,6 +108,7 @@
             margin-bottom: 20px;
             font-weight: 700;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            font-family: var(--font-heading);
         }
 
         .restaurant-tagline {
@@ -89,7 +129,7 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            color: white;
+            color: var(--light-color);
             font-size: 2rem;
             animation: bounce 2s infinite;
             cursor: pointer;
@@ -109,7 +149,7 @@
 
         /* Appetizers Section */
         .appetizers {
-            background-color: #fff;
+            background-color: var(--background-section);
         }
 
         .appetizers .menu-items {
@@ -119,10 +159,10 @@
         }
 
         .appetizers .menu-item {
-            background: white;
-            border-radius: 8px;
+            background: var(--light-color);
+            border-radius: var(--border-radius);
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-light);
             transition: transform 0.3s ease;
             position: relative;
         }
@@ -148,29 +188,29 @@
         }
 
         .appetizers .item-details {
-            padding: 20px;
+            padding: var(--item-padding);
         }
 
         .appetizers .item-name {
             font-size: 1.5rem;
             margin-bottom: 10px;
-            color: #222;
+            color: var(--dark-color);
         }
 
         .appetizers .item-description {
-            color: #666;
+            color: var(--text-light);
             margin-bottom: 15px;
         }
 
         .appetizers .item-price {
             font-weight: bold;
-            color: #d4a762;
+            color: var(--primary-color);
             font-size: 1.2rem;
         }
 
         .original-price {
             text-decoration: line-through;
-            color: #999;
+            color: var(--text-lightest);
             font-size: 0.9rem;
             margin-right: 8px;
         }
@@ -179,8 +219,8 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: #e74c3c;
-            color: white;
+            background-color: var(--discount-color);
+            color: var(--light-color);
             padding: 5px 10px;
             border-radius: 4px;
             font-size: 0.8rem;
@@ -190,11 +230,11 @@
 
         /* Main Courses Section */
         .main-courses {
-            background-color: #f5efe8;
+            background-color: var(--background-alt);
         }
 
         .main-courses h2 {
-            color: #5a3921;
+            color: var(--secondary-color);
         }
 
         .main-courses .menu-items {
@@ -207,10 +247,10 @@
             width: calc(50% - 40px);
             margin: 20px;
             display: flex;
-            background: white;
-            border-radius: 8px;
+            background: var(--light-color);
+            border-radius: var(--border-radius);
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-light);
             position: relative;
         }
 
@@ -236,28 +276,28 @@
         .main-courses .item-name {
             font-size: 1.8rem;
             margin-bottom: 15px;
-            color: #5a3921;
+            color: var(--secondary-color);
         }
 
         .main-courses .item-description {
-            color: #666;
+            color: var(--text-light);
             margin-bottom: 20px;
         }
 
         .main-courses .item-price {
             font-weight: bold;
-            color: #5a3921;
+            color: var(--secondary-color);
             font-size: 1.5rem;
             align-self: flex-end;
         }
 
         /* Desserts Section */
         .desserts {
-            background-color: #fff9f2;
+            background-color: var(--background-alt2);
         }
 
         .desserts h2 {
-            color: #b38b6d;
+            color: var(--tertiary-color);
         }
 
         .desserts .menu-items {
@@ -269,15 +309,15 @@
         .desserts .menu-item {
             text-align: center;
             padding: 30px;
-            background: white;
-            border-radius: 8px;
+            background: var(--light-color);
+            border-radius: var(--border-radius);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
             position: relative;
         }
 
         .desserts .menu-item:hover {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-medium);
             transform: translateY(-5px);
         }
 
@@ -299,28 +339,28 @@
         .desserts .item-name {
             font-size: 1.5rem;
             margin-bottom: 10px;
-            color: #b38b6d;
+            color: var(--tertiary-color);
         }
 
         .desserts .item-description {
-            color: #888;
+            color: var(--text-lighter);
             margin-bottom: 15px;
             font-size: 0.9rem;
         }
 
         .desserts .item-price {
             font-weight: bold;
-            color: #b38b6d;
+            color: var(--tertiary-color);
             font-size: 1.3rem;
         }
 
         /* Drinks Section */
         .drinks {
-            background-color: #f0f5f9;
+            background-color: var(--background-alt3);
         }
 
         .drinks h2 {
-            color: #3a6b8a;
+            color: var(--accent-color);
         }
 
         .drinks .menu-items {
@@ -330,12 +370,12 @@
         }
 
         .drinks .menu-item {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
+            background: var(--light-color);
+            padding: var(--item-padding);
+            border-radius: var(--border-radius);
             text-align: center;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-            border-top: 4px solid #3a6b8a;
+            border-top: var(--border-thin) solid var(--accent-color);
             position: relative;
         }
 
@@ -355,18 +395,18 @@
         .drinks .item-name {
             font-size: 1.2rem;
             margin-bottom: 10px;
-            color: #3a6b8a;
+            color: var(--accent-color);
         }
 
         .drinks .item-description {
-            color: #666;
+            color: var(--text-light);
             font-size: 0.8rem;
             margin-bottom: 10px;
         }
 
         .drinks .item-price {
             font-weight: bold;
-            color: #3a6b8a;
+            color: var(--accent-color);
         }
 
         /* Price Container */
@@ -378,8 +418,8 @@
 
         /* Footer */
         footer {
-            background-color: #222;
-            color: white;
+            background-color: var(--dark-color);
+            color: var(--light-color);
             text-align: center;
             padding: 30px 0;
         }
@@ -392,7 +432,7 @@
         .footer-logo {
             font-size: 2rem;
             margin-bottom: 20px;
-            color: #d4a762;
+            color: var(--primary-color);
         }
 
         /* Responsive Design */
@@ -461,7 +501,7 @@
                 Since 1985, Gourmet Haven has been serving exquisite dishes crafted with passion and the finest ingredients. 
                 Our menu reflects a perfect blend of traditional recipes and innovative culinary techniques.
             </p>
-            <p class="restaurant-description" style="color: #d4a762; font-weight: bold;">
+            <p class="restaurant-description" style="color: var(--primary-color); font-weight: bold;">
                 Special Summer Discounts: 10-20% off on all menu items!
             </p>
         </div>
