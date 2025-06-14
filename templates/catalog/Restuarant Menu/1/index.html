@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Haven - Menu Catalog</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Playfair Display', serif;
+        }
+
+        body {
+            background-color: #f9f5f0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        h2:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #d4a762;
+            margin: 15px auto;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            max-width: 800px;
+        }
+
+        .restaurant-name {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .restaurant-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-style: italic;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .restaurant-description {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+
+        /* Appetizers Section */
+        .appetizers {
+            background-color: #fff;
+        }
+
+        .appetizers .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .appetizers .menu-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .appetizers .menu-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .appetizers .item-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .appetizers .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .appetizers .menu-item:hover .item-image img {
+            transform: scale(1.1);
+        }
+
+        .appetizers .item-details {
+            padding: 20px;
+        }
+
+        .appetizers .item-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .appetizers .item-description {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .appetizers .item-price {
+            font-weight: bold;
+            color: #d4a762;
+            font-size: 1.2rem;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9rem;
+            margin-right: 8px;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        /* Main Courses Section */
+        .main-courses {
+            background-color: #f5efe8;
+        }
+
+        .main-courses h2 {
+            color: #5a3921;
+        }
+
+        .main-courses .menu-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .main-courses .menu-item {
+            width: calc(50% - 40px);
+            margin: 20px;
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .main-courses .item-image {
+            width: 40%;
+            overflow: hidden;
+        }
+
+        .main-courses .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .main-courses .item-details {
+            width: 60%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .main-courses .item-name {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #5a3921;
+        }
+
+        .main-courses .item-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .main-courses .item-price {
+            font-weight: bold;
+            color: #5a3921;
+            font-size: 1.5rem;
+            align-self: flex-end;
+        }
+
+        /* Desserts Section */
+        .desserts {
+            background-color: #fff9f2;
+        }
+
+        .desserts h2 {
+            color: #b38b6d;
+        }
+
+        .desserts .menu-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .desserts .menu-item {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .desserts .menu-item:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .desserts .item-image {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #f0d9c5;
+        }
+
+        .desserts .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .desserts .item-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #b38b6d;
+        }
+
+        .desserts .item-description {
+            color: #888;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .desserts .item-price {
+            font-weight: bold;
+            color: #b38b6d;
+            font-size: 1.3rem;
+        }
+
+        /* Drinks Section */
+        .drinks {
+            background-color: #f0f5f9;
+        }
+
+        .drinks h2 {
+            color: #3a6b8a;
+        }
+
+        .drinks .menu-items {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .drinks .menu-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid #3a6b8a;
+            position: relative;
+        }
+
+        .drinks .item-image {
+            height: 100px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drinks .item-image img {
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        .drinks .item-name {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #3a6b8a;
+        }
+
+        .drinks .item-description {
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .drinks .item-price {
+            font-weight: bold;
+            color: #3a6b8a;
+        }
+
+        /* Price Container */
+        .price-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #d4a762;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-courses .menu-item {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .desserts .menu-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .drinks .menu-items {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .restaurant-name {
+                font-size: 3.5rem;
+            }
+
+            .restaurant-tagline {
+                font-size: 1.2rem;
+            }
+
+            .appetizers .menu-items,
+            .desserts .menu-items {
+                grid-template-columns: 1fr;
+            }
+
+            .main-courses .menu-item {
+                flex-direction: column;
+            }
+
+            .main-courses .item-image,
+            .main-courses .item-details {
+                width: 100%;
+            }
+
+            .drinks .menu-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .restaurant-name {
+                font-size: 2.5rem;
+            }
+
+            .drinks .menu-items {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1 class="restaurant-name">Gourmet Haven</h1>
+            <p class="restaurant-tagline">Where Culinary Dreams Come True</p>
+            <p class="restaurant-description">
+                Since 1985, Gourmet Haven has been serving exquisite dishes crafted with passion and the finest ingredients. 
+                Our menu reflects a perfect blend of traditional recipes and innovative culinary techniques.
+            </p>
+            <p class="restaurant-description" style="color: #d4a762; font-weight: bold;">
+                Special Summer Discounts: 10-20% off on all menu items!
+            </p>
+        </div>
+        <div class="scroll-down" onclick="scrollToMenu()">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </header>
+
+    <section class="appetizers" id="menu">
+        <div class="container">
+            <h2>Appetizers</h2>
+            <div class="menu-items">
+                <!-- Appetizer items will be added by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section class="main-courses">
+        <div class="container">
+            <h2>Main Courses</h2>
+            <div class="menu-items">
+                <!-- Main course items will be added by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section class="desserts">
+        <div class="container">
+            <h2>Desserts</h2>
+            <div class="menu-items">
+                <!-- Dessert items will be added by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section class="drinks">
+        <div class="container">
+            <h2>Drinks</h2>
+            <div class="menu-items">
+                <!-- Drink items will be added by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Gourmet Haven</div>
+            <p>123 Culinary Street, Foodville, FC 12345</p>
+            <p>Reservations: (555) 123-4567</p>
+            <p>Open Tuesday-Sunday: 5PM - 11PM</p>
+        </div>
+    </footer>
+
+    <script>
+        // Function to calculate discounted price
+        function calculateDiscount(originalPrice, discountPercent) {
+            const discountAmount = originalPrice * (discountPercent / 100);
+            return (originalPrice - discountAmount).toFixed(2);
+        }
+
+        // Function to format price as currency
+        function formatPrice(amount) {
+            return '$' + amount;
+        }
+
+        // Sample menu data with original prices and discounts
+        const menuData = {
+            appetizers: [
+                {
+                    name: "Truffle Arancini",
+                    description: "Crispy risotto balls infused with black truffle and melted mozzarella, served with truffle aioli.",
+                    originalPrice: 16.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                },
+                {
+                    name: "Burrata Salad",
+                    description: "Creamy burrata cheese with heirloom tomatoes, fresh basil, aged balsamic glaze, and extra virgin olive oil.",
+                    originalPrice: 18.00,
+                    discount: 10,
+                    image: "https://images.unsplash.com/photo-1606479846690-10f5af9b7d8a?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                },
+                {
+                    name: "Seared Scallops",
+                    description: "Perfectly seared scallops served with cauliflower purée, crispy pancetta, and micro greens.",
+                    originalPrice: 20.00,
+                    discount: 20,
+                    image: "https://images.unsplash.com/photo-1551248429-4096aa4d7352?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                },
+                {
+                    name: "Duck Confit Spring Rolls",
+                    description: "Crispy spring rolls filled with tender duck confit, hoisin sauce, and fresh vegetables.",
+                    originalPrice: 17.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?ixlib=rb-1.2.1&auto=format&fit=crop&w=632&q=80"
+                }
+            ],
+            mainCourses: [
+                {
+                    name: "Filet Mignon",
+                    description: "8oz grass-fed beef filet, cooked to perfection, served with truffle mashed potatoes, roasted asparagus, and red wine reduction.",
+                    originalPrice: 46.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1558030006-450675393462?ixlib=rb-1.2.1&auto=format&fit=crop&w=1331&q=80"
+                },
+                {
+                    name: "Pan-Seared Salmon",
+                    description: "Wild-caught salmon with lemon beurre blanc, quinoa pilaf, and seasonal vegetables.",
+                    originalPrice: 34.00,
+                    discount: 10,
+                    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                },
+                {
+                    name: "Mushroom Risotto",
+                    description: "Creamy arborio rice with wild mushrooms, white wine, parmesan, and truffle oil. Vegetarian.",
+                    originalPrice: 28.00,
+                    discount: 10,
+                    image: "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80"
+                },
+                {
+                    name: "Duck à l'Orange",
+                    description: "Roasted duck breast with classic orange sauce, potato gratin, and glazed carrots.",
+                    originalPrice: 42.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80"
+                }
+            ],
+            desserts: [
+                {
+                    name: "Chocolate Soufflé",
+                    description: "Warm chocolate soufflé with a molten center, served with vanilla bean ice cream.",
+                    originalPrice: 13.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                },
+                {
+                    name: "Crème Brûlée",
+                    description: "Classic vanilla bean custard with caramelized sugar crust and fresh berries.",
+                    originalPrice: 11.00,
+                    discount: 10,
+                    image: "https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                },
+                {
+                    name: "Tiramisu",
+                    description: "Layers of coffee-soaked ladyfingers, mascarpone cream, and cocoa powder.",
+                    originalPrice: 12.00,
+                    discount: 10,
+                    image: "https://images.unsplash.com/photo-1568145675395-66a2eda0c6d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                },
+                {
+                    name: "Apple Tarte Tatin",
+                    description: "Caramelized apple tart with vanilla ice cream and caramel sauce.",
+                    originalPrice: 11.00,
+                    discount: 10,
+                    image: "https://images.unsplash.com/photo-1561626629-e2e57d0d9634?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                },
+                {
+                    name: "Cheesecake",
+                    description: "New York style cheesecake with berry compote and whipped cream.",
+                    originalPrice: 10.00,
+                    discount: 10,
+                    image: "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                },
+                {
+                    name: "Panna Cotta",
+                    description: "Silky vanilla panna cotta with fresh mango purée and mint.",
+                    originalPrice: 11.00,
+                    discount: 10,
+                    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                }
+            ],
+            drinks: [
+                {
+                    name: "Signature Cocktail",
+                    description: "House special with gin, elderflower, and cucumber",
+                    originalPrice: 16.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1551751299-1b51cab2694c?ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80"
+                },
+                {
+                    name: "Classic Martini",
+                    description: "Gin or vodka with dry vermouth",
+                    originalPrice: 15.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                },
+                {
+                    name: "Old Fashioned",
+                    description: "Bourbon, sugar, and bitters",
+                    originalPrice: 16.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1551534235-3a10c0d5bfee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                },
+                {
+                    name: "Red Wine",
+                    description: "Selection of premium red wines",
+                    originalPrice: 14.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1568219656418-15c329312bf1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                },
+                {
+                    name: "White Wine",
+                    description: "Selection of premium white wines",
+                    originalPrice: 13.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1518818608552-195ed130cdf4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                },
+                {
+                    name: "Craft Beer",
+                    description: "Local and international selections",
+                    originalPrice: 8.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                },
+                {
+                    name: "Sparkling Water",
+                    description: "Imported Italian sparkling water",
+                    originalPrice: 6.00,
+                    discount: 20,
+                    image: "https://images.unsplash.com/photo-1560512823-829485b8bf24?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                },
+                {
+                    name: "Fresh Juice",
+                    description: "Seasonal fresh squeezed juices",
+                    originalPrice: 7.00,
+                    discount: 15,
+                    image: "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                }
+            ]
+        };
+
+        // Function to scroll to menu
+        function scrollToMenu() {
+            document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Function to render menu items
+        function renderMenuItems() {
+            // Render appetizers
+            const appetizersContainer = document.querySelector('.appetizers .menu-items');
+            menuData.appetizers.forEach(item => {
+                const discountedPrice = calculateDiscount(item.originalPrice, item.discount);
+                appetizersContainer.innerHTML += `
+                    <div class="menu-item">
+                        <div class="discount-badge">${item.discount}% OFF</div>
+                        <div class="item-image">
+                            <img src="${item.image}" alt="${item.name}">
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name">${item.name}</h3>
+                            <p class="item-description">${item.description}</p>
+                            <div class="price-container">
+                                <span class="original-price">${formatPrice(item.originalPrice)}</span>
+                                <span class="item-price">${formatPrice(discountedPrice)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Render main courses
+            const mainCoursesContainer = document.querySelector('.main-courses .menu-items');
+            menuData.mainCourses.forEach(item => {
+                const discountedPrice = calculateDiscount(item.originalPrice, item.discount);
+                mainCoursesContainer.innerHTML += `
+                    <div class="menu-item">
+                        <div class="discount-badge">${item.discount}% OFF</div>
+                        <div class="item-image">
+                            <img src="${item.image}" alt="${item.name}">
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name">${item.name}</h3>
+                            <p class="item-description">${item.description}</p>
+                            <div class="price-container">
+                                <span class="original-price">${formatPrice(item.originalPrice)}</span>
+                                <span class="item-price">${formatPrice(discountedPrice)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Render desserts
+            const dessertsContainer = document.querySelector('.desserts .menu-items');
+            menuData.desserts.forEach(item => {
+                const discountedPrice = calculateDiscount(item.originalPrice, item.discount);
+                dessertsContainer.innerHTML += `
+                    <div class="menu-item">
+                        <div class="discount-badge">${item.discount}% OFF</div>
+                        <div class="item-image">
+                            <img src="${item.image}" alt="${item.name}">
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name">${item.name}</h3>
+                            <p class="item-description">${item.description}</p>
+                            <div class="price-container">
+                                <span class="original-price">${formatPrice(item.originalPrice)}</span>
+                                <span class="item-price">${formatPrice(discountedPrice)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Render drinks
+            const drinksContainer = document.querySelector('.drinks .menu-items');
+            menuData.drinks.forEach(item => {
+                const discountedPrice = calculateDiscount(item.originalPrice, item.discount);
+                drinksContainer.innerHTML += `
+                    <div class="menu-item">
+                        <div class="discount-badge">${item.discount}% OFF</div>
+                        <div class="item-image">
+                            <img src="${item.image}" alt="${item.name}">
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name">${item.name}</h3>
+                            <p class="item-description">${item.description}</p>
+                            <div class="price-container">
+                                <span class="original-price">${formatPrice(item.originalPrice)}</span>
+                                <span class="item-price">${formatPrice(discountedPrice)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMenuItems();
+        });
+    </script>
+</body>
+</html>
