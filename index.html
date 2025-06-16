@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System</title>
+    <style>
+        /**
+         * DESIGN SYSTEM
+         * ==========================================
+         * 
+         * This design system follows Apple's Human Interface Guidelines
+         * with a structured, developer-friendly approach to variables.
+         * 
+         * Variables are organized by category with clear naming conventions:
+         * 
+         * 1. Colors: --color-{category}-{variant}
+         * 2. Typography: --font-{property}
+         * 3. Spacing: --space-{size}
+         * 4. Radius: --radius-{size}
+         * 5. Shadows: --shadow-{intensity}
+         * 6. Transitions: --transition-{property}
+         * 7. Z-index: --z-{level}
+         * 
+         * All variables are documented with comments for easy reference.
+         */
+
+        :root {
+            /* ========== COLOR PALETTE ========== */
+            /* System Colors */
+            --color-system-blue: #007AFF;
+            --color-system-green: #34C759;
+            --color-system-indigo: #5856D6;
+            --color-system-orange: #FF9500;
+            --color-system-pink: #FF2D55;
+            --color-system-purple: #AF52DE;
+            --color-system-red: #FF3B30;
+            --color-system-teal: #5AC8FA;
+            --color-system-yellow: #FFCC00;
+
+            /* Gray Scale */
+            --color-gray-100: #8E8E93;
+            --color-gray-200: #AEAEB2;
+            --color-gray-300: #C7C7CC;
+            --color-gray-400: #D1D1D6;
+            --color-gray-500: #E5E5EA;
+            --color-gray-600: #F2F2F7;
+
+            /* Text Colors */
+            --color-text-primary: rgba(0, 0, 0, 0.9);
+            --color-text-secondary: rgba(0, 0, 0, 0.6);
+            --color-text-tertiary: rgba(0, 0, 0, 0.3);
+            --color-text-quaternary: rgba(0, 0, 0, 0.18);
+            --color-text-on-dark: rgba(255, 255, 255, 0.9);
+
+            /* Background Colors */
+            --color-background-primary: #FFFFFF;
+            --color-background-secondary: #F2F2F7;
+            --color-background-tertiary: #E5E5EA;
+
+            /* Fill Colors */
+            --color-fill-primary: rgba(120, 120, 128, 0.2);
+            --color-fill-secondary: rgba(120, 120, 128, 0.16);
+            --color-fill-tertiary: rgba(118, 118, 128, 0.12);
+            --color-fill-quaternary: rgba(116, 116, 128, 0.08);
+
+            /* Semantic Colors */
+            --color-primary: var(--color-system-blue);
+            --color-success: var(--color-system-green);
+            --color-info: var(--color-system-teal);
+            --color-warning: var(--color-system-orange);
+            --color-danger: var(--color-system-red);
+            --color-light: var(--color-gray-600);
+
+            /* ========== TYPOGRAPHY ========== */
+            /* Font Family */
+            --font-family-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+            /* Font Sizes (iOS Typography Scale) */
+            --font-size-display: 34px;
+            /* Large Title */
+            --font-size-headline1: 28px;
+            /* Title 1 */
+            --font-size-headline2: 22px;
+            /* Title 2 */
+            --font-size-headline3: 20px;
+            /* Title 3 */
+            --font-size-subhead1: 17px;
+            /* Headline/Body */
+            --font-size-subhead2: 16px;
+            /* Callout */
+            --font-size-subhead3: 15px;
+            /* Subhead */
+            --font-size-caption1: 13px;
+            /* Footnote */
+            --font-size-caption2: 12px;
+            /* Caption 1 */
+            --font-size-caption3: 11px;
+            /* Caption 2 */
+
+            /* Font Weights */
+            --font-weight-regular: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+
+            /* Line Heights */
+            --line-height-tight: 1.2;
+            --line-height-normal: 1.4;
+            --line-height-loose: 1.6;
+
+            /* ========== SPACING SYSTEM ========== */
+            --space-xxs: 4px;
+            --space-xs: 8px;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 20px;
+            --space-xl: 24px;
+            --space-xxl: 32px;
+            --space-xxxl: 40px;
+
+            /* ========== BORDER RADIUS ========== */
+            --radius-xs: 4px;
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-xxl: 20px;
+            --radius-pill: 999px;
+
+            /* ========== BORDERS ========== */
+            --border-width-thin: 0.5px;
+            --border-width-thick: 1px;
+            --border-color-light: var(--color-gray-400);
+            --border-color-dark: var(--color-gray-200);
+
+            /* ========== SHADOWS ========== */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --shadow-inset: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+
+            /* ========== TRANSITIONS ========== */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+
+            /* ========== Z-INDEX ========== */
+            --z-base: 1;
+            --z-elevated: 10;
+            --z-sticky: 100;
+            --z-modal: 1000;
+            --z-toast: 1100;
+
+            /* ========== EFFECTS ========== */
+            --blur-intensity: blur(20px);
+            --backdrop-opacity: 0.8;
+        }
+
+        /* ========== BASE STYLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-system);
+            font-size: var(--font-size-subhead1);
+            color: var(--color-text-primary);
+            background-color: var(--color-background-secondary);
+            line-height: var(--line-height-normal);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ========== LAYOUT COMPONENTS ========== */
+        .app {
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: var(--color-background-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            padding: var(--space-md);
+            background-color: rgba(255, 255, 255, var(--backdrop-opacity));
+            backdrop-filter: var(--blur-intensity);
+            -webkit-backdrop-filter: var(--blur-intensity);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-sticky);
+            border-bottom: var(--border-width-thin) solid var(--border-color-light);
+        }
+
+        .header h1 {
+            font-size: var(--font-size-headline3);
+            font-weight: var(--font-weight-semibold);
+            text-align: center;
+        }
+
+        /* Content Sections */
+        .section {
+            padding: var(--space-md);
+            border-bottom: var(--border-width-thin) solid var(--border-color-light);
+        }
+
+        .section:last-child {
+            margin: 0 0 5rem;
+        }
+
+        .section-title {
+            font-size: var(--font-size-headline3);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--space-md);
+            color: var(--color-primary);
+        }
+
+        .example-container {
+            background-color: var(--color-background-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+            border: var(--border-width-thin) solid var(--border-color-light);
+        }
+
+        /* ========== COLOR EXAMPLES ========== */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: var(--space-sm);
+        }
+
+        .color-swatch {
+            height: 60px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: flex-end;
+            padding: var(--space-xs);
+            font-size: var(--font-size-caption2);
+            color: var(--color-text-on-dark);
+            text-shadow: var(--shadow-sm);
+            border: var(--border-width-thin) solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* ========== TYPOGRAPHY EXAMPLES ========== */
+        .typography-example {
+            margin-bottom: var(--space-sm);
+            padding: var(--space-xxs) 0;
+            border-bottom: var(--border-width-thin) solid var(--color-background-secondary);
+        }
+
+        /* ========== BUTTONS ========== */
+        .button-row {
+            display: flex;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: var(--color-text-on-dark);
+            border: none;
+            border-radius: var(--radius-xxl);
+            padding: var(--space-sm) var(--space-md);
+            font-size: var(--font-size-subhead1);
+            font-weight: var(--font-weight-medium);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+            min-width: 44px;
+            /* Minimum touch target size */
+            min-height: 44px;
+            border: var(--border-width-thin) solid rgba(0, 0, 0, 0.04);
+        }
+
+        .button.secondary {
+            background-color: var(--color-gray-500);
+            color: var(--color-text-primary);
+        }
+
+        .button.destructive {
+            background-color: var(--color-danger);
+        }
+
+        .button:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .button:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        /* ========== CARDS ========== */
+        .card {
+            background-color: var(--color-background-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-normal);
+            border: var(--border-width-thin) solid var(--border-color-light);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--space-xs);
+            color: var(--color-text-primary);
+        }
+
+        .card-content {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-subhead3);
+        }
+
+        /* ========== LISTS ========== */
+        .list {
+            list-style: none;
+            background-color: var(--color-background-primary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: var(--space-md);
+            box-shadow: var(--shadow-sm);
+            border: var(--border-width-thin) solid var(--border-color-light);
+        }
+
+        .list-item {
+            padding: var(--space-md);
+            border-bottom: var(--border-width-thin) solid var(--border-color-light);
+            display: flex;
+            align-items: center;
+            transition: background-color var(--transition-fast);
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item:hover {
+            background-color: var(--color-background-secondary);
+        }
+
+        .list-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: var(--radius-sm);
+            margin-right: var(--space-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-on-dark);
+            font-size: var(--font-size-caption1);
+        }
+
+        /* ========== FORM ELEMENTS ========== */
+        .text-field {
+            width: 100%;
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            border: var(--border-width-thin) solid var(--border-color-light);
+            font-size: var(--font-size-subhead1);
+            margin-bottom: var(--space-md);
+            background-color: var(--color-background-primary);
+            transition: border-color var(--transition-fast);
+        }
+
+        .text-field:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        /* ========== SWITCHES ========== */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 32px;
+            margin-left: auto;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--color-gray-500);
+            transition: var(--transition-normal);
+            border-radius: var(--radius-pill);
+            border: var(--border-width-thin) solid var(--border-color-light);
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 28px;
+            width: 28px;
+            left: 1px;
+            bottom: 1px;
+            background-color: var(--color-background-primary);
+            transition: var(--transition-normal);
+            border-radius: 50%;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .switch input:checked+.switch-slider {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .switch input:checked+.switch-slider:before {
+            transform: translateX(20px);
+        }
+
+        /* ========== SEGMENTED CONTROL ========== */
+        .segmented-control {
+            display: inline-flex;
+            background-color: var(--color-gray-500);
+            border-radius: var(--radius-xxl);
+            padding: 3px;
+            margin-bottom: var(--space-md);
+            border: var(--border-width-thin) solid var(--border-color-light);
+        }
+
+        .segment {
+            padding: var(--space-xs) var(--space-md);
+            font-size: var(--font-size-caption2);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            border-radius: calc(var(--radius-xxl) - 3px);
+            transition: all var(--transition-fast);
+        }
+
+        .segment.active {
+            background-color: var(--color-background-primary);
+            color: var(--color-text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ========== PROGRESS BAR ========== */
+        .progress-bar {
+            height: 4px;
+            background-color: var(--color-gray-500);
+            border-radius: var(--radius-xs);
+            overflow: hidden;
+            margin-bottom: var(--space-md);
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--color-primary);
+            border-radius: var(--radius-xs);
+            transition: width var(--transition-normal);
+        }
+
+        /* ========== EFFECTS ========== */
+        .effect-box {
+            height: 80px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+            font-weight: var(--font-weight-medium);
+            border-radius: var(--radius-sm);
+        }
+
+        /* ========== TAB BAR ========== */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, var(--backdrop-opacity));
+            backdrop-filter: var(--blur-intensity);
+            -webkit-backdrop-filter: var(--blur-intensity);
+            display: flex;
+            justify-content: space-around;
+            padding: var(--space-sm) 0;
+            border-top: var(--border-width-thin) solid var(--border-color-light);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: var(--font-size-caption2);
+            padding: var(--space-xs);
+            border-radius: var(--radius-lg);
+            transition: background-color var(--transition-fast);
+        }
+
+        .tab.active {
+            color: var(--color-primary);
+        }
+
+        .tab .icon {
+            font-size: var(--space-xl);
+            margin-bottom: var(--space-xxs);
+        }
+
+        /* Ripple effect */
+        .ripple {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <header class="header">
+            <h1>Design System</h1>
+        </header>
+
+        <main>
+            <!-- COLORS SECTION -->
+            <section class="section">
+                <h2 class="section-title">Colors</h2>
+
+                <div class="example-container">
+                    <h3>System Colors</h3>
+                    <div class="color-grid">
+                        <div class="color-swatch"
+                            style="background-color: var(--color-system-blue); color: var(--color-text-on-dark);">
+                            #007AFF</div>
+                        <div class="color-swatch" style="background-color: var(--color-system-green);">#34C759
+                        </div>
+                        <div class="color-swatch" style="background-color: var(--color-system-indigo);">#5856D6
+                        </div>
+                        <div class="color-swatch" style="background-color: var(--color-system-orange);">#FF9500
+                        </div>
+                        <div class="color-swatch" style="background-color: var(--color-system-pink);">#FF2D55
+                        </div>
+                        <div class="color-swatch" style="background-color: var(--color-system-purple);">#AF52DE
+                        </div>
+                        <div class="color-swatch" style="background-color: var(--color-system-red);">#FF3B30
+                        </div>
+                        <div class="color-swatch" style="background-color: var(--color-system-teal);">#5AC8FA
+                        </div>
+                        <div class="color-swatch"
+                            style="background-color: var(--color-system-yellow); color: var(--color-text-primary);">
+                            #FFCC00
+                        </div>
+                        <div class="color-swatch" style="background-color: var(--color-gray-100);">#8E8E93
+                        </div>
+                        <div class="color-swatch" style="background-color: var(--color-gray-200);">#AEAEB2
+                        </div>
+                        <div class="color-swatch" style="background-color: var(--color-gray-300);">#C7C7CC
+                        </div>
+                        <div class="color-swatch" style="background-color: var(--color-gray-400);">#D1D1D6
+                        </div>
+                        <div class="color-swatch"
+                            style="background-color: var(--color-gray-500); color: var(--color-text-primary);">#E5E5EA
+                        </div>
+                        <div class="color-swatch"
+                            style="background-color: var(--color-gray-600); color: var(--color-text-primary);">#F2F2F7
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-container">
+                    <h3>Text Colors</h3>
+                    <div class="color-grid">
+                        <div class="color-swatch" style="background-color: var(--color-text-primary); color: white;">
+                            #000000</div>
+                        <div class="color-swatch" style="background-color: var(--color-text-secondary);">
+                            #8E8E93</div>
+                        <div class="color-swatch" style="background-color: var(--color-text-tertiary);">
+                            #AEAEB2</div>
+                        <div class="color-swatch" style="background-color: var(--color-text-quaternary);">
+                            #C7C7CC</div>
+                        <div class="color-swatch" style="background-color: #333; color: var(--color-text-on-dark);">
+                            #FFFFFF</div>
+                    </div>
+                </div>
+
+                <div class="example-container">
+                    <h3>Fill Colors</h3>
+                    <div class="color-grid">
+                        <div class="color-swatch"
+                            style="background-color: var(--color-fill-primary); color: var(--color-text-primary);">
+                            rgba(120, 120, 128, 0.2)</div>
+                        <div class="color-swatch"
+                            style="background-color: var(--color-fill-secondary); color: var(--color-text-primary);">
+                            rgba(120, 120, 128, 0.16)</div>
+                        <div class="color-swatch"
+                            style="background-color: var(--color-fill-tertiary); color: var(--color-text-primary);">
+                            rgba(118, 118, 128, 0.12)</div>
+                        <div class="color-swatch"
+                            style="background-color: var(--color-fill-quaternary); color: var(--color-text-primary);">
+                            rgba(120, 120, 128, 0.08)</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TYPOGRAPHY SECTION -->
+            <section class="section">
+                <h2 class="section-title">Typography</h2>
+
+                <div class="example-container">
+                    <div class="typography-example" style="font-size: var(--font-size-display);">Display
+                        (34px)</div>
+                    <div class="typography-example" style="font-size: var(--font-size-headline1);">Headline 1
+                        (28px)</div>
+                    <div class="typography-example" style="font-size: var(--font-size-headline2);">Headline 2
+                        (22px)</div>
+                    <div class="typography-example" style="font-size: var(--font-size-headline3);">Headline 3
+                        (20px)</div>
+                    <div class="typography-example"
+                        style="font-size: var(--font-size-subhead1); font-weight: var(--font-weight-semibold);">Subhead
+                        1 - Semibold (17px)</div>
+                    <div class="typography-example" style="font-size: var(--font-size-subhead1);">Subhead 1 - Regular
+                        (17px)</div>
+                    <div class="typography-example" style="font-size: var(--font-size-subhead2);">Subhead 2
+                        (16px)</div>
+                    <div class="typography-example" style="font-size: var(--font-size-subhead3);">Subhead 3
+                        (15px)</div>
+                    <div class="typography-example" style="font-size: var(--font-size-caption1);">Caption 1
+                        (13px)</div>
+                    <div class="typography-example" style="font-size: var(--font-size-caption2);">Caption 2
+                        (12px)</div>
+                    <div class="typography-example" style="font-size: var(--font-size-caption3);">Caption 3
+                        (11px)</div>
+                </div>
+
+                <div class="example-container">
+                    <h3>Text Colors</h3>
+                    <p style="color: var(--color-text-primary); margin-bottom: var(--space-xs);">Primary text color
+                        (--color-text-primary)</p>
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--space-xs);">Secondary text color
+                        (--color-text-secondary)</p>
+                    <p style="color: var(--color-text-tertiary); margin-bottom: var(--space-xs);">Tertiary text color
+                        (--color-text-tertiary)</p>
+                    <p style="color: var(--color-text-quaternary); margin-bottom: var(--space-xs);">Quaternary text
+                        color (--color-text-quaternary)</p>
+                    <p style="color: var(--color-success); margin-bottom: var(--space-xs);">Success text color
+                        (--color-success)</p>
+                    <p style="color: var(--color-info); margin-bottom: var(--space-xs);">Info text color (--color-info)
+                    </p>
+                    <p style="color: var(--color-warning); margin-bottom: var(--space-xs);">Warning text color
+                        (--color-warning)</p>
+                    <p style="color: var(--color-danger); margin-bottom: var(--space-xs);">Danger text color
+                        (--color-danger)</p>
+                    <p
+                        style="color: var(--color-light); background-color: #333; padding: var(--space-xs); border-radius: var(--radius-xs);">
+                        Light text color (--color-light)</p>
+                </div>
+            </section>
+
+            <!-- BUTTONS SECTION -->
+            <section class="section">
+                <h2 class="section-title">Buttons</h2>
+
+                <div class="example-container">
+                    <div class="button-row">
+                        <button class="button">Primary Button</button>
+                        <button class="button secondary">Secondary Button</button>
+                        <button class="button destructive">Destructive</button>
+                    </div>
+                    <div class="button-row">
+                        <button class="button" disabled>Disabled Button</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FORM ELEMENTS SECTION -->
+            <section class="section">
+                <h2 class="section-title">Form Elements</h2>
+
+                <div class="example-container">
+                    <input type="text" class="text-field" placeholder="Text Field">
+                    <input type="password" class="text-field" placeholder="Password">
+
+                    <div style="display: flex; align-items: center; margin-bottom: var(--space-md);">
+                        <span style="margin-right: var(--space-md);">Switch</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="segmented-control">
+                        <div class="segment active">Option 1</div>
+                        <div class="segment">Option 2</div>
+                        <div class="segment">Option 3</div>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 65%"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARDS SECTION -->
+            <section class="section">
+                <h2 class="section-title">Cards</h2>
+
+                <div class="example-container">
+                    <div class="card">
+                        <div class="card-header">Default Card</div>
+                        <div class="card-content">This card has subtle shadow and hover effect with proper border.
+                        </div>
+                    </div>
+
+                    <div class="card" style="background-color: var(--color-primary); color: var(--color-text-on-dark);">
+                        <div class="card-header">Colored Card</div>
+                        <div class="card-content">Cards can have different background colors with proper borders.
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-radius: var(--radius-xxl);">
+                        <div class="card-header">Large Corner Radius</div>
+                        <div class="card-content">Cards can have different corner radius values.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LISTS SECTION -->
+            <section class="section">
+                <h2 class="section-title">Lists</h2>
+
+                <div class="example-container">
+                    <ul class="list">
+                        <li class="list-item">
+                            <div class="list-icon" style="background-color: var(--color-primary);">1</div>
+                            <div>List item with icon</div>
+                        </li>
+                        <li class="list-item">
+                            <div class="list-icon" style="background-color: var(--color-gray-100);">2</div>
+                            <div>Another list item</div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </li>
+                        <li class="list-item">
+                            <div class="list-icon"
+                                style="background-color: var(--color-gray-300); color: var(--color-text-primary);">3
+                            </div>
+                            <div>Third item</div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- EFFECTS SECTION -->
+            <section class="section">
+                <h2 class="section-title">Effects</h2>
+
+                <div class="example-container">
+                    <h3>Shadows</h3>
+                    <div class="effect-box"
+                        style="background-color: var(--color-background-primary); box-shadow: var(--shadow-sm); margin-bottom: var(--space-md);">
+                        Subtle Shadow (--shadow-sm)
+                    </div>
+                    <div class="effect-box"
+                        style="background-color: var(--color-background-primary); box-shadow: var(--shadow-md); margin-bottom: var(--space-md);">
+                        Regular Shadow (--shadow-md)
+                    </div>
+                    <div class="effect-box"
+                        style="background-color: var(--color-background-primary); box-shadow: var(--shadow-lg);">
+                        Large Shadow (--shadow-lg)
+                    </div>
+                </div>
+
+                <div class="example-container">
+                    <h3>Blur & Opacity</h3>
+                    <div
+                        style="position: relative; height: 100px; background-color: var(--color-primary); overflow: hidden; border-radius: var(--radius-sm);">
+                        <div
+                            style="position: absolute; top: var(--space-md); left: var(--space-md); right: var(--space-md); bottom: var(--space-md); background-color: rgba(255,255,255,0.8); backdrop-filter: var(--blur-intensity); -webkit-backdrop-filter: var(--blur-intensity); display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: var(--border-width-thin) solid rgba(255,255,255,0.3);">
+                            Blur Effect (--blur-intensity)
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-md);">
+                        <div
+                            style="flex: 1; height: 60px; background-color: var(--color-primary); opacity: 1; display: flex; align-items: center; justify-content: center; color: var(--color-text-on-dark); border-radius: var(--radius-sm); border: var(--border-width-thin) solid rgba(0,0,0,0.1);">
+                            100%
+                        </div>
+                        <div
+                            style="flex: 1; height: 60px; background-color: var(--color-primary); opacity: 0.8; display: flex; align-items: center; justify-content: center; color: var(--color-text-on-dark); border-radius: var(--radius-sm); border: var(--border-width-thin) solid rgba(0,0,0,0.1);">
+                            80%
+                        </div>
+                        <div
+                            style="flex: 1; height: 60px; background-color: var(--color-primary); opacity: 0.5; display: flex; align-items: center; justify-content: center; color: var(--color-text-on-dark); border-radius: var(--radius-sm); border: var(--border-width-thin) solid rgba(0,0,0,0.1);">
+                            50%
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+
+        <nav class="tab-bar">
+            <a href="#" class="tab active">
+                <span class="icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="#" class="tab">
+                <span class="icon">🌈</span>
+                <span>Design</span>
+            </a>
+            <a href="#" class="tab">
+                <span class="icon">⚙️</span>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+
+</body>
+
+</html>
