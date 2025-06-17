@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  <title>Navbar</title>
+  <title>Responsive Navbar</title>
   <style>
     * {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -42,31 +42,46 @@
       user-select: none;
     }
 
-    /* Navigation Items Container */
+    /* Main Navigation - Default (Desktop) */
     .nav {
+      flex: 1;
       display: flex;
+      justify-content: flex-end;
       align-items: center;
     }
 
     .nav__list {
       display: flex;
       list-style: none;
-      gap: 24px;
+      gap: 16px;
+      margin: 0;
+      padding: 0;
     }
 
     .nav__item a {
       color: #007aff;
-      /* iOS blue */
       font-weight: 500;
       font-size: 16px;
       text-decoration: none;
-      padding: 6px 8px;
+      padding: 8px 12px;
       border-radius: 12px;
-      transition: background-color 0.25s ease;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .nav__item a:hover {
+    .nav__item a:hover,
+    .nav__item a.nav__link--active {
       background-color: rgba(0, 122, 255, 0.15);
+    }
+
+    .nav__item .nav__icon {
+      font-size: 18px;
+    }
+
+    .nav__item .nav__text {
+      display: inline;
     }
 
     /* Profile Picture */
@@ -80,7 +95,6 @@
       border-radius: 50%;
       cursor: pointer;
       border: 1.5px solid #d1d1d6;
-      /* subtle border like iOS */
       transition: box-shadow 0.3s ease;
     }
 
@@ -88,75 +102,62 @@
       box-shadow: 0 0 8px rgba(0, 122, 255, 0.5);
     }
 
-    /* Mobile Bottom Navbar */
-    .bottom-navbar {
-      display: none;
-      position: fixed;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 40px);
-      max-width: 420px;
-      background: rgba(255 255 255 / 0.9);
-      backdrop-filter: saturate(180%) blur(10px);
-      box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
-      border-radius: 28px;
-      padding: 8px 0;
-      z-index: 110;
-    }
-
-    .bottom-navbar__list {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      list-style: none;
-      padding: 0 10px;
-      margin: 0;
-    }
-
-    .bottom-navbar__item {
-      flex: 1;
-      text-align: center;
-    }
-
-    .bottom-navbar__link {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 12px;
-      font-weight: 600;
-      color: #8e8e93;
-      text-decoration: none;
-      user-select: none;
-      padding: 6px 4px;
-      transition: color 0.3s ease;
-      border-radius: 100px;
-    }
-
-    .bottom-navbar__link i {
-      font-size: 22px;
-      margin-bottom: 4px;
-      line-height: 1;
-    }
-
-    .bottom-navbar__link:hover,
-    .bottom-navbar__link--active {
-      color: #007aff;
-    }
-
+    /* Mobile Navigation Styles */
     @media (max-width: 767.98px) {
-      .nav__list {
-        display: none;
+
+      /* Convert to bottom navbar */
+      .nav {
+        position: fixed;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 40px);
+        max-width: 420px;
+        background: rgba(255 255 255 / 0.9);
+        backdrop-filter: saturate(180%) blur(10px);
+        box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
+        border-radius: 28px;
+        padding: 8px 0;
+        z-index: 110;
+        justify-content: center;
       }
 
-      .bottom-navbar {
-        display: block;
+      .nav__list {
+        width: 100%;
+        justify-content: space-around;
+        gap: 0;
+      }
+
+      .nav__item a {
+        flex-direction: column;
+        font-size: 12px;
+        font-weight: 600;
+        color: #8e8e93;
+        padding: 6px 12px;
+        border-radius: 100px;
+        background-color: transparent !important;
+      }
+
+      .nav__item .nav__icon {
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+
+      .nav__item a:hover,
+      .nav__item a.nav__link--active {
+        color: #007aff;
+      }
+
+      /* Adjust header padding */
+      .header {
+        padding-bottom: 24px;
       }
     }
 
     /* iOS-style content */
     .section {
       padding: 20px;
+      margin-bottom: 80px; /* Add space for bottom navbar on mobile */
     }
 
     .section__title {
@@ -188,44 +189,107 @@
       <h2 class="header__logo">Logo</h2>
       <nav class="nav" aria-label="Primary navigation">
         <ul class="nav__list">
-          <li class="nav__item"><a href="#">Home</a></li>
-          <li class="nav__item"><a href="#">Product</a></li>
-          <li class="nav__item"><a href="#">Report</a></li>
-          <li class="nav__item"><a href="#">Contact Us</a></li>
+          <li class="nav__item">
+            <a href="#home" class="nav__link--active">
+              <i class="fas fa-home nav__icon"></i>
+              <span class="nav__text">Home</span>
+            </a>
+          </li>
+          <li class="nav__item">
+            <a href="#product">
+              <i class="fas fa-box nav__icon"></i>
+              <span class="nav__text">Product</span>
+            </a>
+          </li>
+          <li class="nav__item">
+            <a href="#report">
+              <i class="fas fa-chart-bar nav__icon"></i>
+              <span class="nav__text">Report</span>
+            </a>
+          </li>
+          <li class="nav__item">
+            <a href="#contact">
+              <i class="fas fa-phone nav__icon"></i>
+              <span class="nav__text">Contact</span>
+            </a>
+          </li>
         </ul>
-        <a href="#" class="profile">
-          <img class="profile__image"
-            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-            alt="Profile Picture" />
-        </a>
       </nav>
+      <a href="#" class="profile">
+        <img class="profile__image"
+          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+          alt="Profile Picture" />
+      </a>
     </header>
 
     <div class="content-wrapper">
-      <div class="section">
+      <section id="home" class="section">
         <h3 class="section__title">Welcome Back</h3>
         <div class="card">
           <p class="card__text">
-            This is a sample iOS-style content card. The design emphasizes clarity, simplicity, and subtle visual
-            feedback.
+            This is the Home section. The design emphasizes clarity, simplicity, and subtle visual feedback.
           </p>
         </div>
-      </div>
+      </section>
+      
+      <section id="product" class="section">
+        <h3 class="section__title">Our Products</h3>
+        <div class="card">
+          <p class="card__text">
+            This is the Product section. Here you can browse all our amazing products.
+          </p>
+        </div>
+      </section>
+      
+      <section id="report" class="section">
+        <h3 class="section__title">Reports</h3>
+        <div class="card">
+          <p class="card__text">
+            This is the Report section. View analytics and performance metrics here.
+          </p>
+        </div>
+      </section>
+      
+      <section id="contact" class="section">
+        <h3 class="section__title">Contact Us</h3>
+        <div class="card">
+          <p class="card__text">
+            This is the Contact section. Get in touch with our team for any inquiries.
+          </p>
+        </div>
+      </section>
     </div>
-
-    <nav class="bottom-navbar" aria-label="Mobile primary navigation">
-      <ul class="bottom-navbar__list">
-        <li class="bottom-navbar__item"><a href="#" class="bottom-navbar__link bottom-navbar__link--active"><i
-              class="fas fa-home"></i> Home</a></li>
-        <li class="bottom-navbar__item"><a href="#" class="bottom-navbar__link"><i class="fas fa-box"></i> Product</a>
-        </li>
-        <li class="bottom-navbar__item"><a href="#" class="bottom-navbar__link"><i class="fas fa-chart-bar"></i>
-            Report</a></li>
-        <li class="bottom-navbar__item"><a href="#" class="bottom-navbar__link"><i class="fas fa-phone"></i> Contact</a>
-        </li>
-      </ul>
-    </nav>
   </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav__item a');
+      
+      function updateActiveNav() {
+        let current = '';
+        
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          
+          if (pageYOffset >= (sectionTop - 100)) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        navLinks.forEach(link => {
+          link.classList.remove('nav__link--active');
+          if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('nav__link--active');
+          }
+        });
+      }
+      
+      window.addEventListener('scroll', updateActiveNav);
+      updateActiveNav();
+    });
+  </script>
 </body>
 
 </html>
