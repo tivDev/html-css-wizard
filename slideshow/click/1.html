@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      /* Colors */
+      --primary-bg: #f9f9f9;
+      --text-color: #ffffff;
+      --text-bg: rgba(0, 0, 0, 0.3);
+      --dot-color: #d0d0d0;
+      --dot-active-color: #007aff;
+      --nav-btn-bg: rgba(0, 0, 0, 0.3);
+      --nav-btn-hover-bg: rgba(0, 0, 0, 0.6);
+      
+      /* Sizes */
+      --container-max-width: 1000px;
+      --container-margin: 40px;
+      --border-radius: 20px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      
+      /* Text */
+      --text-font-size: 17px;
+      --text-padding: 12px;
+      --number-font-size: 14px;
+      --number-padding: 10px;
+      
+      /* Navigation */
+      --nav-btn-size: 20px;
+      --nav-btn-padding: 12px;
+      --nav-btn-position: 20px;
+      
+      /* Dots */
+      --dot-size: 12px;
+      --dot-margin: 4px;
+      
+      /* Transitions */
+      --transition-speed: 0.3s;
+      --slide-transition: 1s ease-in-out;
+      
+      /* Mobile adjustments */
+      --mobile-text-font-size: 14px;
+      --mobile-text-padding: 10px;
+      --mobile-nav-btn-size: 16px;
+      --mobile-nav-btn-padding: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", sans-serif;
+      margin: 0;
+      background-color: var(--primary-bg);
+    }
+
+    .slideshow-container {
+      max-width: var(--container-max-width);
+      position: relative;
+      margin: var(--container-margin) auto;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .mySlides {
+      opacity: 0;
+      transition: opacity var(--slide-transition);
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      display: block;
+      pointer-events: none;
+    }
+
+    .mySlides.show {
+      opacity: 1;
+      position: relative;
+      pointer-events: auto;
+    }
+
+    img {
+      vertical-align: middle;
+      width: 100%;
+      height: auto;
+      border-radius: var(--border-radius);
+    }
+
+    .prev, .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: var(--nav-btn-padding);
+      background-color: var(--nav-btn-bg);
+      color: var(--text-color);
+      border-radius: 50%;
+      font-size: var(--nav-btn-size);
+      transition: background-color var(--transition-speed);
+      user-select: none;
+      z-index: 10;
+    }
+
+    .next {
+      right: var(--nav-btn-position);
+    }
+
+    .prev {
+      left: var(--nav-btn-position);
+    }
+
+    .prev:hover, .next:hover {
+      background-color: var(--nav-btn-hover-bg);
+    }
+
+    .text {
+      color: var(--text-color);
+      font-size: var(--text-font-size);
+      background: var(--text-bg);
+      padding: var(--text-padding);
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    .numbertext {
+      color: var(--text-color);
+      font-size: var(--number-font-size);
+      padding: var(--number-padding);
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+    }
+
+    .dot {
+      cursor: pointer;
+      height: var(--dot-size);
+      width: var(--dot-size);
+      margin: 0 var(--dot-margin);
+      background-color: var(--dot-color);
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color var(--transition-speed);
+    }
+
+    .active, .dot:hover {
+      background-color: var(--dot-active-color);
+    }
+
+    @media only screen and (max-width: 600px) {
+      .text {
+        font-size: var(--mobile-text-font-size);
+        padding: var(--mobile-text-padding);
+      }
+
+      .prev, .next {
+        padding: var(--mobile-nav-btn-padding);
+        font-size: var(--mobile-nav-btn-size);
+      }
+    }
+
+    .dot-container {
+      text-align: center;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- The rest of your HTML remains the same -->
+  <div class="slideshow-container">
+    <div class="mySlides">
+      <div class="numbertext">1 / 3</div>
+      <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" alt="Nature">
+      <div class="text">Caption One</div>
+    </div>
+
+    <div class="mySlides">
+      <div class="numbertext">2 / 3</div>
+      <img src="https://www.w3schools.com/howto/img_snow_wide.jpg" alt="Snow">
+      <div class="text">Caption Two</div>
+    </div>
+
+    <div class="mySlides">
+      <div class="numbertext">3 / 3</div>
+      <img src="https://www.w3schools.com/howto/img_mountains_wide.jpg" alt="Mountains">
+      <div class="text">Caption Three</div>
+    </div>
+
+    <a class="prev">❮</a>
+    <a class="next">❯</a>
+  </div>
+
+  <div class="dot-container">
+    <span class="dot"></span> 
+    <span class="dot"></span> 
+    <span class="dot"></span> 
+  </div>
+
+  <script>
+    // Your JavaScript code here (OOP version from previous example)
+    class Slideshow {
+      constructor(containerSelector, options = {}) {
+        this.container = document.querySelector(containerSelector);
+        this.slides = this.container.querySelectorAll('.mySlides');
+        this.dots = document.querySelectorAll('.dot');
+        this.prevBtn = this.container.querySelector('.prev');
+        this.nextBtn = this.container.querySelector('.next');
+        this.currentIndex = 0;
+        this.autoPlayInterval = null;
+        this.autoPlayDelay = options.autoPlayDelay || 3000;
+        this.isAutoPlaying = options.autoPlay || true;
+        
+        this.init();
+      }
+      
+      init() {
+        this.showSlide(this.currentIndex);
+        
+        this.prevBtn.addEventListener('click', () => this.prevSlide());
+        this.nextBtn.addEventListener('click', () => this.nextSlide());
+        
+        this.dots.forEach((dot, index) => {
+          dot.addEventListener('click', () => this.goToSlide(index));
+        });
+        
+        this.container.addEventListener('mouseover', () => this.stopAutoPlay());
+        this.container.addEventListener('mouseout', () => this.startAutoPlay());
+        
+        if (this.isAutoPlaying) {
+          this.startAutoPlay();
+        }
+      }
+      
+      showSlide(index) {
+        if (index >= this.slides.length) {
+          this.currentIndex = 0;
+        } else if (index < 0) {
+          this.currentIndex = this.slides.length - 1;
+        } else {
+          this.currentIndex = index;
+        }
+        
+        this.slides.forEach(slide => slide.classList.remove('show'));
+        this.slides[this.currentIndex].classList.add('show');
+        
+        this.dots.forEach(dot => dot.classList.remove('active'));
+        this.dots[this.currentIndex].classList.add('active');
+      }
+      
+      nextSlide() {
+        this.showSlide(this.currentIndex + 1);
+      }
+      
+      prevSlide() {
+        this.showSlide(this.currentIndex - 1);
+      }
+      
+      goToSlide(index) {
+        this.showSlide(index);
+      }
+      
+      startAutoPlay() {
+        if (this.autoPlayInterval) {
+          clearInterval(this.autoPlayInterval);
+        }
+        this.autoPlayInterval = setInterval(() => {
+          this.nextSlide();
+        }, this.autoPlayDelay);
+      }
+      
+      stopAutoPlay() {
+        if (this.autoPlayInterval) {
+          clearInterval(this.autoPlayInterval);
+          this.autoPlayInterval = null;
+        }
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      new Slideshow('.slideshow-container', {
+        autoPlay: true,
+        autoPlayDelay: 3000
+      });
+    });
+  </script>
+</body>
+</html>
