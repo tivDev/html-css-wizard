@@ -1,0 +1,16 @@
+body {
+  font-family: sans-serif;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+button {
+  margin-bottom: 20px;
+  padding: 10px;
+}
+li {
+  margin: 5px 0;
+  padding: 10px;
+  background: #f1f1f1;
+  border-radius: 5px;
+}
