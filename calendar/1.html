@@ -262,6 +262,7 @@
             padding: 10px;
             cursor: pointer;
         }
+
         .year-month:hover {
             background-color: #f9f9f9;
         }
@@ -299,6 +300,9 @@
 
         .year-day:hover {
             background-color: #afaeae;
+        }
+        .year-day-prev{
+            color: #afaeae;
         }
 
         .year-current-day {
@@ -406,22 +410,24 @@
         .active {
             display: block;
         }
-/* Add to your existing CSS */
-.event.dragging {
-    opacity: 0.5;
-}
 
-.week-day.drop-target {
-    background-color: #e8f0fe;
-}
+        /* Add to your existing CSS */
+        .event.dragging {
+            opacity: 0.5;
+        }
 
-.day-slot.drop-target {
-    background-color: #e8f0fe;
-}
+        .week-day.drop-target {
+            background-color: #e8f0fe;
+        }
 
-.day-cell.drop-target {
-    background-color: #e8f0fe;
-}
+        .day-slot.drop-target {
+            background-color: #e8f0fe;
+        }
+
+        .day-cell.drop-target {
+            background-color: #e8f0fe;
+        }
+
         /* Screen Responsive */
         @media (width < 768px) {
             .year-months {
@@ -953,14 +959,18 @@
                     const startDay = firstDay.getDay();
                     const daysInMonth = lastDay.getDate();
 
-                    // Add empty cells for days before the first day of the month
-                    for (let i = 0; i < startDay; i++) {
-                        const emptyCell = document.createElement('div');
-                        emptyCell.className = 'year-day';
-                        daysContainer.appendChild(emptyCell);
+                    // Get days from previous month
+                    const prevMonthLastDay = new Date(currentDate.getFullYear(), month, 0).getDate();
+
+                    // Add days from previous month
+                    for (let i = startDay - 1; i >= 0; i--) {
+                        const prevMonthDay = document.createElement('div');
+                        prevMonthDay.className = 'year-day year-day-prev';
+                        prevMonthDay.textContent = prevMonthLastDay - i;
+                        daysContainer.appendChild(prevMonthDay);
                     }
 
-                    // Add days of the month
+                    // Add days of the current month
                     for (let day = 1; day <= daysInMonth; day++) {
                         const dayCell = document.createElement('div');
                         dayCell.className = 'year-day';
@@ -982,6 +992,18 @@
                         });
 
                         daysContainer.appendChild(dayCell);
+                    }
+
+                    // Calculate how many days from next month to show
+                    const totalCells = Math.ceil((daysInMonth + startDay) / 7) * 7;
+                    const nextMonthDaysToShow = totalCells - (daysInMonth + startDay);
+
+                    // Add days from next month
+                    for (let day = 1; day <= nextMonthDaysToShow; day++) {
+                        const nextMonthDay = document.createElement('div');
+                        nextMonthDay.className = 'year-day year-day-next';
+                        nextMonthDay.textContent = day;
+                        daysContainer.appendChild(nextMonthDay);
                     }
 
                     monthContainer.appendChild(daysContainer);
