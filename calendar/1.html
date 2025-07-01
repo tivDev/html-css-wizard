@@ -260,6 +260,10 @@
         .year-month {
             border: 1px solid #eee;
             padding: 10px;
+            cursor: pointer;
+        }
+        .year-month:hover {
+            background-color: #f9f9f9;
         }
 
         .year-month-title {
@@ -281,9 +285,20 @@
         }
 
         .year-day {
+            width: 18px;
+            height: 18px;
             font-size: 10px;
             text-align: center;
-            padding: 2px;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            line-height: 18px;
+            cursor: pointer;
+        }
+
+        .year-day:hover {
+            background-color: #afaeae;
         }
 
         .year-current-day {
@@ -391,7 +406,22 @@
         .active {
             display: block;
         }
+/* Add to your existing CSS */
+.event.dragging {
+    opacity: 0.5;
+}
 
+.week-day.drop-target {
+    background-color: #e8f0fe;
+}
+
+.day-slot.drop-target {
+    background-color: #e8f0fe;
+}
+
+.day-cell.drop-target {
+    background-color: #e8f0fe;
+}
         /* Screen Responsive */
         @media (width < 768px) {
             .year-months {
@@ -547,7 +577,7 @@
 
             // Calendar state
             let currentDate = new Date();
-            let currentView = 'day';
+            let currentView = 'week';
             let events = JSON.parse(localStorage.getItem('calendarEvents')) || [];
 
             // Initialize calendar
@@ -801,7 +831,6 @@
                         daySlot.addEventListener('click', (e) => {
                             if (e.target === daySlot) {
                                 const clickedTime = new Date(daySlot.dataset.date);
-                                console.log('clickedTime: ', clickedTime);
                                 openAddModal(clickedTime);
                             }
                         });
@@ -834,8 +863,14 @@
                     hourSlot.className = 'day-slot';
 
                     const slotTime = new Date(currentDate);
-                    slotTime.setHours(hour, 0, 0, 0);
-                    hourSlot.dataset.date = slotTime.toISOString();
+
+                    const dateStr = slotTime.toISOString().split('T')[0];
+                    const hourStr = hour.toString().padStart(2, '0');
+                    const dateTime = `${dateStr}T${hourStr}:00:00`;
+
+                    const convertedDateTime = new Date(dateTime);
+                    hourSlot.dataset.date = dateTime;
+
 
                     // Highlight current time
                     const now = new Date();
@@ -847,8 +882,8 @@
                     }
 
                     // Add events to the time slot
-                    const slotStart = new Date(slotTime);
-                    const slotEnd = new Date(slotTime);
+                    const slotStart = new Date(dateTime);
+                    const slotEnd = new Date(dateTime);
                     slotEnd.setHours(hour + 1, 0, 0, 0);
 
                     const slotEvents = getEventsForTimeRange(slotStart, slotEnd);
@@ -888,6 +923,14 @@
                 for (let month = 0; month < 12; month++) {
                     const monthContainer = document.createElement('div');
                     monthContainer.className = 'year-month';
+
+                    // Add click handler for month container
+                    monthContainer.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('year-day')) {
+                            currentDate = new Date(currentDate.getFullYear(), month, 1);
+                            setActiveView('month');
+                        }
+                    });
 
                     const monthTitle = document.createElement('div');
                     monthTitle.className = 'year-month-title';
@@ -932,7 +975,8 @@
                         }
 
                         const date = new Date(currentDate.getFullYear(), month, day);
-                        dayCell.addEventListener('click', () => {
+                        dayCell.addEventListener('click', (e) => {
+                            e.stopPropagation(); // Prevent month container click
                             currentDate = date;
                             setActiveView('day');
                         });
@@ -977,18 +1021,18 @@
 
             // Open modal to add new event
             function openAddModal(date) {
+
                 modalTitle.textContent = 'Add Event';
                 eventIdInput.value = '';
                 eventTitleInput.value = '';
                 eventUserInput.value = '';
 
-                const dateStr = date.toISOString().split('T')[0];
+                const dateStr = date.toLocaleDateString('en-CA');
                 const timeStr = date.toTimeString().substring(0, 5);
 
                 eventDateInput.value = dateStr;
                 eventStartTimeInput.value = timeStr;
 
-                // Set end time to 1 hour later by default
                 const endTime = new Date(date);
                 endTime.setHours(date.getHours() + 1);
                 eventEndTimeInput.value = endTime.toTimeString().substring(0, 5);
@@ -996,6 +1040,7 @@
                 deleteBtn.style.display = 'none';
                 eventModal.style.display = 'flex';
             }
+
 
             // Open modal to edit existing event
             function openEditModal(event) {
