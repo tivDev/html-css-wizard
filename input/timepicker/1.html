@@ -121,7 +121,17 @@
     }
 
     .calendar .day:hover {
-      background: #f2f2f7;
+      background: #cecece;
+    }
+
+    /* Other Month */
+    .calendar .other-month {
+      color: #868686;
+      opacity: 0.6;
+    }
+
+    .calendar .other-month:hover {
+      background: #bebebe;
     }
 
     .calendar .today {
@@ -131,7 +141,7 @@
     }
 
     .calendar .day.selected {
-      background-color: #f2f2f7;
+      background-color: #cecece;
       font-weight: 500;
     }
 
@@ -557,9 +567,10 @@
           this.picker.querySelector('.hourRange').value = hour === 0 ? 24 : hour;
           this.picker.querySelector('.hourValue').textContent = String(hour === 0 ? 24 : hour).padStart(2, '0');
 
-          const roundedMinutes = Math.floor(this.selectedDate.getMinutes() / 5) * 5;
-          this.picker.querySelector('.minuteRange').value = roundedMinutes;
-          this.picker.querySelector('.minuteValue').textContent = String(roundedMinutes).padStart(2, '0');
+          // Changed from rounded minutes to exact minutes
+          const minutes = this.selectedDate.getMinutes();
+          this.picker.querySelector('.minuteRange').value = minutes;
+          this.picker.querySelector('.minuteValue').textContent = String(minutes).padStart(2, '0');
         }
       }
 
@@ -591,22 +602,36 @@
 
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
 
         const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
         weekdays.forEach(d => calendar.innerHTML += `<div class="header">${d}</div>`);
 
-        for (let i = 0; i < firstDay; i++) {
-          calendar.innerHTML += `<div></div>`;
+        // Add days from previous month
+        for (let i = firstDay - 1; i >= 0; i--) {
+          const day = daysInPrevMonth - i;
+          calendar.innerHTML += `<div class="day other-month" data-day="${day}" data-month="prev">${day}</div>`;
         }
 
+        // Add current month days
         const today = new Date();
         const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
 
         for (let i = 1; i <= daysInMonth; i++) {
           const isToday = isCurrentMonth && i === today.getDate();
-          const isSelected = i === this.selectedDate.getDate();
+          const isSelected = i === this.selectedDate.getDate() && month === this.selectedDate.getMonth();
           calendar.innerHTML += `<div class="day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}" 
-            data-day="${i}">${i}</div>`;
+      data-day="${i}">${i}</div>`;
+        }
+
+        // Calculate how many days from next month we need to add
+        const totalCells = 7 * 6; // 7 days * 6 rows max
+        const daysSoFar = firstDay + daysInMonth;
+        const daysFromNextMonth = totalCells - daysSoFar > 7 ? 0 : totalCells - daysSoFar;
+
+        // Add days from next month
+        for (let i = 1; i <= daysFromNextMonth; i++) {
+          calendar.innerHTML += `<div class="day other-month" data-day="${i}" data-month="next">${i}</div>`;
         }
 
         // Update select values
@@ -637,9 +662,10 @@
           this.picker.querySelector('.hourRange').value = hour === 0 ? 24 : hour;
           this.picker.querySelector('.hourValue').textContent = String(hour === 0 ? 24 : hour).padStart(2, '0');
 
-          const roundedMinutes = Math.floor(this.selectedDate.getMinutes() / 5) * 5;
-          this.picker.querySelector('.minuteRange').value = roundedMinutes;
-          this.picker.querySelector('.minuteValue').textContent = String(roundedMinutes).padStart(2, '0');
+          // Changed from rounded minutes to exact minutes
+          const minutes = this.selectedDate.getMinutes();
+          this.picker.querySelector('.minuteRange').value = minutes;
+          this.picker.querySelector('.minuteValue').textContent = String(minutes).padStart(2, '0');
         }
       }
 
@@ -652,9 +678,10 @@
         this.picker.querySelector('.hourRange').value = hour === 0 ? 24 : hour;
         this.picker.querySelector('.hourValue').textContent = String(hour === 0 ? 24 : hour).padStart(2, '0');
 
-        const roundedMinutes = Math.floor(now.getMinutes() / 5) * 5;
-        this.picker.querySelector('.minuteRange').value = roundedMinutes;
-        this.picker.querySelector('.minuteValue').textContent = String(roundedMinutes).padStart(2, '0');
+        // Changed from rounded minutes to exact minutes
+        const minutes = now.getMinutes();
+        this.picker.querySelector('.minuteRange').value = minutes;
+        this.picker.querySelector('.minuteValue').textContent = String(minutes).padStart(2, '0');
 
         this.generateCalendar();
         this.picker.style.display = 'none';
